@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ShipSafe — Is your website about to get an ADA demand letter? Free 10-second check</title>
+<meta name="description" content="Paste your URL and get a plain-English report on ADA/WCAG accessibility gaps, missing privacy policy, cookie-consent, and broken schema — the issues that trigger demand letters. Built for no-code & AI-generated sites. Free.">
+<link rel="canonical" href="https://dukotah.github.io/shipsafe/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ShipSafe — Is your site about to get an ADA demand letter?">
+<meta property="og:description" content="Free, plain-English accessibility + privacy risk check for vibe-coded and no-code sites. 10 seconds, no signup.">
+<meta property="og:url" content="https://dukotah.github.io/shipsafe/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ShipSafe — Free ADA & privacy risk check">
+<meta name="twitter:description" content="Paste a URL → plain-English report on the gaps that trigger demand letters. Built for AI-generated sites.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛟</text></svg>">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"ShipSafe","applicationCategory":"DeveloperApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free plain-English ADA/WCAG accessibility and privacy-compliance risk checker for websites, built for no-code and AI-generated sites.","publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"}}
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap row">
+    <a class="brand" href="/shipsafe/">🛟 ShipSafe</a>
+    <span class="byline">by <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Labs</a></span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1>Is your website about to get a <span class="hl">demand letter?</span></h1>
+      <p class="sub">Over <strong>4,600 ADA website lawsuits</strong> were filed in 2024 — and AI-generated &amp; no-code sites are the easiest targets. Paste your URL for a plain-English report on the accessibility, privacy, and schema gaps that actually get sites sued. <strong>10 seconds, no signup.</strong></p>
+
+      <form id="scan-form" class="scanbar" novalidate>
+        <input id="url" type="url" inputmode="url" autocomplete="off" placeholder="yourwebsite.com" aria-label="Website URL to check" required>
+        <button id="scan-btn" type="submit">Check my site</button>
+      </form>
+      <p class="micro" id="status" role="status" aria-live="polite">Free · client-side · we don't store your URL.</p>
+    </div>
+  </section>
+
+  <section id="results" class="results wrap" hidden></section>
+
+  <section class="explain wrap">
+    <h2>What ShipSafe checks</h2>
+    <div class="cards">
+      <div class="card"><h3>♿ Accessibility (ADA / WCAG)</h3><p>Missing alt text, unlabeled form fields, no page language, empty buttons/links, heading structure — the exact issues cited in ADA demand letters.</p></div>
+      <div class="card"><h3>🔒 Privacy &amp; legal</h3><p>Missing privacy policy, no cookie/consent notice, no terms or contact path — frequently bundled into the same complaints (CCPA/GDPR).</p></div>
+      <div class="card"><h3>🔎 Schema &amp; SEO</h3><p>Broken or missing structured data, meta description, Open Graph, canonical — quietly costs you search visibility and rich results.</p></div>
+      <div class="card"><h3>🛡️ Trust signals</h3><p>HTTPS, favicon, mobile viewport, mixed-content — the basics that make a site look legitimate to visitors and crawlers.</p></div>
+    </div>
+  </section>
+
+  <section class="faq wrap">
+    <h2>FAQ</h2>
+    <details><summary>Is my AI-generated (Lovable / Bolt / v0 / Cursor) site really at risk?</summary><p>Often, yes. AI builders produce great-looking sites that frequently ship with no <code>lang</code> attribute, unlabeled inputs, images without alt text, and no privacy policy. Those are precisely the issues that serial ADA filers scan for. ShipSafe flags them in plain English so you can fix them before a letter arrives.</p></details>
+    <details><summary>Is this legal advice?</summary><p>No. ShipSafe is an automated heuristic check that highlights common risk areas. It is not legal advice and not a guarantee of compliance. For a binding audit, talk to a professional.</p></details>
+    <details><summary>How does it work without signup?</summary><p>It fetches your page and analyzes the HTML right in your browser. Nothing is stored. The free check reads your page source; a deeper rendered-page scan and scheduled monitoring are coming in the Pro tier.</p></details>
+    <details><summary>Why might a check say it couldn't read my site?</summary><p>Some sites block third-party fetching, or render entirely with JavaScript (so the HTML source is nearly empty). That's a limitation of the free in-browser check — the upcoming Pro scan renders the full page.</p></details>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>A <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Labs</a> experiment. ShipSafe gives heuristic guidance, not legal advice.</p>
+    <p class="cta">Want it actually fixed? <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Tech does accessibility &amp; compliance audits →</a></p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
