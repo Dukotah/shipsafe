@@ -116,6 +116,21 @@ const CHECKS = {
       : { status: "warn", detail: "No viewport meta tag.", fix: 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> so the page is usable and zoomable on phones.', law: "WCAG 1.4.10" }],
     ["Main landmark", (c) => c.doc.querySelector('main,[role="main"]') ? { status: "pass", detail: "<main> landmark present." }
       : { status: "warn", detail: "No <main> landmark.", fix: "Wrap your primary content in <main> so assistive tech can jump straight to it.", law: "WCAG 1.3.1" }],
+    ["Descriptive link text", (c) => {
+      const links = [...c.doc.querySelectorAll("a[href]")].filter(a => {
+        const href = (a.getAttribute("href") || "").trim();
+        return href && !href.startsWith("#") && !href.startsWith("mailto:") && !href.startsWith("tel:");
+      });
+      if (!links.length) return { status: "info", detail: "No navigation links found." };
+      const generic = new Set(["click here", "here", "read more", "more", "learn more", "continue", "details", "click", "link", "more info"]);
+      const bad = links.filter(a => {
+        if (a.getAttribute("aria-label")?.trim() || a.getAttribute("aria-labelledby")?.trim()) return false;
+        return generic.has((a.textContent || "").replace(/\s+/g, " ").trim().toLowerCase());
+      });
+      return bad.length
+        ? { status: "warn", detail: `${bad.length} link(s) use generic text (“click here”, “here”, “read more”…) that won’t tell screen-reader users where the link goes.`, fix: 'Describe where each link leads: “Read our privacy policy” instead of “click here”. Screen-reader users navigate by jumping between links, so the text must work out of context.', law: "WCAG 2.4.4" }
+        : { status: "pass", detail: "No obviously generic link text found." };
+    }],
   ],
   privacy: [
     ["Privacy policy linked", (c) => hasLink(c, /privacy/i) ? { status: "pass", detail: "A privacy-policy link was found." }
@@ -236,9 +251,13 @@ function render(r, url) {
       <button class="btn" id="again">${svg("again", "")}Scan another</button>
       <a class="btn" href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed by Copper Bay Tech →</a>
     </div>
-    <p class="trustline" style="margin-top:8px">ShipSafe analyzes your page's HTML source and gives heuristic guidance, not legal advice. <a href="methodology.html">How we score →</a></p>`;
+    <p class="trustline" style="margin-top:8px">ShipSafe analyzes your page’s HTML source and gives heuristic guidance, not legal advice. <a href="methodology.html">How we score →</a></p>`;
   el.hidden = false;
   el.scrollIntoView({ behavior: "smooth", block: "start" });
+  requestAnimationFrame(() => {
+    const h2 = el.querySelector("h2");
+    if (h2) { h2.tabIndex = -1; h2.focus({ preventScroll: true }); }
+  });
   $("#again").onclick = () => { el.hidden = true; $("#url").value = ""; $("#url").focus(); window.scrollTo({ top: 0, behavior: "smooth" }); };
   $("#copy-report").onclick = () => navigator.clipboard.writeText(reportText(r, url)).then(() => { const b = $("#copy-report"); b.innerHTML = svg("pass", "", { fill: "currentColor", stroke: "none" }) + "Copied"; setTimeout(() => (b.innerHTML = svg("copy", "") + "Copy report"), 1800); });
 }
@@ -307,7 +326,7 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const u = normalizeUrl($("#url").value), status = $("#scan-status"), btn = $("#scan-btn");
   $("#results").hidden = true;
-  if (!u) { status.textContent = "That doesn’t look like a URL — try again (e.g. example.com)."; return; }
+  if (!u) { status.textContent = "That doesn't look like a URL — try again (e.g. example.com)."; return; }
   setBtnLoading(btn, true);
   status.textContent = `Fetching ${u.host} and running checks…`;
   skeleton();
@@ -321,6 +340,8 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
   } catch {
     $("#results").innerHTML = `<div class="notice" role="alert"><strong>Couldn’t read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
     $("#results").hidden = false;
+    const noticeEl = $("#results").querySelector(".notice");
+    if (noticeEl) { noticeEl.tabIndex = -1; noticeEl.focus({ preventScroll: true }); }
     status.textContent = "Free — runs in your browser — we never store your URL.";
   } finally {
     setBtnLoading(btn, false);
@@ -348,3 +369,11 @@ if (_deep) {
   const inp = $("#url");
   if (inp) { inp.value = _deep.replace(/^https?:\/\//, ""); $("#scan-form")?.requestSubmit(); }
 }
+
+// Sync aria-expanded on FAQ <details> for AT (VoiceOver + Safari compatibility).
+document.querySelectorAll(".faq details").forEach(d => {
+  const s = d.querySelector("summary");
+  if (!s) return;
+  s.setAttribute("aria-expanded", d.open ? "true" : "false");
+  d.addEventListener("toggle", () => s.setAttribute("aria-expanded", d.open ? "true" : "false"));
+});
