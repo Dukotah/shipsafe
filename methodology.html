@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Methodology — ShipSafe</title>
+<title>Methodology &mdash; ShipSafe</title>
 <meta name="description" content="Exactly what ShipSafe checks, which WCAG success criteria each check maps to, why each matters for demand-letter risk, how the grade is calculated, and the honest limits of an in-browser source scan.">
 <link rel="canonical" href="https://dukotah.github.io/shipsafe/methodology.html">
-<meta property="og:title" content="ShipSafe Methodology — how each check maps to WCAG and demand-letter risk">
+<meta property="og:title" content="ShipSafe Methodology &mdash; how each check maps to WCAG and demand-letter risk">
 <meta property="og:description" content="Exactly what ShipSafe checks, how each check maps to WCAG and privacy law, and the honest limits of a source-only scan.">
 <meta property="og:image" content="https://dukotah.github.io/shipsafe/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,7 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=8">
 <style>
-/* Scoped additions for methodology.html — no edits to styles.css */
+/* Scoped additions for methodology.html &mdash; no edits to styles.css */
 .check-table { border-collapse: collapse; width: 100%; margin: 18px 0 10px; font-size: 15px; }
 .check-table th { background: var(--copper-tint); font-family: "Hanken Grotesk", sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .03em; text-transform: uppercase; padding: 9px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .check-table td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; color: #2c2f36; }
@@ -51,11 +51,11 @@
   <p class="lede">ShipSafe is a transparent tool. Here is every check it runs, the specific WCAG success criterion each maps to, why that criterion matters for demand-letter risk, and what the tool genuinely cannot see.</p>
 
   <div class="callout">
-    <strong>What ShipSafe is — and isn't.</strong> It reads your page's HTML source and runs heuristic checks against WCAG 2.2 and common privacy rules. It flags real, documented risk patterns. It is not legal advice, not a certified WCAG conformance audit, and not a guarantee of compliance. Treat a clean result as "no obvious red flags in the source," not "certified accessible."
+    <strong>What ShipSafe is &mdash; and isn&rsquo;t.</strong> It reads your page&rsquo;s HTML source and runs heuristic checks against WCAG 2.2 and common privacy rules. It flags real, documented risk patterns. It is not legal advice, not a certified WCAG conformance audit, and not a guarantee of compliance. Treat a clean result as &ldquo;no obvious red flags in the source,&rdquo; not &ldquo;certified accessible.&rdquo;
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These eleven checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 — the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These twelve checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -72,7 +72,7 @@
           <span class="wcag-ref">3.1.1 Language of Page</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>Screen readers (JAWS, NVDA, VoiceOver) pick a pronunciation engine based on the <code>lang</code> attribute on the <code>&lt;html&gt;</code> element. Without it, an English page may be read with a French or Spanish voice — making it effectively unintelligible. WCAG 3.1.1 is a Level A requirement, the floor for ADA compliance. Its absence is a quick, defensible strike in a demand letter because it requires a single attribute to fix.</td>
+        <td>Screen readers (JAWS, NVDA, VoiceOver) pick a pronunciation engine based on the <code>lang</code> attribute on the <code>&lt;html&gt;</code> element. Without it, an English page may be read with a French or Spanish voice &mdash; making it effectively unintelligible. WCAG 3.1.1 is a Level A requirement, the floor for ADA compliance. Its absence is a quick, defensible strike in a demand letter because it requires a single attribute to fix.</td>
       </tr>
       <tr>
         <td>Images have alt text</td>
@@ -80,7 +80,7 @@
           <span class="wcag-ref">1.1.1 Non-text Content</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>WCAG 1.1.1 requires every meaningful image to have a text alternative. It is the single most-cited issue in ADA demand letters — often the sole basis for a filing. A missing <code>alt</code> attribute is machine-detectable in seconds, which is why serial filers automate it. Decorative images should carry <code>alt=""</code> to explicitly mark them as presentational; ShipSafe flags any <code>&lt;img&gt;</code> with no <code>alt</code> attribute at all.</td>
+        <td>WCAG 1.1.1 requires every meaningful image to have a text alternative. It is the single most-cited issue in ADA demand letters &mdash; often the sole basis for a filing. A missing <code>alt</code> attribute is machine-detectable in seconds, which is why serial filers automate it. Decorative images should carry <code>alt=""</code> to explicitly mark them as presentational; ShipSafe flags any <code>&lt;img&gt;</code> with no <code>alt</code> attribute at all.</td>
       </tr>
       <tr>
         <td>Form fields are labeled</td>
@@ -89,7 +89,7 @@
           <span class="wcag-ref">4.1.2 Name, Role, Value</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>A form input without a programmatic label is unusable by screen readers: the user hears "edit text" with no indication of what to type. Placeholder text does not satisfy this requirement — it disappears on focus and is frequently skipped by assistive technology. ShipSafe checks for a <code>&lt;label for&gt;</code> pointing to the field, an <code>aria-label</code>, an <code>aria-labelledby</code>, or a <code>title</code> attribute. It flags fields that have none of these.</td>
+        <td>A form input without a programmatic label is unusable by screen readers: the user hears &ldquo;edit text&rdquo; with no indication of what to type. Placeholder text does not satisfy this requirement &mdash; it disappears on focus and is frequently skipped by assistive technology. ShipSafe checks for a <code>&lt;label for&gt;</code> pointing to the field, an <code>aria-label</code>, an <code>aria-labelledby</code>, or a <code>title</code> attribute. It flags fields that have none of these.</td>
       </tr>
       <tr>
         <td>Links &amp; buttons have names</td>
@@ -97,7 +97,7 @@
           <span class="wcag-ref">4.1.2 Name, Role, Value</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>WCAG 4.1.2 requires every interactive control to have a name that assistive technology can announce. Icon-only buttons — a close icon with no text, an arrow link with no label — are dead ends for screen-reader users: they hear "button" or "link" with nothing else. ShipSafe checks accessible name computation: visible text, <code>aria-label</code>, <code>aria-labelledby</code>, image alt text, or an SVG <code>&lt;title&gt;</code>. If none is found, it flags the control.</td>
+        <td>WCAG 4.1.2 requires every interactive control to have a name that assistive technology can announce. Icon-only buttons &mdash; a close icon with no text, an arrow link with no label &mdash; are dead ends for screen-reader users: they hear &ldquo;button&rdquo; or &ldquo;link&rdquo; with nothing else. ShipSafe checks accessible name computation: visible text, <code>aria-label</code>, <code>aria-labelledby</code>, image alt text, or an SVG <code>&lt;title&gt;</code>. If none is found, it flags the control.</td>
       </tr>
       <tr>
         <td>Page has a title</td>
@@ -105,7 +105,7 @@
           <span class="wcag-ref">2.4.2 Page Titled</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>The <code>&lt;title&gt;</code> element is announced first when a screen reader loads the page and shown in the browser tab and bookmark. WCAG 2.4.2 requires pages to have descriptive titles — "Untitled" or a missing title leaves users without orientation. It also hurts search visibility, so fixing it serves both accessibility and SEO.</td>
+        <td>The <code>&lt;title&gt;</code> element is announced first when a screen reader loads the page and shown in the browser tab and bookmark. WCAG 2.4.2 requires pages to have descriptive titles &mdash; &ldquo;Untitled&rdquo; or a missing title leaves users without orientation. It also hurts search visibility, so fixing it serves both accessibility and SEO.</td>
       </tr>
       <tr>
         <td>Heading structure</td>
@@ -113,7 +113,7 @@
           <span class="wcag-ref">1.3.1 Info and Relationships</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>Screen-reader users navigate pages primarily by headings — they jump from <code>&lt;h1&gt;</code> to <code>&lt;h2&gt;</code> to <code>&lt;h3&gt;</code> to build a mental outline of the page. WCAG 1.3.1 requires that structure conveyed visually be present in the programmatic structure too. ShipSafe checks that exactly one <code>&lt;h1&gt;</code> exists. Multiple <code>&lt;h1&gt;</code> elements (a common AI-builder output) break that outline; zero means there is no navigational anchor at all.</td>
+        <td>Screen-reader users navigate pages primarily by headings &mdash; they jump from <code>&lt;h1&gt;</code> to <code>&lt;h2&gt;</code> to <code>&lt;h3&gt;</code> to build a mental outline of the page. WCAG 1.3.1 requires that structure conveyed visually be present in the programmatic structure too. ShipSafe checks that exactly one <code>&lt;h1&gt;</code> exists. Multiple <code>&lt;h1&gt;</code> elements (a common AI-builder output) break that outline; zero means there is no navigational anchor at all.</td>
       </tr>
       <tr>
         <td>Mobile viewport</td>
@@ -121,7 +121,7 @@
           <span class="wcag-ref">1.4.10 Reflow</span><br>
           <span class="wcag-level">Level AA</span>
         </td>
-        <td>WCAG 1.4.10 requires content to reflow to a single column at 320px without requiring horizontal scrolling. Without a viewport meta tag, browsers render the page at desktop width on mobile and users must scroll horizontally — making the site practically unusable on a phone. Low-vision users who zoom heavily are particularly affected. The fix is one meta tag.</td>
+        <td>WCAG 1.4.10 requires content to reflow to a single column at 320px without requiring horizontal scrolling. Without a viewport meta tag, browsers render the page at desktop width on mobile and users must scroll horizontally &mdash; making the site practically unusable on a phone. Low-vision users who zoom heavily are particularly affected. The fix is one meta tag.</td>
       </tr>
       <tr>
         <td>Main landmark</td>
@@ -137,7 +137,7 @@
           <span class="wcag-ref">2.4.4 Link Purpose (In Context)</span><br>
           <span class="wcag-level">Level AA</span>
         </td>
-        <td>Screen-reader users often navigate a page by jumping from link to link without surrounding context. WCAG 2.4.4 requires that link purpose be determinable from the link text alone, or from its immediate context. Generic text — "click here," "read more," "here," "more" — tells a screen reader only that a link exists, not where it leads or why. ShipSafe checks for a known list of generic phrases in link text. Links with an <code>aria-label</code>, anchor (<code>#</code>) links, and <code>mailto:</code> links are excluded. The check returns a warning rather than a fail because static HTML context cannot always confirm whether surrounding content makes a link's purpose clear.</td>
+        <td>Screen-reader users often navigate a page by jumping from link to link without surrounding context. WCAG 2.4.4 requires that link purpose be determinable from the link text alone, or from its immediate context. Generic text &mdash; &ldquo;click here,&rdquo; &ldquo;read more,&rdquo; &ldquo;here,&rdquo; &ldquo;more&rdquo; &mdash; tells a screen reader only that a link exists, not where it leads or why. ShipSafe checks for a known list of generic phrases in link text. Links with an <code>aria-label</code>, anchor (<code>#</code>) links, and <code>mailto:</code> links are excluded. The check returns a warning rather than a fail because static HTML context cannot always confirm whether surrounding content makes a link&rsquo;s purpose clear.</td>
       </tr>
       <tr>
         <td>ARIA roles are valid</td>
@@ -145,7 +145,7 @@
           <span class="wcag-ref">4.1.2 Name, Role, Value</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>The <code>role</code> attribute tells assistive technology how to announce and interact with an element — "button", "dialog", "navigation", and so on. An empty <code>role=""</code> gives screen readers nothing to work with; an unrecognized value (a typo, a made-up role, or an ARIA abstract role used directly in content) is silently ignored or misinterpreted. ShipSafe checks every element with a <code>role</code> attribute against the full WAI-ARIA 1.2 non-abstract role taxonomy. The check returns a fail because invalid ARIA roles are machine-detectable, straightforward to fix (remove or replace the attribute), and represent a direct failure of the Name, Role, Value requirement that underpins most interactive accessibility.</td>
+        <td>The <code>role</code> attribute tells assistive technology how to announce and interact with an element &mdash; &ldquo;button&rdquo;, &ldquo;dialog&rdquo;, &ldquo;navigation&rdquo;, and so on. An empty <code>role=""</code> gives screen readers nothing to work with; an unrecognized value (a typo, a made-up role, or an ARIA abstract role used directly in content) is silently ignored or misinterpreted. ShipSafe checks every element with a <code>role</code> attribute against the full WAI-ARIA 1.2 non-abstract role taxonomy. The check returns a fail because invalid ARIA roles are machine-detectable, straightforward to fix (remove or replace the attribute), and represent a direct failure of the Name, Role, Value requirement that underpins most interactive accessibility.</td>
       </tr>
       <tr>
         <td>Tab order preserved</td>
@@ -153,13 +153,21 @@
           <span class="wcag-ref">2.4.3 Focus Order</span><br>
           <span class="wcag-level">Level A</span>
         </td>
-        <td>WCAG 2.4.3 requires that focusable components receive focus in an order that preserves meaning and operation. <code>tabindex="0"</code> and <code>tabindex="-1"</code> are both safe — they participate in (or are removed from) the natural DOM tab order without disrupting it. A positive tabindex value — <code>tabindex="1"</code>, <code>tabindex="2"</code>, etc. — is a red flag: it forces focus to jump to those elements <em>before</em> everything else on the page, regardless of DOM order. In practice this nearly always creates a disjointed, confusing keyboard experience for sighted keyboard users and screen-reader users alike. ShipSafe scans the source HTML for any element whose <code>tabindex</code> attribute parses to a positive integer and returns a warning if any are found. The check returns a warn rather than a fail because context matters: a positive tabindex might be an intentional (if unusual) design decision, and visual DOM order cannot be verified from source HTML alone.</td>
+        <td>WCAG 2.4.3 requires that focusable components receive focus in an order that preserves meaning and operation. <code>tabindex="0"</code> and <code>tabindex="-1"</code> are both safe &mdash; they participate in (or are removed from) the natural DOM tab order without disrupting it. A positive tabindex value &mdash; <code>tabindex="1"</code>, <code>tabindex="2"</code>, etc. &mdash; is a red flag: it forces focus to jump to those elements <em>before</em> everything else on the page, regardless of DOM order. In practice this nearly always creates a disjointed, confusing keyboard experience for sighted keyboard users and screen-reader users alike. ShipSafe scans the source HTML for any element whose <code>tabindex</code> attribute parses to a positive integer and returns a warning if any are found. The check returns a warn rather than a fail because context matters: a positive tabindex might be an intentional (if unusual) design decision, and visual DOM order cannot be verified from source HTML alone.</td>
+      </tr>
+      <tr>
+        <td>Video captions</td>
+        <td>
+          <span class="wcag-ref">1.2.2 Captions (Prerecorded)</span><br>
+          <span class="wcag-level">Level A</span>
+        </td>
+        <td>WCAG 1.2.2 requires captions for all prerecorded synchronized audio-video content. A <code>&lt;video&gt;</code> element without a <code>&lt;track kind="captions"&gt;</code> or <code>&lt;track kind="subtitles"&gt;</code> child is inaccessible to users who are deaf or hard of hearing &mdash; and it is machine-detectable in the source HTML. ShipSafe checks every <code>&lt;video&gt;</code> element for a caption or subtitle track. The check returns a fail when captions are missing because WCAG 1.2.2 is a Level A requirement with no ambiguity: if the video has audio content, captions are mandatory. If no <code>&lt;video&gt;</code> elements are present, the check returns informational rather than pass, since the absence of video is not a failing condition. Audio-only content (<code>&lt;audio&gt;</code> elements) is not checked here &mdash; transcripts for those fall under WCAG 1.2.1, which ShipSafe does not currently check.</td>
       </tr>
     </tbody>
   </table>
 
   <h2 id="privacy">Privacy &amp; legal checks</h2>
-  <p>Privacy claims are frequently filed alongside accessibility complaints — they share the same plaintiff's bar and the same demand-letter economics. These checks are also weighted high in the score.</p>
+  <p>Privacy claims are frequently filed alongside accessibility complaints &mdash; they share the same plaintiff&rsquo;s bar and the same demand-letter economics. These checks are also weighted high in the score.</p>
 
   <table class="check-table" aria-label="Privacy and legal checks">
     <thead>
@@ -173,7 +181,7 @@
       <tr>
         <td>Privacy policy linked</td>
         <td><span class="wcag-ref">CCPA / GDPR</span></td>
-        <td>California's CCPA and the EU's GDPR both require a privacy policy if you collect personal data — and "personal data" includes IP addresses and analytics identifiers, not just form submissions. ShipSafe checks for a link whose text or URL contains "privacy." Its absence is a recurring item in demand letters, particularly when bundled with accessibility claims.</td>
+        <td>California&rsquo;s CCPA and the EU&rsquo;s GDPR both require a privacy policy if you collect personal data &mdash; and &ldquo;personal data&rdquo; includes IP addresses and analytics identifiers, not just form submissions. ShipSafe checks for a link whose text or URL contains &ldquo;privacy.&rdquo; Its absence is a recurring item in demand letters, particularly when bundled with accessibility claims.</td>
       </tr>
       <tr>
         <td>Cookie / consent notice</td>
@@ -183,23 +191,23 @@
       <tr>
         <td>Terms of service linked</td>
         <td><span class="wcag-ref">General legal best practice</span></td>
-        <td>A Terms of Service link is expected wherever users can register, purchase, or submit content. Its absence is a warn rather than a fail — many simple informational sites have no need for one — but it is a gap worth noting for any site with interactive features.</td>
+        <td>A Terms of Service link is expected wherever users can register, purchase, or submit content. Its absence is a warn rather than a fail &mdash; many simple informational sites have no need for one &mdash; but it is a gap worth noting for any site with interactive features.</td>
       </tr>
       <tr>
         <td>Contact path</td>
         <td><span class="wcag-ref">General legal / accessibility best practice</span></td>
-        <td>A reachable contact path — a <code>mailto:</code> link or a page linked as "contact" — matters for both accessibility and legal purposes. Accessibility statements and legal processes require a way for users to report problems. Several state laws and WCAG supplementary guidance specifically encourage providing contact information for accessibility feedback. Its absence is a warn.</td>
+        <td>A reachable contact path &mdash; a <code>mailto:</code> link or a page linked as &ldquo;contact&rdquo; &mdash; matters for both accessibility and legal purposes. Accessibility statements and legal processes require a way for users to report problems. Several state laws and WCAG supplementary guidance specifically encourage providing contact information for accessibility feedback. Its absence is a warn.</td>
       </tr>
       <tr>
         <td>Accessibility statement</td>
         <td><span class="wcag-ref">WCAG 2 supplementary / ADA best practice</span></td>
-        <td>An accessibility statement (a page or section documenting your commitment, known limitations, and a contact for reporting issues) is not a WCAG success criterion, but it is a documented factor in reducing demand-letter risk. Courts and plaintiffs' attorneys look for evidence of good-faith effort. A statement signals awareness and ongoing commitment; its absence signals the opposite. ShipSafe checks for a link whose text or URL contains "accessib."</td>
+        <td>An accessibility statement (a page or section documenting your commitment, known limitations, and a contact for reporting issues) is not a WCAG success criterion, but it is a documented factor in reducing demand-letter risk. Courts and plaintiffs&rsquo; attorneys look for evidence of good-faith effort. A statement signals awareness and ongoing commitment; its absence signals the opposite. ShipSafe checks for a link whose text or URL contains &ldquo;accessib.&rdquo;</td>
       </tr>
     </tbody>
   </table>
 
   <h2 id="schema">Schema &amp; SEO checks</h2>
-  <p>These checks carry lower legal risk weight, but they are cheap wins — most are single-line fixes with direct visibility impact.</p>
+  <p>These checks carry lower legal risk weight, but they are cheap wins &mdash; most are single-line fixes with direct visibility impact.</p>
 
   <table class="check-table" aria-label="Schema and SEO checks">
     <thead>
@@ -213,22 +221,22 @@
       <tr>
         <td>Structured data (schema.org)</td>
         <td><span class="wcag-ref">SEO / Google Rich Results</span></td>
-        <td>ShipSafe looks for <code>&lt;script type="application/ld+json"&gt;</code> blocks and attempts to parse each as JSON. A missing block is a warn — Google cannot show rich results without structured data. A block that fails JSON.parse is a fail — it is silently ignored by search engines, so it provides no benefit while looking like it does.</td>
+        <td>ShipSafe looks for <code>&lt;script type="application/ld+json"&gt;</code> blocks and attempts to parse each as JSON. A missing block is a warn &mdash; Google cannot show rich results without structured data. A block that fails JSON.parse is a fail &mdash; it is silently ignored by search engines, so it provides no benefit while looking like it does.</td>
       </tr>
       <tr>
         <td>Meta description</td>
         <td><span class="wcag-ref">SEO</span></td>
-        <td>A <code>&lt;meta name="description"&gt;</code> content attribute with at least some text. It doesn't affect ranking directly but is your pitch in the search results snippet. Missing it means Google writes one for you, which is usually worse.</td>
+        <td>A <code>&lt;meta name="description"&gt;</code> content attribute with at least some text. It doesn&rsquo;t affect ranking directly but is your pitch in the search results snippet. Missing it means Google writes one for you, which is usually worse.</td>
       </tr>
       <tr>
         <td>Open Graph tags</td>
         <td><span class="wcag-ref">SEO / Social sharing</span></td>
-        <td>ShipSafe checks for <code>og:title</code> and <code>og:image</code>. Without them, shared links on LinkedIn, Slack, iMessage, and most social platforms show a blank card — a trust signal problem, especially for a business site.</td>
+        <td>ShipSafe checks for <code>og:title</code> and <code>og:image</code>. Without them, shared links on LinkedIn, Slack, iMessage, and most social platforms show a blank card &mdash; a trust signal problem, especially for a business site.</td>
       </tr>
       <tr>
         <td>Canonical URL</td>
         <td><span class="wcag-ref">SEO</span></td>
-        <td>A <code>&lt;link rel="canonical"&gt;</code> tells search engines which version of a URL is authoritative. Its absence is informational on a single-page site — not a problem — but worth noting for sites with URL parameters or multiple paths.</td>
+        <td>A <code>&lt;link rel="canonical"&gt;</code> tells search engines which version of a URL is authoritative. Its absence is informational on a single-page site &mdash; not a problem &mdash; but worth noting for sites with URL parameters or multiple paths.</td>
       </tr>
     </tbody>
   </table>
@@ -248,17 +256,17 @@
       <tr>
         <td>HTTPS</td>
         <td><span class="wcag-ref">Security / browser policy</span></td>
-        <td>Checks whether the scanned URL uses the <code>https:</code> protocol. HTTP sites are marked "Not secure" by all major browsers — a visible warning that undermines trust, and a hard barrier to some browser features. Every major hosting platform provides free TLS certificates.</td>
+        <td>Checks whether the scanned URL uses the <code>https:</code> protocol. HTTP sites are marked &ldquo;Not secure&rdquo; by all major browsers &mdash; a visible warning that undermines trust, and a hard barrier to some browser features. Every major hosting platform provides free TLS certificates.</td>
       </tr>
       <tr>
         <td>Favicon</td>
         <td><span class="wcag-ref">Browser UI convention</span></td>
-        <td>A <code>&lt;link rel="icon"&gt;</code> (or <code>shortcut icon</code>) declaration. Its absence is informational — browsers will show a fallback — but a missing favicon is a detail that reads as unfinished, particularly to business users who pin tabs.</td>
+        <td>A <code>&lt;link rel="icon"&gt;</code> (or <code>shortcut icon</code>) declaration. Its absence is informational &mdash; browsers will show a fallback &mdash; but a missing favicon is a detail that reads as unfinished, particularly to business users who pin tabs.</td>
       </tr>
       <tr>
         <td>No mixed content</td>
         <td><span class="wcag-ref">Security / browser policy</span></td>
-        <td>On an HTTPS page, any resource loaded over <code>http://</code> — an image, script, or stylesheet — is "mixed content." Modern browsers block active mixed content (scripts, iframes) silently and warn on passive mixed content (images). ShipSafe scans <code>src</code> and <code>href</code> attributes in the source HTML for insecure http:// references.</td>
+        <td>On an HTTPS page, any resource loaded over <code>http://</code> &mdash; an image, script, or stylesheet &mdash; is &ldquo;mixed content.&rdquo; Modern browsers block active mixed content (scripts, iframes) silently and warn on passive mixed content (images). ShipSafe scans <code>src</code> and <code>href</code> attributes in the source HTML for insecure http:// references.</td>
       </tr>
     </tbody>
   </table>
@@ -269,39 +277,40 @@
     <div class="scoring-card"><div class="label">Pass</div><div class="value" style="color:var(--pass)">1.0</div><p>Requirement is met.</p></div>
     <div class="scoring-card"><div class="label">Warn</div><div class="value" style="color:var(--warn)">0.5</div><p>Partially met or a best-practice gap with no direct legal exposure.</p></div>
     <div class="scoring-card"><div class="label">Fail</div><div class="value" style="color:var(--fail)">0.0</div><p>Requirement is not met. Legal or UX risk.</p></div>
-    <div class="scoring-card"><div class="label">Info / N/A</div><div class="value" style="color:var(--muted-2)">—</div><p>Not applicable or informational. Excluded from scoring.</p></div>
+    <div class="scoring-card"><div class="label">Info / N/A</div><div class="value" style="color:var(--muted-2)">&#8212;</div><p>Not applicable or informational. Excluded from scoring.</p></div>
   </div>
 
-  <p>A <strong>category score</strong> is the mean of its applicable checks, multiplied by 100. <strong>Health</strong> is the mean of the four category scores. The <strong>letter grade</strong> maps as: A ≥ 90, B ≥ 80, C ≥ 70, D ≥ 55, F below that.</p>
+  <p>A <strong>category score</strong> is the mean of its applicable checks, multiplied by 100. <strong>Health</strong> is the mean of the four category scores. The <strong>letter grade</strong> maps as: A &ge; 90, B &ge; 80, C &ge; 70, D &ge; 55, F below that.</p>
 
   <p><strong>Demand-letter risk</strong> is determined by the two legal categories (Accessibility + Privacy), not the overall health:</p>
   <ul>
-    <li><span class="risk-tag high">High risk</span> — three or more legal-category fails, or Accessibility score below 50, or Privacy score below 40.</li>
-    <li><span class="risk-tag med">Some risk</span> — at least one legal-category fail, or Accessibility score below 85.</li>
-    <li><span class="risk-tag low">Low risk</span> — no legal fails and Accessibility score at 85 or above.</li>
+    <li><span class="risk-tag high">High risk</span> &mdash; three or more legal-category fails, or Accessibility score below 50, or Privacy score below 40.</li>
+    <li><span class="risk-tag med">Some risk</span> &mdash; at least one legal-category fail, or Accessibility score below 85.</li>
+    <li><span class="risk-tag low">Low risk</span> &mdash; no legal fails and Accessibility score at 85 or above.</li>
   </ul>
 
   <h2 id="limitations">Honest limitations</h2>
   <p>The free ShipSafe check reads the static HTML your server returns. That imposes real constraints:</p>
   <ul>
     <li><strong>Color contrast is not checked.</strong> WCAG 1.4.3 (minimum contrast, Level AA) and 1.4.6 (enhanced contrast, Level AAA) require measuring rendered text against its background. That requires a live rendering environment, not source HTML. Contrast is one of the more common real-world accessibility failures and ShipSafe does not currently catch it.</li>
-    <li><strong>JavaScript-rendered content is invisible.</strong> If your site builds its DOM after page load — single-page app frameworks, React, Vue, Svelte — the source HTML may be nearly empty. ShipSafe will analyze what is in the source and flag issues there, but it cannot see the final rendered output. A rendered-DOM scan (using a headless browser) is in development as a planned Pro tier feature.</li>
-    <li><strong>Heuristic matching has false positives and negatives.</strong> ShipSafe detects a "privacy policy link" by matching link text or URL against a pattern. A site might have a privacy policy that passes heuristically but is legally inadequate, or might fail the check while having a real policy under an unusual label. The check is a signal, not a certification.</li>
-    <li><strong>One page only.</strong> ShipSafe scans the URL you provide. It does not crawl other pages on your site. The homepage scan is a representative sample — your blog posts, product pages, or contact forms may have different issues.</li>
+    <li><strong>JavaScript-rendered content is invisible.</strong> If your site builds its DOM after page load &mdash; single-page app frameworks, React, Vue, Svelte &mdash; the source HTML may be nearly empty. ShipSafe will analyze what is in the source and flag issues there, but it cannot see the final rendered output. A rendered-DOM scan (using a headless browser) is in development as a planned Pro tier feature.</li>
+    <li><strong>Heuristic matching has false positives and negatives.</strong> ShipSafe detects a &ldquo;privacy policy link&rdquo; by matching link text or URL against a pattern. A site might have a privacy policy that passes heuristically but is legally inadequate, or might fail the check while having a real policy under an unusual label. The check is a signal, not a certification.</li>
+    <li><strong>One page only.</strong> ShipSafe scans the URL you provide. It does not crawl other pages on your site. The homepage scan is a representative sample &mdash; your blog posts, product pages, or contact forms may have different issues.</li>
     <li><strong>Source-HTML accessibility differs from rendered-DOM accessibility.</strong> The <code>&lt;main&gt;</code> element, labels, and ARIA roles ShipSafe looks for may differ from what a browser actually constructs if JavaScript moves or replaces elements. Automated testing on the rendered DOM (with tools like axe-core or Lighthouse) will surface issues a source scan cannot.</li>
+    <li><strong>Audio-only content (transcripts) is not checked.</strong> WCAG 1.2.1 requires a text transcript for prerecorded audio-only content such as podcasts. ShipSafe does not currently check for <code>&lt;audio&gt;</code> elements or transcript links &mdash; only video captions are checked (WCAG 1.2.2).</li>
   </ul>
 
   <div class="callout">
-    <strong>The right place for ShipSafe in a compliance workflow:</strong> use it as a fast first pass — a 10-second smoke test before you tackle accessibility properly. A clean result means no obvious red flags in your source. It does not mean certified compliant. If you need a binding determination, talk to a qualified accessibility professional.
+    <strong>The right place for ShipSafe in a compliance workflow:</strong> use it as a fast first pass &mdash; a 10-second smoke test before you tackle accessibility properly. A clean result means no obvious red flags in your source. It does not mean certified compliant. If you need a binding determination, talk to a qualified accessibility professional.
   </div>
 
-  <p><a href="./">← Run a scan</a> · <a href="about.html">About ShipSafe and Copper Bay Labs</a></p>
+  <p><a href="./">&#8592; Run a scan</a> &middot; <a href="about.html">About ShipSafe and Copper Bay Labs</a></p>
 
 </article></main>
 
 <footer class="footer"><div class="wrap foot">
   <div><a class="brand small" href="./" aria-label="ShipSafe home"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="currentColor" stroke-width="3"/></svg><span class="wordmark">ShipSafe</span></a><p class="fine">Heuristic guidance, not legal advice.</p></div>
-  <nav class="foot-nav" aria-label="Footer"><a href="methodology.html">Methodology</a><a href="about.html">About</a><a href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed →</a></nav>
+  <nav class="foot-nav" aria-label="Footer"><a href="methodology.html">Methodology</a><a href="about.html">About</a><a href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed &rarr;</a></nav>
 </div><div class="wrap"><p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Labs</a> product.</p></div></footer>
 </body>
 </html>

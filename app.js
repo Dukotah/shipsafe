@@ -32,6 +32,7 @@ const statSvg = (status) => {
 const WCAG_URL = {
   "3.1.1": "language-of-page", "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
   "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
+  "1.2.2": "captions-prerecorded",
 };
 function lawTag(law) {
   if (!law) return "";
@@ -167,6 +168,19 @@ const CHECKS = {
       });
       if (!abusers.length) return { status: "pass", detail: `${elements.length} tabindex attribute(s) found — none override the natural DOM order.` };
       return { status: "warn", detail: `${abusers.length} element(s) use a positive tabindex value, which overrides the natural DOM tab order and can create a disjointed keyboard navigation experience.`, fix: 'Replace tabindex="1", tabindex="2", etc. with tabindex="0" or remove the attribute entirely. Use DOM source order to control focus flow instead. Positive tabindex values cause focus to jump to those elements before all tabindex="0" and naturally focusable elements on the page, which almost always breaks the expected reading order for keyboard and screen-reader users.', law: "WCAG 2.4.3" };
+    }],
+    ["Video captions", (c) => {
+      const videos = [...c.doc.querySelectorAll("video")];
+      if (!videos.length) return { status: "info", detail: "No <video> elements found in the source." };
+      const missing = videos.filter(v => {
+        const tracks = [...v.querySelectorAll("track")];
+        return !tracks.some(t => {
+          const kind = (t.getAttribute("kind") || "").toLowerCase();
+          return kind === "captions" || kind === "subtitles";
+        });
+      });
+      if (!missing.length) return { status: "pass", detail: `All ${videos.length} video element(s) have a captions or subtitles track.` };
+      return { status: "fail", detail: `${missing.length} of ${videos.length} <video> element(s) have no <track kind="captions"> or <track kind="subtitles">.`, fix: 'Add a <track kind="captions" src="captions.vtt" srclang="en" label="English"> inside each <video> element. WCAG 1.2.2 requires captions for all prerecorded audio content — missing captions are one of the most common ADA lawsuit triggers for media-heavy sites.', law: "WCAG 1.2.2" };
     }],
   ],
   privacy: [
