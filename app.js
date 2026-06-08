@@ -32,7 +32,7 @@ const statSvg = (status) => {
 const WCAG_URL = {
   "3.1.1": "language-of-page", "3.1.2": "language-of-parts",
   "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
-  "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
+  "4.1.1": "parsing", "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
   "1.2.2": "captions-prerecorded",
   "2.4.1": "bypass-blocks",
 };
@@ -227,6 +227,20 @@ const CHECKS = {
         detail: `${broken.length} skip link(s) point to a destination that does not exist in the page source (${targets}).`,
         fix: 'The href in your skip link must match an id on a real element in the same page. For example, <a class="skip" href="#main"> requires an element with id="main". A skip link that leads nowhere means keyboard and screen-reader users who activate it land in an undefined location, defeating its only purpose.',
         law: "WCAG 2.4.1"
+      };
+    }],
+    ["Duplicate IDs", (c) => {
+      const ids = [...c.doc.querySelectorAll("[id]")].map(el => el.id).filter(Boolean);
+      if (!ids.length) return { status: "info", detail: "No id attributes found on this page." };
+      const counts = {};
+      for (const id of ids) counts[id] = (counts[id] || 0) + 1;
+      const dupes = Object.entries(counts).filter(([, n]) => n > 1).map(([id, n]) => `"${id}" (×${n})`);
+      if (!dupes.length) return { status: "pass", detail: `${ids.length} unique ID attribute${ids.length === 1 ? "" : "s"} — all values are distinct.` };
+      return {
+        status: "fail",
+        detail: `${dupes.length} duplicate ID value${dupes.length === 1 ? "" : "s"}: ${dupes.slice(0, 5).join(", ")}${dupes.length > 5 ? ` and ${dupes.length - 5} more` : ""}.`,
+        fix: 'Each id attribute value must be unique within a page. Duplicate IDs silently break for/aria-labelledby/aria-describedby associations — assistive technology reads the first matching element and ignores the rest. Use classes for styling hooks and reserve IDs for unique landmarks, form labels, and fragment anchors.',
+        law: "WCAG 4.1.1"
       };
     }],
   ],
