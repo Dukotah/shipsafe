@@ -254,35 +254,77 @@ function reportText(r, url) {
 function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
 function skeleton() {
-  $("#results").innerHTML = `<div class="report-head skeleton"><div class="grade sk" style="background:var(--line-2)"></div><div class="verdict" style="flex:1"><div class="sk" style="height:20px;width:40%;margin-bottom:12px"></div><div class="sk" style="height:28px;width:70%;margin-bottom:10px"></div><div class="sk" style="height:16px;width:90%"></div></div></div>` +
-    `<div class="cat skeleton" style="padding:18px"><div class="sk" style="height:16px;width:55%;margin-bottom:14px"></div><div class="sk" style="height:14px;width:85%;margin-bottom:8px"></div><div class="sk" style="height:14px;width:75%"></div></div>`;
+  const skRow = (w) => `<div class="sk" style="height:14px;width:${w}%;border-radius:7px"></div>`;
+  const skCat = () => `
+    <div class="cat skeleton" style="margin-bottom:16px">
+      <div class="cat-head" style="border-bottom:1px solid var(--line-2)">
+        <div class="sk" style="width:24px;height:24px;border-radius:6px;flex:0 0 24px"></div>
+        <div class="sk" style="height:15px;width:45%;border-radius:7px;margin-left:4px"></div>
+        <div class="sk" style="height:15px;width:60px;border-radius:7px;margin-left:auto"></div>
+        <div class="sk" style="height:8px;width:110px;border-radius:6px"></div>
+      </div>
+      <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px">
+        ${skRow(55)} ${skRow(80)} ${skRow(68)} ${skRow(45)}
+      </div>
+    </div>`;
+  $("#results").innerHTML = `
+    <div class="report-head skeleton" style="margin-bottom:20px">
+      <div class="grade sk" style="background:var(--line-2);box-shadow:none"></div>
+      <div class="verdict" style="flex:1;display:flex;flex-direction:column;gap:11px">
+        <div class="sk" style="height:18px;width:38%;border-radius:9px"></div>
+        <div class="sk" style="height:26px;width:72%;border-radius:9px"></div>
+        <div class="sk" style="height:15px;width:88%;border-radius:7px"></div>
+        <div class="sk" style="height:15px;width:60%;border-radius:7px"></div>
+      </div>
+    </div>
+    ${skCat()}${skCat()}`;
   $("#results").hidden = false;
 }
 
 // --- build the landing "what we look for" strip -----------------------------
 function buildCatGrid() {
   const g = $("#cat-grid"); if (!g) return;
-  g.innerHTML = Object.values(CAT_META).map((m) => `<div class="feature">${svg(m.icon, "ico")}<h3>${esc(m.name)}</h3><p>${esc(m.blurb)}</p><span class="tag">${esc(m.weight)}</span></div>`).join("");
+  g.innerHTML = Object.values(CAT_META).map((m) => `<div class="feature" role="listitem">${svg(m.icon, "ico")}<h3>${esc(m.name)}</h3><p>${esc(m.blurb)}</p><span class="tag">${esc(m.weight)}</span></div>`).join("");
+}
+
+function setBtnLoading(btn, loading) {
+  const label = btn.querySelector(".btn-label");
+  const spinner = btn.querySelector(".btn-spinner");
+  if (loading) {
+    btn.disabled = true;
+    btn.setAttribute("aria-busy", "true");
+    if (label) label.textContent = "Checking…";
+    if (spinner) spinner.hidden = false;
+  } else {
+    btn.disabled = false;
+    btn.removeAttribute("aria-busy");
+    if (label) label.textContent = "Check my site";
+    if (spinner) spinner.hidden = true;
+  }
 }
 
 $("#scan-form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const u = normalizeUrl($("#url").value), status = $("#status"), btn = $("#scan-btn");
+  const u = normalizeUrl($("#url").value), status = $("#scan-status"), btn = $("#scan-btn");
   $("#results").hidden = true;
-  if (!u) { status.textContent = "That doesn't look like a URL — try again (e.g. example.com)."; return; }
-  btn.disabled = true; btn.textContent = "Checking…"; status.textContent = `Fetching ${u.host} and analyzing…`;
+  if (!u) { status.textContent = "That doesn’t look like a URL — try again (e.g. example.com)."; return; }
+  setBtnLoading(btn, true);
+  status.textContent = `Fetching ${u.host} and running checks…`;
   skeleton();
   try {
     const report = analyze(await fetchHTML(u.href), u.href);
     render(report, u.href);
-    status.textContent = "Free · runs in your browser · we never store your URL.";
+    status.textContent = "Free — runs in your browser — we never store your URL.";
     // Reflect the scanned site in the URL so the result is shareable / re-runnable.
     const slug = u.host + (u.pathname !== "/" ? u.pathname.replace(/\/$/, "") : "");
     history.replaceState(null, "", "?url=" + encodeURIComponent(slug));
   } catch {
-    $("#results").innerHTML = `<div class="notice"><strong>Couldn't read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
-    $("#results").hidden = false; status.textContent = "Free · runs in your browser · we never store your URL.";
-  } finally { btn.disabled = false; btn.textContent = "Check my site"; }
+    $("#results").innerHTML = `<div class="notice" role="alert"><strong>Couldn’t read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
+    $("#results").hidden = false;
+    status.textContent = "Free — runs in your browser — we never store your URL.";
+  } finally {
+    setBtnLoading(btn, false);
+  }
 });
 
 buildCatGrid();

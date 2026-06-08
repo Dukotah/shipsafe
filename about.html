@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About ShipSafe — by Copper Bay Labs</title>
-<meta name="description" content="ShipSafe is a free accessibility & privacy risk checker by Copper Bay Labs, the product studio of Copper Bay Tech. Why it exists, how it respects your privacy, and who's behind it.">
+<title>About ShipSafe — Copper Bay Labs</title>
+<meta name="description" content="ShipSafe is a free accessibility and privacy risk checker by Copper Bay Labs, the product studio of Copper Bay Tech. Why it exists, how it respects your privacy, and who's behind it.">
 <link rel="canonical" href="https://dukotah.github.io/shipsafe/about.html">
+<meta property="og:title" content="About ShipSafe — Copper Bay Labs">
+<meta property="og:description" content="What ShipSafe is, why it exists, and who built it. An honest account of what a free source-HTML check can and cannot do.">
 <meta property="og:image" content="https://dukotah.github.io/shipsafe/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dukotah.github.io/shipsafe/og-image.png">
@@ -26,24 +28,41 @@
 </div></header>
 
 <main id="main"><article class="doc wrap narrow">
+
   <h1>About ShipSafe</h1>
   <p class="lede">A free, no-signup check for the accessibility and privacy gaps that get websites demand letters — built for the wave of AI-generated and no-code sites.</p>
 
   <h2>Why it exists</h2>
-  <p>AI builders and no-code tools made it possible for anyone to ship a beautiful site in an afternoon. But "beautiful" and "compliant" are different things. These tools routinely produce pages with no language attribute, unlabeled form fields, images without alt text, and no privacy policy — exactly the issues that automated ADA filers scan for, and that resulted in <strong>4,600+ website lawsuits in 2024 alone</strong>.</p>
-  <p>Most existing checkers are built for developers and speak in error codes. ShipSafe is for the person who shipped the site, in plain language: here's your risk, here's what to fix, here's why it matters.</p>
+  <p>AI builders and no-code tools made it genuinely easy to ship a professional-looking site in an afternoon. That's worth celebrating. But speed and compliance are different things, and most of these tools are optimized for the former.</p>
+  <p>The result is a predictable set of gaps: no <code>lang</code> attribute, images without <code>alt</code> text, unlabeled form fields, no privacy policy. These are the exact issues that automated ADA filers scan for — and they resulted in <strong>more than 4,600 website lawsuits in 2024 alone</strong>. The filings are often from the same small group of serial plaintiffs using the same scanning scripts looking for the same handful of missing attributes.</p>
+  <p>Most accessibility tools are built for developers and speak in audit codes. ShipSafe is built for the person who shipped the site and doesn't have a compliance background: here is your risk level, here is what to fix, here is why it matters — in plain English, in under 10 seconds.</p>
 
   <h2 id="privacy">Your privacy</h2>
-  <p>The check runs <strong>in your browser</strong>. Your URL is fetched and analyzed client-side; we don't store it, log it, or send it to a server of ours. There's no account and no tracking pixel waiting to flag <em>your</em> site.</p>
+  <p>The scan runs <strong>in your browser</strong>. ShipSafe fetches the target page through a public CORS proxy and analyzes the HTML client-side. We do not store your URL, log your scans, or track you across sessions. There is no account. The scan leaves no trace on our end.</p>
+  <p>The only network requests are: the fonts from Google Fonts (loaded once per browser, standard), and the CORS proxy fetches to read the URL you submitted. That proxy is a public service; its terms apply to it, not to ShipSafe.</p>
 
   <h2>Who's behind it</h2>
-  <p>ShipSafe is a product of <strong>Copper Bay Labs</strong>, the product studio of <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Tech</a> — a Sonoma County web, IT, and security shop that builds and audits sites for small businesses. ShipSafe is the free, self-serve front door to work we also do by hand.</p>
-  <div class="callout">Need more than a smoke test? Copper Bay Tech does full accessibility and compliance audits, remediation, and ongoing monitoring. <a href="https://copperbaytech.com" target="_blank" rel="noopener">Talk to us →</a></div>
+  <p>ShipSafe is a product of <strong>Copper Bay Labs</strong>, the independent product studio of <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Tech</a>. Copper Bay Tech is a Sonoma County web, IT, and security shop that has built, audited, and remediated sites for small and mid-size businesses since 2020. ShipSafe is the free, self-serve version of work we already do by hand.</p>
+  <p>The studio model means ShipSafe is a real product with real ongoing development — not a weekend project that ships and stops. The planned Pro tier (a rendered-DOM scan, scheduled re-checks, and PDF reports) requires a serverless deployment, but the free check runs entirely in your browser and will stay free.</p>
+
+  <div class="callout">Need more than a smoke test? Copper Bay Tech does full accessibility audits, remediation, and ongoing monitoring for businesses that need a documented compliance record. <a href="https://copperbaytech.com" target="_blank" rel="noopener">Talk to us about a full audit →</a></div>
+
+  <h2 id="limitations">Limitations</h2>
+  <p>The free check reads your page's <strong>static HTML source</strong> — what the server returns before JavaScript runs. That is useful and catches a lot of real issues, but there are things it cannot see:</p>
+  <ul>
+    <li><strong>Color contrast</strong> is not checked. Measuring text-to-background contrast (WCAG 1.4.3) requires a rendered page, not source HTML. It is one of the more common accessibility failures and the free check does not catch it.</li>
+    <li><strong>JavaScript-rendered content</strong> is not analyzed. If your site builds its interface after load — a React or Vue app, a Webflow interaction, a Squarespace section — the scan may see a near-empty HTML document. ShipSafe reports what it finds in the source, but what's there may not reflect the final page.</li>
+    <li><strong>Only the URL you provide is scanned.</strong> ShipSafe does not crawl your other pages. Your homepage may look clean while a contact form on a subpage has unlabeled inputs.</li>
+    <li><strong>Heuristics have limits.</strong> ShipSafe detects a privacy policy by matching link text or URLs against a pattern. A site can pass that check and still have an inadequate policy, or fail it with a valid policy under an unusual label.</li>
+    <li><strong>This is heuristic guidance, not a legal opinion.</strong> A passing result means no obvious red flags in the source. It does not mean "certified accessible" or "legally compliant." For a binding assessment, consult a qualified accessibility professional or attorney.</li>
+  </ul>
+  <p>A rendered-DOM scan — using a headless browser to analyze the page as a user would actually see it — is in development as the planned Pro tier. It will catch contrast, dynamic content, and JavaScript-built structure that the free check cannot reach.</p>
 
   <h2>The fine print</h2>
-  <p>ShipSafe gives automated, heuristic guidance. It is not legal advice, not a certified WCAG audit, and not a guarantee of compliance. For a binding determination, consult a qualified professional. See the <a href="methodology.html">methodology</a> for exactly what we check and the limits of an in-browser scan.</p>
+  <p>ShipSafe provides automated, heuristic guidance. It is not legal advice. It is not a certified WCAG conformance audit. It is not a guarantee of compliance or protection from legal action. For a binding determination, consult a qualified professional. See the <a href="methodology.html">methodology page</a> for the exact checks run and their known limitations.</p>
 
-  <p><a href="./">← Run a scan</a></p>
+  <p><a href="./">← Run a scan</a> · <a href="methodology.html">Read the methodology</a></p>
+
 </article></main>
 
 <footer class="footer"><div class="wrap foot">

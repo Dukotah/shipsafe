@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ShipSafe — Is your website at risk of an ADA demand letter? Free check</title>
-<meta name="description" content="Paste your URL for a plain-English report on the accessibility (ADA/WCAG), privacy, and structured-data gaps that get websites demand letters. Built for AI-generated and no-code sites. Free, no signup.">
+<title>ShipSafe — ADA & privacy risk check for your website</title>
+<meta name="description" content="Paste a URL and get a plain-English report on the accessibility, privacy, and structured-data gaps that trigger ADA demand letters. Runs in your browser. Free, no signup.">
 <link rel="canonical" href="https://dukotah.github.io/shipsafe/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ShipSafe">
-<meta property="og:title" content="Is your website at risk of an ADA demand letter?">
-<meta property="og:description" content="A plain-English accessibility & privacy risk check for AI-generated and no-code sites. 10 seconds, no signup.">
+<meta property="og:title" content="ShipSafe — ADA & privacy risk check for your website">
+<meta property="og:description" content="A plain-English accessibility and privacy risk check for AI-generated and no-code sites. Runs in your browser, no signup required.">
 <meta property="og:url" content="https://dukotah.github.io/shipsafe/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ShipSafe — Free ADA & privacy risk check">
-<meta name="twitter:description" content="Paste a URL → a plain-English report on the gaps that get sites demand letters.">
 <meta property="og:image" content="https://dukotah.github.io/shipsafe/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ShipSafe — ADA & privacy risk check">
+<meta name="twitter:description" content="Paste a URL for a plain-English report on the gaps that trigger ADA demand letters.">
 <meta name="twitter:image" content="https://dukotah.github.io/shipsafe/og-image.png">
 <meta name="theme-color" content="#faf8f4">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -27,18 +27,18 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"ShipSafe","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free plain-English ADA/WCAG accessibility and privacy-compliance risk checker for websites, built for no-code and AI-generated sites.","publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"}}
 </script>
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to main content</a>
 
-<header class="masthead">
-  <div class="wrap bar">
-    <a class="brand" href="./" aria-label="ShipSafe home">
+<header class="masthead" role="banner">
+  <div class="wrap hdr-bar">
+    <a class="brand" href="./" aria-label="ShipSafe — go to homepage">
       <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/><g fill="var(--ink)"><rect x="29" y="2" width="6" height="14" rx="3"/><rect x="29" y="48" width="6" height="14" rx="3"/><rect x="2" y="29" width="14" height="6" rx="3"/><rect x="48" y="29" width="14" height="6" rx="3"/></g></svg>
       <span class="wordmark">ShipSafe</span>
     </a>
-    <nav class="nav" aria-label="Primary">
+    <nav class="nav" aria-label="Primary navigation">
       <a href="methodology.html">Methodology</a>
       <a href="about.html">About</a>
     </nav>
@@ -46,84 +46,109 @@
 </header>
 
 <main id="main">
-  <section class="hero">
+  <section class="hero" aria-labelledby="hero-heading">
     <div class="wrap">
       <p class="eyebrow">Accessibility &amp; privacy risk check</p>
-      <h1>Is your site one scan away from a <em>demand letter?</em></h1>
-      <p class="lede">More than <strong>4,600 ADA website lawsuits</strong> were filed in 2024, and serial filers scan for the exact issues AI builders ship by default — no page language, unlabeled forms, missing alt text, no privacy policy. Paste your URL and see what they'd see.</p>
+      <h1 id="hero-heading">Is your site one scan away from a <em>demand letter?</em></h1>
+      <p class="lede">More than <strong>4,600 ADA website lawsuits</strong> were filed in 2024. Serial filers scan for the exact issues AI builders ship by default — no page language, unlabeled forms, missing alt text, no privacy policy. Paste your URL and see what they find.</p>
 
-      <form id="scan-form" class="scan" novalidate>
+      <form id="scan-form" class="scan" novalidate aria-label="URL scanner">
         <label for="url" class="sr-only">Website URL to check</label>
-        <div class="field">
-          <span class="proto" aria-hidden="true">https://</span>
-          <input id="url" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="your-website.com" aria-describedby="status" required>
+        <div class="field" role="group" aria-labelledby="proto-hint">
+          <span class="proto" id="proto-hint" aria-hidden="true">https://</span>
+          <input
+            id="url"
+            type="text"
+            inputmode="url"
+            autocomplete="url"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="your-website.com"
+            aria-describedby="scan-status"
+            required>
         </div>
-        <button id="scan-btn" type="submit">Check my site</button>
+        <button id="scan-btn" type="submit" aria-describedby="scan-status">
+          <span class="btn-label">Check my site</span>
+          <span class="btn-spinner" aria-hidden="true" hidden></span>
+        </button>
       </form>
-      <p class="trustline" id="status" role="status" aria-live="polite">Free · runs in your browser · we never store your URL.</p>
+      <p class="trustline" id="scan-status" role="status" aria-live="polite" aria-atomic="true">Free &mdash; runs in your browser &mdash; we never store your URL.</p>
     </div>
   </section>
 
-  <section id="results" class="results wrap" aria-label="Scan results" hidden></section>
+  <section id="results" class="results wrap" aria-label="Scan results" aria-live="polite" hidden></section>
 
-  <section class="builtfor">
+  <section class="builtfor" aria-labelledby="builtfor-heading">
     <div class="wrap">
-      <p class="builtfor-label">Built for sites made with</p>
-      <ul class="chips">
+      <p class="builtfor-label" id="builtfor-heading">Built for sites made with</p>
+      <ul class="chips" aria-label="Supported site builders">
         <li>Lovable</li><li>Bolt</li><li>v0</li><li>Cursor</li><li>Webflow</li><li>Framer</li><li>Squarespace</li><li>WordPress</li>
       </ul>
     </div>
   </section>
 
-  <section class="checks-strip">
+  <section class="checks-strip" aria-labelledby="checks-heading">
     <div class="wrap">
-      <h2 class="section-title">What we look for</h2>
+      <h2 class="section-title" id="checks-heading">What we look for</h2>
       <p class="section-sub">Four categories, weighted toward the two that actually get sites sued.</p>
-      <div class="grid4" id="cat-grid"></div>
+      <div class="grid4" id="cat-grid" role="list" aria-label="Check categories"></div>
     </div>
   </section>
 
-  <section class="how">
+  <section class="how" aria-labelledby="how-heading">
     <div class="wrap">
-      <h2 class="section-title">How it works</h2>
+      <h2 class="section-title" id="how-heading">How it works</h2>
       <p class="section-sub">No signup, no install, nothing stored.</p>
       <ol class="steps">
         <li><span class="step-n" aria-hidden="true">1</span><h3>Paste your URL</h3><p>Any live page — your homepage, a landing page, or a client's site.</p></li>
-        <li><span class="step-n" aria-hidden="true">2</span><h3>We read the source</h3><p>ShipSafe fetches the page and runs ~20 checks against WCAG and privacy rules, right in your browser.</p></li>
+        <li><span class="step-n" aria-hidden="true">2</span><h3>We read the source</h3><p>ShipSafe fetches the page and runs around 20 checks against WCAG and privacy rules, right in your browser.</p></li>
         <li><span class="step-n" aria-hidden="true">3</span><h3>Get a plain-English report</h3><p>A letter grade, a demand-letter risk level, and a prioritized fix list anyone can act on.</p></li>
       </ol>
     </div>
   </section>
 
-  <section class="faq">
+  <section class="faq" aria-labelledby="faq-heading">
     <div class="wrap narrow">
-      <h2 class="section-title">Questions</h2>
-      <details open><summary>Is my AI-generated site (Lovable, Bolt, v0, Cursor) really at risk?</summary><p>Frequently, yes. These tools produce great-looking sites that often ship without a <code>lang</code> attribute, with unlabeled inputs and images missing alt text, and no privacy policy — precisely what automated ADA filers look for. ShipSafe surfaces those in plain English so you can fix them on your terms, not under a deadline.</p></details>
-      <details><summary>Is this legal advice?</summary><p>No. ShipSafe is an automated heuristic check that flags common risk areas. It isn't legal advice and isn't a guarantee of compliance. For a binding determination, talk to a qualified professional. <a href="methodology.html">See exactly what we check and how →</a></p></details>
-      <details><summary>How does it work without a signup?</summary><p>It fetches your page and analyzes the HTML in your browser — nothing is stored or sent to us. The free check reads your page's source; a deeper scan that renders the full page (catching contrast and JavaScript-built content) is in development.</p></details>
-      <details><summary>It said it couldn't read my site. Why?</summary><p>Some sites block third-party fetching, and some render entirely with JavaScript, leaving the HTML source nearly empty. The free in-browser check can only read static source — the upcoming rendered scan handles both.</p></details>
+      <h2 class="section-title" id="faq-heading">Questions</h2>
+      <details open>
+        <summary>Is my AI-generated site (Lovable, Bolt, v0, Cursor) really at risk?</summary>
+        <p>Often, yes. These tools produce good-looking sites that frequently ship without a <code>lang</code> attribute, with unlabeled inputs, images missing alt text, and no privacy policy — exactly what automated ADA filers look for. ShipSafe surfaces those gaps so you can fix them on your terms, not under a deadline.</p>
+      </details>
+      <details>
+        <summary>Is this legal advice?</summary>
+        <p>No. ShipSafe is an automated heuristic check that flags common risk patterns. It is not legal advice and is not a guarantee of compliance. For a binding determination, talk to a qualified attorney. <a href="methodology.html">See exactly what we check and how it's scored</a></p>
+      </details>
+      <details>
+        <summary>How does it work without a signup?</summary>
+        <p>ShipSafe fetches your page and analyzes the HTML in your browser — nothing is stored or sent to our servers. The free check reads your page's source; a deeper scan that renders the full page (catching contrast and JavaScript-built content) is in development.</p>
+      </details>
+      <details>
+        <summary>It said it couldn't read my site. Why?</summary>
+        <p>Some sites block third-party fetching, and some render entirely with JavaScript, leaving the HTML source nearly empty. The free in-browser check can only read static source — the upcoming rendered scan handles both cases.</p>
+      </details>
     </div>
   </section>
 </main>
 
-<footer class="footer">
+<footer class="footer" role="contentinfo">
   <div class="wrap foot">
     <div>
-      <a class="brand small" href="./" aria-label="ShipSafe home">
+      <a class="brand small" href="./" aria-label="ShipSafe — go to homepage">
         <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="currentColor" stroke-width="3"/></svg>
         <span class="wordmark">ShipSafe</span>
       </a>
       <p class="fine">Heuristic guidance, not legal advice.</p>
     </div>
-    <nav class="foot-nav" aria-label="Footer">
+    <nav class="foot-nav" aria-label="Footer navigation">
       <a href="methodology.html">Methodology</a>
       <a href="about.html">About</a>
-      <a href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed →</a>
+      <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Get it fixed <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens in new tab)</span></a>
     </nav>
   </div>
   <div class="wrap">
-    <p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Labs</a> product.</p>
-    <nav class="foot-nav" aria-label="Legal" style="margin-top:12px">
+    <p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Copper Bay Labs<span class="sr-only"> (opens in new tab)</span></a> product.</p>
+    <nav class="foot-nav foot-legal" aria-label="Legal navigation">
       <a href="about.html#privacy">Privacy</a>
       <a href="methodology.html">Accessibility</a>
       <a href="about.html">Contact</a>
@@ -131,6 +156,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>
