@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology — how ShipSafe scores your site</title>
+<meta name="description" content="Exactly what ShipSafe checks, how each check maps to WCAG and privacy law, how the grade and demand-letter risk level are calculated, and the honest limits of an in-browser source scan.">
+<link rel="canonical" href="https://dukotah.github.io/shipsafe/methodology.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead"><div class="wrap bar">
+  <a class="brand" href="./" aria-label="ShipSafe home">
+    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/><g fill="var(--ink)"><rect x="29" y="2" width="6" height="14" rx="3"/><rect x="29" y="48" width="6" height="14" rx="3"/><rect x="2" y="29" width="14" height="6" rx="3"/><rect x="48" y="29" width="14" height="6" rx="3"/></g></svg>
+    <span class="wordmark">ShipSafe</span></a>
+  <nav class="nav" aria-label="Primary"><a href="methodology.html" aria-current="page">Methodology</a><a href="about.html">About</a></nav>
+</div></header>
+
+<main id="main"><article class="doc wrap narrow">
+  <h1>Methodology</h1>
+  <p class="lede">ShipSafe is deliberately transparent: here is exactly what it checks, how each check maps to a real standard, and how the grade is calculated. No black box.</p>
+
+  <div class="callout"><strong>What ShipSafe is — and isn't.</strong> It's a fast, automated heuristic that reads your page's HTML source and flags common, high-frequency risk areas in plain language. It is <strong>not legal advice</strong>, not a full WCAG conformance audit, and not a guarantee. It's the 10-second smoke test you run before — and instead of — ignoring the problem entirely.</p>
+
+  <h2>The four categories</h2>
+  <p>Each check returns <em>pass</em>, <em>warn</em>, <em>fail</em>, or <em>not-applicable</em>, and rolls up into a category score out of 100.</p>
+
+  <h3>Accessibility (ADA / WCAG) — weighted highest</h3>
+  <p>These are the issues automated ADA filers and overlay scanners look for first. Each maps to a Web Content Accessibility Guidelines 2.2 success criterion:</p>
+  <table>
+    <tr><th>Check</th><th>WCAG criterion</th><th>Why it matters</th></tr>
+    <tr><td>Page language declared</td><td>3.1.1 Language of Page</td><td>Screen readers need it to choose the right pronunciation engine.</td></tr>
+    <tr><td>Images have alt text</td><td>1.1.1 Non-text Content</td><td>The single most-cited issue in demand letters.</td></tr>
+    <tr><td>Form fields are labeled</td><td>1.3.1 / 4.1.2</td><td>Unlabeled inputs are unusable by assistive tech; a placeholder is not a label.</td></tr>
+    <tr><td>Links &amp; buttons have names</td><td>4.1.2 Name, Role, Value</td><td>Icon-only controls a screen reader can't announce are dead ends.</td></tr>
+    <tr><td>Page has a title</td><td>2.4.2 Page Titled</td><td>First thing announced; also your search headline.</td></tr>
+    <tr><td>Heading structure</td><td>1.3.1 Info &amp; Relationships</td><td>Headings are how non-visual users navigate.</td></tr>
+    <tr><td>Mobile viewport</td><td>1.4.10 Reflow</td><td>Lets users zoom and use the site on a phone.</td></tr>
+    <tr><td>Main landmark</td><td>1.3.1</td><td>Lets assistive tech skip straight to content.</td></tr>
+  </table>
+
+  <h3>Privacy &amp; legal — weighted high</h3>
+  <p>Accessibility complaints are frequently bundled with privacy claims. We check for a privacy-policy link, a cookie/consent mechanism (and flag when trackers load <em>without</em> one — a direct GDPR/CCPA exposure), a terms link, a contact path, and an accessibility statement (which signals good-faith effort and is shown to reduce demand-letter risk).</p>
+
+  <h3>Schema &amp; SEO · Trust signals — lighter weight</h3>
+  <p>Structured-data validity, meta description, Open Graph, and canonical affect how you show up in search. HTTPS, favicon, viewport, and mixed-content are baseline trust checks. These don't carry legal risk, so they're weighted lower — but they're cheap wins.</p>
+
+  <h2>How the grade is calculated</h2>
+  <ul>
+    <li>Each check scores <code>pass = 1.0</code>, <code>warn = 0.5</code>, <code>fail = 0</code>. Not-applicable checks are excluded.</li>
+    <li>A <strong>category score</strong> is the average across its checks, ×100.</li>
+    <li><strong>Health</strong> is the mean of the four category scores; the <strong>letter grade</strong> is A (≥90), B (≥80), C (≥70), D (≥55), F (below).</li>
+    <li><strong>Demand-letter risk</strong> is driven by the two <em>legal</em> categories: <em>High</em> if there are 3+ accessibility/privacy fails or either score is very low; <em>Some</em> if there's at least one legal fail; otherwise <em>Low</em>.</li>
+  </ul>
+
+  <h2>Honest limitations</h2>
+  <ul>
+    <li>It reads the <strong>HTML source</strong>, not the rendered page — so it can't measure color contrast or check content built entirely by JavaScript after load. A rendered scan is in development.</li>
+    <li>It uses heuristics (e.g. matching a "privacy" link by text/URL). A site can pass a heuristic and still have a problem, or vice-versa.</li>
+    <li>It is not a substitute for a manual audit or legal review. Treat a clean result as "no obvious red flags," not "certified compliant."</li>
+  </ul>
+
+  <p><a href="./">← Run a scan</a></p>
+</article></main>
+
+<footer class="footer"><div class="wrap foot">
+  <div><a class="brand small" href="./" aria-label="ShipSafe home"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="currentColor" stroke-width="3"/></svg><span class="wordmark">ShipSafe</span></a><p class="fine">Heuristic guidance, not legal advice.</p></div>
+  <nav class="foot-nav" aria-label="Footer"><a href="methodology.html">Methodology</a><a href="about.html">About</a><a href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed →</a></nav>
+</div><div class="wrap"><p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener">Copper Bay Labs</a> product.</p></div></footer>
+</body>
+</html>
