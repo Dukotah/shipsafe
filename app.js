@@ -34,6 +34,7 @@ const WCAG_URL = {
   "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
   "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
   "1.2.2": "captions-prerecorded",
+  "2.4.1": "bypass-blocks",
 };
 function lawTag(law) {
   if (!law) return "";
@@ -197,6 +198,36 @@ const CHECKS = {
         ? `${bad.length} element(s) carry an empty lang="" that gives screen readers no language context.`
         : `${bad.length} element(s) have an empty or structurally invalid lang value.`;
       return { status: "fail", detail, fix: 'Remove empty lang="" attributes and replace invalid values with a valid BCP 47 language subtag — e.g. lang="fr" for French, lang="es" for Spanish, lang="zh-TW" for Traditional Chinese. Screen readers switch pronunciation engines at lang boundaries; an empty or unrecognized value corrupts pronunciation for the affected content.', law: "WCAG 3.1.2" };
+    }],
+    ["Skip link resolves", (c) => {
+      const byClass = [...c.doc.querySelectorAll('a.skip, a[class*="skip-link"]')];
+      const byText  = [...c.doc.querySelectorAll('a[href^="#"]')].filter(
+        a => /\bskip\b/i.test((a.textContent || "").trim())
+      );
+      const seen = new Set();
+      const skipLinks = [...byClass, ...byText].filter(a => {
+        if (seen.has(a)) return false;
+        seen.add(a);
+        return true;
+      });
+      if (!skipLinks.length) return { status: "info", detail: "No skip navigation link detected. A skip link is strongly recommended for keyboard users to bypass repeated navigation blocks." };
+      const broken = skipLinks.filter(a => {
+        const href = (a.getAttribute("href") || "").trim();
+        if (!href.startsWith("#")) return false;
+        const id = href.slice(1);
+        return !id || !c.doc.getElementById(id);
+      });
+      if (!broken.length) {
+        const targets = skipLinks.map(a => a.getAttribute("href")).join(", ");
+        return { status: "pass", detail: `Skip link found — destination exists in the page (${targets}).` };
+      }
+      const targets = broken.map(a => a.getAttribute("href")).join(", ");
+      return {
+        status: "fail",
+        detail: `${broken.length} skip link(s) point to a destination that does not exist in the page source (${targets}).`,
+        fix: 'The href in your skip link must match an id on a real element in the same page. For example, <a class="skip" href="#main"> requires an element with id="main". A skip link that leads nowhere means keyboard and screen-reader users who activate it land in an undefined location, defeating its only purpose.',
+        law: "WCAG 2.4.1"
+      };
     }],
   ],
   privacy: [
