@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These twelve checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These thirteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -162,6 +162,14 @@
           <span class="wcag-level">Level A</span>
         </td>
         <td>WCAG 1.2.2 requires captions for all prerecorded synchronized audio-video content. A <code>&lt;video&gt;</code> element without a <code>&lt;track kind="captions"&gt;</code> or <code>&lt;track kind="subtitles"&gt;</code> child is inaccessible to users who are deaf or hard of hearing &mdash; and it is machine-detectable in the source HTML. ShipSafe checks every <code>&lt;video&gt;</code> element for a caption or subtitle track. The check returns a fail when captions are missing because WCAG 1.2.2 is a Level A requirement with no ambiguity: if the video has audio content, captions are mandatory. If no <code>&lt;video&gt;</code> elements are present, the check returns informational rather than pass, since the absence of video is not a failing condition. Audio-only content (<code>&lt;audio&gt;</code> elements) is not checked here &mdash; transcripts for those fall under WCAG 1.2.1, which ShipSafe does not currently check.</td>
+      </tr>
+      <tr>
+        <td>Language of parts</td>
+        <td>
+          <span class="wcag-ref">3.1.2 Language of Parts</span><br>
+          <span class="wcag-level">Level AA</span>
+        </td>
+        <td>WCAG 3.1.2 is the companion to 3.1.1: where 3.1.1 requires a language declaration on the page, 3.1.2 requires that any passage or phrase in a different language carry its own <code>lang</code> attribute so screen readers can switch pronunciation engines at that boundary. A French quotation on an English page pronounced with English phonology is incomprehensible. ShipSafe checks all elements with a <code>lang</code> attribute other than <code>&lt;html&gt;</code>. Empty <code>lang=""</code> attributes and values that do not conform to the BCP 47 language-subtag format are flagged as a fail &mdash; they promise a language context to assistive technology but deliver none. If no inline <code>lang</code> attributes are found, the check returns informational: the page may be monolingual (correctly), or it may have unmarked foreign-language passages that ShipSafe cannot detect from source alone. The check returns a fail rather than a warn because an invalid lang attribute is worse than no attribute &mdash; it actively misleads the pronunciation engine.</td>
       </tr>
     </tbody>
   </table>
@@ -298,6 +306,7 @@
     <li><strong>One page only.</strong> ShipSafe scans the URL you provide. It does not crawl other pages on your site. The homepage scan is a representative sample &mdash; your blog posts, product pages, or contact forms may have different issues.</li>
     <li><strong>Source-HTML accessibility differs from rendered-DOM accessibility.</strong> The <code>&lt;main&gt;</code> element, labels, and ARIA roles ShipSafe looks for may differ from what a browser actually constructs if JavaScript moves or replaces elements. Automated testing on the rendered DOM (with tools like axe-core or Lighthouse) will surface issues a source scan cannot.</li>
     <li><strong>Audio-only content (transcripts) is not checked.</strong> WCAG 1.2.1 requires a text transcript for prerecorded audio-only content such as podcasts. ShipSafe does not currently check for <code>&lt;audio&gt;</code> elements or transcript links &mdash; only video captions are checked (WCAG 1.2.2).</li>
+    <li><strong>Unmarked foreign-language content cannot be detected.</strong> WCAG 3.1.2 requires <code>lang</code> attributes on foreign-language phrases, but ShipSafe can only validate <code>lang</code> attributes that already exist in the source. If a page mixes languages without any inline <code>lang</code> markup, the check returns informational rather than a fail &mdash; the absence of markup is invisible to a source scanner.</li>
   </ul>
 
   <div class="callout">

@@ -30,7 +30,8 @@ const statSvg = (status) => {
 };
 
 const WCAG_URL = {
-  "3.1.1": "language-of-page", "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
+  "3.1.1": "language-of-page", "3.1.2": "language-of-parts",
+  "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
   "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
   "1.2.2": "captions-prerecorded",
 };
@@ -181,6 +182,21 @@ const CHECKS = {
       });
       if (!missing.length) return { status: "pass", detail: `All ${videos.length} video element(s) have a captions or subtitles track.` };
       return { status: "fail", detail: `${missing.length} of ${videos.length} <video> element(s) have no <track kind="captions"> or <track kind="subtitles">.`, fix: 'Add a <track kind="captions" src="captions.vtt" srclang="en" label="English"> inside each <video> element. WCAG 1.2.2 requires captions for all prerecorded audio content — missing captions are one of the most common ADA lawsuit triggers for media-heavy sites.', law: "WCAG 1.2.2" };
+    }],
+    ["Language of parts", (c) => {
+      const elements = [...c.doc.querySelectorAll("[lang]")].filter(el => el.tagName.toLowerCase() !== "html");
+      if (!elements.length) return { status: "info", detail: "No inline lang attributes found. If your page includes foreign-language phrases, mark them with a lang attribute so screen readers can pronounce them correctly." };
+      const BCP47 = /^[a-zA-Z]{2,8}(-[a-zA-Z0-9]{2,8})*$/;
+      const bad = elements.filter(el => {
+        const val = (el.getAttribute("lang") || "").trim();
+        return !val || !BCP47.test(val);
+      });
+      if (!bad.length) return { status: "pass", detail: `${elements.length} inline lang attribute(s) found — all use a well-formed language tag.` };
+      const emptyCount = bad.filter(el => !(el.getAttribute("lang") || "").trim()).length;
+      const detail = emptyCount === bad.length
+        ? `${bad.length} element(s) carry an empty lang="" that gives screen readers no language context.`
+        : `${bad.length} element(s) have an empty or structurally invalid lang value.`;
+      return { status: "fail", detail, fix: 'Remove empty lang="" attributes and replace invalid values with a valid BCP 47 language subtag — e.g. lang="fr" for French, lang="es" for Spanish, lang="zh-TW" for Traditional Chinese. Screen readers switch pronunciation engines at lang boundaries; an empty or unrecognized value corrupts pronunciation for the affected content.', law: "WCAG 3.1.2" };
     }],
   ],
   privacy: [
