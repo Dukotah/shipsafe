@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These ten checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 — the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These eleven checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 — the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -146,6 +146,14 @@
           <span class="wcag-level">Level A</span>
         </td>
         <td>The <code>role</code> attribute tells assistive technology how to announce and interact with an element — "button", "dialog", "navigation", and so on. An empty <code>role=""</code> gives screen readers nothing to work with; an unrecognized value (a typo, a made-up role, or an ARIA abstract role used directly in content) is silently ignored or misinterpreted. ShipSafe checks every element with a <code>role</code> attribute against the full WAI-ARIA 1.2 non-abstract role taxonomy. The check returns a fail because invalid ARIA roles are machine-detectable, straightforward to fix (remove or replace the attribute), and represent a direct failure of the Name, Role, Value requirement that underpins most interactive accessibility.</td>
+      </tr>
+      <tr>
+        <td>Tab order preserved</td>
+        <td>
+          <span class="wcag-ref">2.4.3 Focus Order</span><br>
+          <span class="wcag-level">Level A</span>
+        </td>
+        <td>WCAG 2.4.3 requires that focusable components receive focus in an order that preserves meaning and operation. <code>tabindex="0"</code> and <code>tabindex="-1"</code> are both safe — they participate in (or are removed from) the natural DOM tab order without disrupting it. A positive tabindex value — <code>tabindex="1"</code>, <code>tabindex="2"</code>, etc. — is a red flag: it forces focus to jump to those elements <em>before</em> everything else on the page, regardless of DOM order. In practice this nearly always creates a disjointed, confusing keyboard experience for sighted keyboard users and screen-reader users alike. ShipSafe scans the source HTML for any element whose <code>tabindex</code> attribute parses to a positive integer and returns a warning if any are found. The check returns a warn rather than a fail because context matters: a positive tabindex might be an intentional (if unusual) design decision, and visual DOM order cannot be verified from source HTML alone.</td>
       </tr>
     </tbody>
   </table>

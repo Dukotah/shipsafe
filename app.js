@@ -31,7 +31,7 @@ const statSvg = (status) => {
 
 const WCAG_URL = {
   "3.1.1": "language-of-page", "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
-  "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
+  "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
 };
 function lawTag(law) {
   if (!law) return "";
@@ -157,6 +157,16 @@ const CHECKS = {
         ? `${bad.length} element(s) have an empty role="" that gives assistive technology nothing to announce.`
         : `${bad.length} element(s) carry an unrecognized or empty ARIA role value.`;
       return { status: "fail", detail, fix: 'Remove empty role="" attributes and replace unrecognized values with a valid WAI-ARIA role (e.g. role="button", role="dialog"), or remove the attribute entirely. Screen readers announce role values — an invalid role confuses or misleads assistive technology.', law: "WCAG 4.1.2" };
+    }],
+    ["Tab order preserved", (c) => {
+      const elements = [...c.doc.querySelectorAll("[tabindex]")];
+      if (!elements.length) return { status: "info", detail: "No elements with tabindex attributes found." };
+      const abusers = elements.filter(el => {
+        const val = parseInt(el.getAttribute("tabindex"), 10);
+        return !isNaN(val) && val > 0;
+      });
+      if (!abusers.length) return { status: "pass", detail: `${elements.length} tabindex attribute(s) found — none override the natural DOM order.` };
+      return { status: "warn", detail: `${abusers.length} element(s) use a positive tabindex value, which overrides the natural DOM tab order and can create a disjointed keyboard navigation experience.`, fix: 'Replace tabindex="1", tabindex="2", etc. with tabindex="0" or remove the attribute entirely. Use DOM source order to control focus flow instead. Positive tabindex values cause focus to jump to those elements before all tabindex="0" and naturally focusable elements on the page, which almost always breaks the expected reading order for keyboard and screen-reader users.', law: "WCAG 2.4.3" };
     }],
   ],
   privacy: [
