@@ -287,8 +287,21 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
 
 buildCatGrid();
 
+const _params = new URLSearchParams(location.search);
+
+// ?demo=1 — render a representative sample report (real engine, crafted sample). A "see a sample" link.
+if (_params.get("demo") === "1") {
+  const sample = '<!doctype html><html><head><title>Maple Street Bakery</title>' +
+    '<meta name="description" content="Fresh sourdough and pastries in downtown Petaluma."><link rel="icon" href="/favicon.ico">' +
+    '<script src="https://www.googletagmanager.com/gtag/js"><' + '/script></head><body><main>' +
+    '<h1>Maple Street Bakery</h1><img src="hero.jpg"><img src="logo.png" alt="Maple Street Bakery">' +
+    '<form><input type="email" placeholder="Email"><button>Join</button></form>' +
+    '<a href="mailto:hi@bakery.example">Email us</a> <a href="/menu">Menu</a></main></body></html>';
+  render(analyze(sample, "https://maple-street-bakery.example"), "https://maple-street-bakery.example (sample)");
+}
+
 // Deep link: ?url=example.com prefills + auto-runs a scan (shareable result links).
-const _deep = new URLSearchParams(location.search).get("url");
+const _deep = _params.get("url");
 if (_deep) {
   const inp = $("#url");
   if (inp) { inp.value = _deep.replace(/^https?:\/\//, ""); $("#scan-form")?.requestSubmit(); }
