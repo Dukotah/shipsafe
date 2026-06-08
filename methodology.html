@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These fifteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These sixteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -186,6 +186,14 @@
           <span class="wcag-level">Level A</span>
         </td>
         <td>The HTML specification requires every <code>id</code> attribute value to be unique within a document. Duplicate IDs are a well-known accessibility trap: when a <code>&lt;label for="email"&gt;</code> or <code>aria-labelledby="desc"</code> refers to an ID that appears more than once, assistive technology silently binds to the <em>first</em> matching element and ignores subsequent ones. Form fields get mislabeled, described-by relationships break, and skip-link fragments resolve to the wrong target &mdash; all without any visual indication that anything is wrong. ShipSafe collects every <code>id</code> attribute in the page source, counts occurrences per value, and fails on any duplicate. If no <code>id</code> attributes are found, the check returns informational (absence of IDs is not itself a failure). The check returns a fail rather than a warn because duplicate IDs represent a structural HTML conformance error with direct, predictable, and hard-to-detect accessibility consequences.</td>
+      </tr>
+      <tr>
+        <td>ARIA required attributes</td>
+        <td>
+          <span class="wcag-ref">4.1.2 Name, Role, Value</span><br>
+          <span class="wcag-level">Level A</span>
+        </td>
+        <td>The WAI-ARIA 1.2 specification defines a set of <em>required state and property attributes</em> for certain interactive roles. A <code>role="slider"</code> element must carry <code>aria-valuenow</code>, <code>aria-valuemin</code>, and <code>aria-valuemax</code>; a <code>role="checkbox"</code> or <code>role="switch"</code> must carry <code>aria-checked</code>; a <code>role="combobox"</code> must carry <code>aria-expanded</code>; a <code>role="option"</code> must carry <code>aria-selected</code>. Without these attributes, assistive technology has no way to determine or announce the control&rsquo;s current state &mdash; a slider with no value, a checkbox with no checked state, an option with no selected state. WCAG 4.1.2 (Name, Role, Value) requires that all user interface components expose their state, so a control missing a mandatory ARIA property is a direct 4.1.2 failure. ShipSafe checks each element whose <code>role</code> is in the WAI-ARIA 1.2 required-properties table against those required attributes and returns a fail on any gap. The complete set of roles checked: <code>checkbox</code>, <code>combobox</code>, <code>heading</code>, <code>menuitemcheckbox</code>, <code>menuitemradio</code>, <code>meter</code>, <code>option</code>, <code>radio</code>, <code>scrollbar</code>, <code>slider</code>, <code>spinbutton</code>, <code>switch</code>. The check returns <em>info</em> if no elements with roles requiring mandatory attributes are found &mdash; the correct result for static pages that use only semantic HTML without custom ARIA widgets.</td>
       </tr>
     </tbody>
   </table>
@@ -325,13 +333,14 @@
     <li><strong>Unmarked foreign-language content cannot be detected.</strong> WCAG 3.1.2 requires <code>lang</code> attributes on foreign-language phrases, but ShipSafe can only validate <code>lang</code> attributes that already exist in the source. If a page mixes languages without any inline <code>lang</code> markup, the check returns informational rather than a fail &mdash; the absence of markup is invisible to a source scanner.</li>
     <li><strong>Skip links injected by JavaScript are not visible to the source scan.</strong> If a skip link is added to the page by a script after load, ShipSafe cannot detect it. A &ldquo;no skip link found&rdquo; result is informational rather than a fail for this reason &mdash; it reflects what is in the HTML source, not necessarily what a browser renders.</li>
     <li><strong>Duplicate ID detection is source-only.</strong> ShipSafe detects duplicate <code>id</code> attributes in the HTML source. IDs injected or deduplicated by JavaScript after page load are invisible to the check. A pass result means no duplicates were found in the static source; it does not guarantee uniqueness in the live rendered DOM.</li>
+    <li><strong>ARIA required-attribute detection is source-only.</strong> ShipSafe checks whether elements with ARIA roles that have mandatory state/property attributes (per WAI-ARIA 1.2) carry those attributes in the static HTML source. Attributes added or updated by JavaScript at runtime &mdash; for example, <code>aria-valuenow</code> on a slider whose value is set by a script &mdash; are not present in the source and will be flagged as missing. An <em>info</em> result means no elements with required-attribute roles were found in the static source; it does not guarantee that all ARIA widgets in the rendered DOM are fully attributed.</li>
   </ul>
 
   <div class="callout">
     <strong>The right place for ShipSafe in a compliance workflow:</strong> use it as a fast first pass &mdash; a 10-second smoke test before you tackle accessibility properly. A clean result means no obvious red flags in your source. It does not mean certified compliant. If you need a binding determination, talk to a qualified accessibility professional.
   </div>
 
-  <p><a href="./">&#8592; Run a scan</a> &middot; <a href="about.html">About ShipSafe and Copper Bay Labs</a></p>
+  <p><a href="./">&larr; Run a scan</a> &middot; <a href="about.html">About ShipSafe and Copper Bay Labs</a></p>
 
 </article></main>
 

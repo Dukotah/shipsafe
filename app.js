@@ -243,6 +243,45 @@ const CHECKS = {
         law: "WCAG 4.1.1"
       };
     }],
+    ["ARIA required attributes", (c) => {
+      const REQUIRED = {
+        checkbox:         ["aria-checked"],
+        combobox:         ["aria-expanded"],
+        heading:          ["aria-level"],
+        menuitemcheckbox: ["aria-checked"],
+        menuitemradio:    ["aria-checked"],
+        meter:            ["aria-valuenow"],
+        option:           ["aria-selected"],
+        radio:            ["aria-checked"],
+        scrollbar:        ["aria-controls", "aria-valuenow", "aria-valuemin", "aria-valuemax"],
+        slider:           ["aria-valuenow", "aria-valuemin", "aria-valuemax"],
+        spinbutton:       ["aria-valuenow"],
+        switch:           ["aria-checked"],
+      };
+      const candidates = [...c.doc.querySelectorAll("[role]")].filter(el => {
+        const roles = (el.getAttribute("role") || "").trim().split(/\s+/).filter(Boolean);
+        return roles.some(r => REQUIRED[r]);
+      });
+      if (!candidates.length) return { status: "info", detail: "No elements found with ARIA roles that have mandatory state/property attributes." };
+      const violations = [];
+      for (const el of candidates) {
+        const roles = (el.getAttribute("role") || "").trim().split(/\s+/).filter(Boolean);
+        for (const role of roles) {
+          if (!REQUIRED[role]) continue;
+          const missing = REQUIRED[role].filter(attr => !el.hasAttribute(attr));
+          if (missing.length) violations.push(`role="${role}" missing ${missing.join(", ")}`);
+        }
+      }
+      if (!violations.length) return { status: "pass", detail: `All ${candidates.length} element(s) with required-attribute roles carry their mandatory ARIA state/property attributes.` };
+      const shown = violations.slice(0, 3).join("; ");
+      const more = violations.length > 3 ? ` and ${violations.length - 3} more` : "";
+      return {
+        status: "fail",
+        detail: `${violations.length} element(s) are missing required ARIA attributes: ${shown}${more}.`,
+        fix: "Each WAI-ARIA role with required state/properties must carry those attributes. For example: role=\"slider\" requires aria-valuenow, aria-valuemin, and aria-valuemax; role=\"checkbox\" and role=\"switch\" require aria-checked; role=\"combobox\" requires aria-expanded. Missing required attributes mean assistive technology cannot correctly announce or interact with the control.",
+        law: "WCAG 4.1.2",
+      };
+    }],
   ],
   privacy: [
     ["Privacy policy linked", (c) => hasLink(c, /privacy/i) ? { status: "pass", detail: "A privacy-policy link was found." }
