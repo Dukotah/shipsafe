@@ -276,6 +276,9 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
     const report = analyze(await fetchHTML(u.href), u.href);
     render(report, u.href);
     status.textContent = "Free · runs in your browser · we never store your URL.";
+    // Reflect the scanned site in the URL so the result is shareable / re-runnable.
+    const slug = u.host + (u.pathname !== "/" ? u.pathname.replace(/\/$/, "") : "");
+    history.replaceState(null, "", "?url=" + encodeURIComponent(slug));
   } catch {
     $("#results").innerHTML = `<div class="notice"><strong>Couldn't read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
     $("#results").hidden = false; status.textContent = "Free · runs in your browser · we never store your URL.";
@@ -283,3 +286,10 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
 });
 
 buildCatGrid();
+
+// Deep link: ?url=example.com prefills + auto-runs a scan (shareable result links).
+const _deep = new URLSearchParams(location.search).get("url");
+if (_deep) {
+  const inp = $("#url");
+  if (inp) { inp.value = _deep.replace(/^https?:\/\//, ""); $("#scan-form")?.requestSubmit(); }
+}
