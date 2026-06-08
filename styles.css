@@ -1,6 +1,6 @@
 :root{
   --ink:#14181f; --paper:#faf8f4; --surface:#fff; --line:#e9e3d8; --line-2:#f0ebe2;
-  --muted:#665f54; --muted-2:#8a8276;
+  --muted:#665f54; --muted-2:#706860;
   --copper:#bf6b3c; --copper-deep:#8f4a22; --copper-tint:#f6ebe2;
   --bay:#13525a; --bay-tint:#e3eeef;
   --pass:#2f7d52; --pass-bg:#e8f3ec; --warn:#a9711a; --warn-bg:#f9f0dd; --fail:#bb392b; --fail-bg:#f9e7e4;
@@ -33,6 +33,7 @@ strong{font-weight:700}
 .nav{display:flex;gap:24px}
 .nav a{color:var(--muted);font-weight:600;font-size:15.5px}
 .nav a:hover{color:var(--ink);text-decoration:none}
+.nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 
 /* hero */
 .hero{padding:72px 0 40px;position:relative;overflow:hidden;text-align:center}

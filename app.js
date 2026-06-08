@@ -270,22 +270,34 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
   const u = normalizeUrl($("#url").value), status = $("#status"), btn = $("#scan-btn");
   $("#results").hidden = true;
   if (!u) { status.textContent = "That doesn't look like a URL — try again (e.g. example.com)."; return; }
-  btn.disabled = true; btn.textContent = "Checking…"; status.textContent = `Fetching ${u.host} and analyzing…`;
+  btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = "Checking…"; status.textContent = `Fetching ${u.host} and analyzing…`;
   skeleton();
   try {
     const report = analyze(await fetchHTML(u.href), u.href);
     render(report, u.href);
     status.textContent = "Free · runs in your browser · we never store your URL.";
+    // Move focus to the report heading so keyboard/AT users know results arrived.
+    requestAnimationFrame(() => { const h2 = $("#results h2"); if (h2) { h2.setAttribute("tabindex", "-1"); h2.focus({ preventScroll: true }); } });
     // Reflect the scanned site in the URL so the result is shareable / re-runnable.
     const slug = u.host + (u.pathname !== "/" ? u.pathname.replace(/\/$/, "") : "");
     history.replaceState(null, "", "?url=" + encodeURIComponent(slug));
   } catch {
-    $("#results").innerHTML = `<div class="notice"><strong>Couldn't read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
-    $("#results").hidden = false; status.textContent = "Free · runs in your browser · we never store your URL.";
-  } finally { btn.disabled = false; btn.textContent = "Check my site"; }
+    $("#results").innerHTML = `<div class="notice" tabindex="-1"><strong>Couldn't read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
+    $("#results").hidden = false;
+    requestAnimationFrame(() => { const n = $("#results .notice"); if (n) n.focus({ preventScroll: true }); });
+    status.textContent = "Free · runs in your browser · we never store your URL.";
+  } finally { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = "Check my site"; }
 });
 
 buildCatGrid();
+
+// Mirror <details> open state to aria-expanded for ATs that don't handle native <details>.
+document.querySelectorAll("details").forEach((det) => {
+  const sum = det.querySelector("summary");
+  if (!sum) return;
+  sum.setAttribute("aria-expanded", det.open ? "true" : "false");
+  det.addEventListener("toggle", () => sum.setAttribute("aria-expanded", det.open ? "true" : "false"));
+});
 
 const _params = new URLSearchParams(location.search);
 
