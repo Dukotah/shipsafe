@@ -128,8 +128,35 @@ const CHECKS = {
         return generic.has((a.textContent || "").replace(/\s+/g, " ").trim().toLowerCase());
       });
       return bad.length
-        ? { status: "warn", detail: `${bad.length} link(s) use generic text (“click here”, “here”, “read more”…) that won’t tell screen-reader users where the link goes.`, fix: 'Describe where each link leads: “Read our privacy policy” instead of “click here”. Screen-reader users navigate by jumping between links, so the text must work out of context.', law: "WCAG 2.4.4" }
+        ? { status: "warn", detail: `${bad.length} link(s) use generic text ("click here", "here", "read more"…) that won't tell screen-reader users where the link goes.`, fix: 'Describe where each link leads: "Read our privacy policy" instead of "click here". Screen-reader users navigate by jumping between links, so the text must work out of context.', law: "WCAG 2.4.4" }
         : { status: "pass", detail: "No obviously generic link text found." };
+    }],
+    ["ARIA roles are valid", (c) => {
+      const elements = [...c.doc.querySelectorAll("[role]")];
+      if (!elements.length) return { status: "info", detail: "No elements with role attributes found." };
+      const VALID_ROLES = new Set([
+        "alert","alertdialog","application","article","banner","button","cell","checkbox",
+        "columnheader","combobox","complementary","contentinfo","definition","dialog",
+        "directory","document","feed","figure","form","generic","grid","gridcell","group",
+        "heading","img","link","list","listbox","listitem","log","main","marquee","math",
+        "menu","menubar","menuitem","menuitemcheckbox","menuitemradio","meter","navigation",
+        "none","note","paragraph","presentation","progressbar","radio","radiogroup",
+        "region","row","rowgroup","rowheader","scrollbar","search","searchbox","separator",
+        "slider","spinbutton","status","switch","tab","table","tablist","tabpanel","term",
+        "textbox","timer","toolbar","tooltip","tree","treegrid","treeitem",
+        "caption","code","deletion","emphasis","insertion","mark","strong","subscript","superscript","time"
+      ]);
+      const bad = elements.filter(el => {
+        const roles = (el.getAttribute("role") || "").trim().split(/\s+/).filter(Boolean);
+        if (!roles.length) return true;
+        return roles.some(r => !VALID_ROLES.has(r));
+      });
+      if (!bad.length) return { status: "pass", detail: `All ${elements.length} role attribute(s) use recognized ARIA values.` };
+      const emptyCount = bad.filter(el => !(el.getAttribute("role") || "").trim()).length;
+      const detail = emptyCount === bad.length
+        ? `${bad.length} element(s) have an empty role="" that gives assistive technology nothing to announce.`
+        : `${bad.length} element(s) carry an unrecognized or empty ARIA role value.`;
+      return { status: "fail", detail, fix: 'Remove empty role="" attributes and replace unrecognized values with a valid WAI-ARIA role (e.g. role="button", role="dialog"), or remove the attribute entirely. Screen readers announce role values — an invalid role confuses or misleads assistive technology.', law: "WCAG 4.1.2" };
     }],
   ],
   privacy: [
@@ -251,7 +278,7 @@ function render(r, url) {
       <button class="btn" id="again">${svg("again", "")}Scan another</button>
       <a class="btn" href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed by Copper Bay Tech →</a>
     </div>
-    <p class="trustline" style="margin-top:8px">ShipSafe analyzes your page’s HTML source and gives heuristic guidance, not legal advice. <a href="methodology.html">How we score →</a></p>`;
+    <p class="trustline" style="margin-top:8px">ShipSafe analyzes your page's HTML source and gives heuristic guidance, not legal advice. <a href="methodology.html">How we score →</a></p>`;
   el.hidden = false;
   el.scrollIntoView({ behavior: "smooth", block: "start" });
   requestAnimationFrame(() => {
@@ -338,7 +365,7 @@ $("#scan-form")?.addEventListener("submit", async (e) => {
     const slug = u.host + (u.pathname !== "/" ? u.pathname.replace(/\/$/, "") : "");
     history.replaceState(null, "", "?url=" + encodeURIComponent(slug));
   } catch {
-    $("#results").innerHTML = `<div class="notice" role="alert"><strong>Couldn’t read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
+    $("#results").innerHTML = `<div class="notice" role="alert"><strong>Couldn't read that site.</strong> It may block third-party fetching, or it renders entirely with JavaScript (so the HTML source is nearly empty). The free in-browser check reads static source only — the upcoming rendered scan handles both. Try another URL in the meantime.</div>`;
     $("#results").hidden = false;
     const noticeEl = $("#results").querySelector(".notice");
     if (noticeEl) { noticeEl.tabIndex = -1; noticeEl.focus({ preventScroll: true }); }
