@@ -207,14 +207,33 @@ function render(r, url) {
     low: "Solid. No major demand-letter red flags in your page source. Skim the items below for polish.",
   }[r.risk];
 
+  // P1.3 — issue summary counts for the report card header
+  const allResults = Object.values(r.cats).flatMap((c) => c.results);
+  const totalFails = allResults.filter((x) => x.status === "fail").length;
+  const totalWarns = allResults.filter((x) => x.status === "warn").length;
+  const totalPass = allResults.filter((x) => x.status === "pass").length;
+  const summaryParts = [
+    totalFails ? `<span class="sum-n sum-fail">${totalFails} issue${totalFails !== 1 ? "s" : ""}</span>` : "",
+    totalWarns ? `<span class="sum-n sum-warn">${totalWarns} warning${totalWarns !== 1 ? "s" : ""}</span>` : "",
+    totalPass ? `<span class="sum-n sum-pass">${totalPass} passed</span>` : "",
+  ].filter(Boolean).join("");
+
   const cat = (key) => {
     const c = r.cats[key], m = CAT_META[key];
+    const fails = c.results.filter((x) => x.status === "fail").length;
+    const warns = c.results.filter((x) => x.status === "warn").length;
+    const badge = fails
+      ? `<span class="sev-badge sev-fail">${fails} issue${fails !== 1 ? "s" : ""}</span>`
+      : warns
+      ? `<span class="sev-badge sev-warn">${warns} warning${warns !== 1 ? "s" : ""}</span>`
+      : `<span class="sev-badge sev-ok">Passed</span>`;
     const rows = [...c.results].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]).map((x) => `
-      <div class="check">${statSvg(x.status)}<div class="body">
+      <div class="check is-${x.status}">${statSvg(x.status)}<div class="body">
         <div class="lbl">${esc(x.label)}</div><p class="det">${esc(x.detail || "")}</p>
         ${x.fix ? `<p class="fix">${esc(x.fix)}</p>` : ""}${x.status !== "pass" && x.status !== "info" ? lawTag(x.law) : ""}
       </div></div>`).join("");
     return `<div class="cat"><div class="cat-head">${svg(m.icon, "ico")}<h3>${esc(m.name)}</h3>
+      ${badge}
       <span class="cat-score" style="color:${tone(c.score)}">${c.score}</span>
       <span class="bar"><i style="width:${c.score}%;background:${tone(c.score)}"></i></span></div>${rows}</div>`;
   };
@@ -224,8 +243,10 @@ function render(r, url) {
     <div class="report-head">
       <div class="grade" style="background:${tone(r.health)}">${r.grade}<small>GRADE</small></div>
       <div class="verdict">
+        <p class="rc-label">ShipSafe Assessment</p>
+        <h2>Health ${r.health}/100</h2>
+        <div class="issue-summary">${summaryParts}</div>
         <span class="risk-pill ${riskClass}">${svg(riskIcon, "", { fill: "currentColor", stroke: "none" })}${riskWord}</span>
-        <h2>Health ${r.health}/100 — ${riskWord.toLowerCase()}</h2>
         <p>${verdict}</p>
         <p class="scanned">${esc(url)}</p>
       </div>
