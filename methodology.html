@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These nineteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These twenty checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -219,6 +219,14 @@
         </td>
         <td>WCAG 1.4.4 requires that text can be resized up to 200 percent without loss of content or functionality. The most common way a web page blocks this is through the <code>&lt;meta name="viewport"&gt;</code> tag: setting <code>user-scalable=no</code> disables pinch-to-zoom on mobile browsers, and setting <code>maximum-scale=1</code> (or lower) caps how far the user can zoom. Both are direct barriers for low-vision users who rely on device-level zoom to read standard-sized text. ShipSafe parses the viewport meta tag&rsquo;s <code>content</code> attribute and checks for both directives. If <code>user-scalable=no</code> is present, or if <code>maximum-scale</code> is set to a value of 1 or below, the check returns a warning. iOS Safari has ignored <code>user-scalable=no</code> since iOS 10, which is why this is classified as a warn rather than a fail &mdash; in practice the restriction may not take effect on modern iPhones. However, many Android browsers and older mobile WebViews still honour it, and WCAG makes no platform exception. The fix is always the same: remove the restriction and use the safe default viewport declaration. If no viewport meta tag is present, the check returns informational &mdash; the companion &ldquo;Mobile viewport&rdquo; check handles that case.</td>
       </tr>
+      <tr>
+        <td>Color contrast (inline styles)</td>
+        <td>
+          <span class="wcag-ref">1.4.3 Contrast (Minimum)</span><br>
+          <span class="wcag-level">Level AA</span>
+        </td>
+        <td>WCAG 1.4.3 requires a contrast ratio of at least 4.5:1 between normal text and its background, or 3:1 for large text (18pt / 24px, or 14pt / 18.67px bold). Insufficient contrast is one of the most common real-world accessibility failures and is particularly disabling for users with low vision, color blindness, and older adults whose contrast sensitivity declines with age. It is also an invisible failure &mdash; a site that looks fine at full brightness on a calibrated screen can be illegible on a phone in sunlight. Because ShipSafe reads static HTML source (not rendered pixels), it can only check text color declared through <strong>inline <code>style</code> attributes</strong>. For each element with an inline <code>color</code> property, ShipSafe parses the color value and the inline <code>background-color</code> (falling back to white if no background is declared inline) and calculates the WCAG relative-luminance contrast ratio. Elements with transparent, inherited, or unparseable color values are skipped. Font size and weight are read from inline styles to determine whether the large-text threshold (3:1) applies. The check returns a warning rather than a fail because it is inherently heuristic &mdash; text colored through CSS classes or external stylesheets is invisible to source analysis, so a pass or info result does not guarantee that all text on the page meets WCAG 1.4.3. A warn result identifies confirmed inline-style violations that can be fixed immediately; use a dedicated color contrast tool (WebAIM Contrast Checker, Colour Contrast Analyser, browser DevTools) to audit the full rendered page.</td>
+      </tr>
     </tbody>
   </table>
 
@@ -348,7 +356,7 @@
   <h2 id="limitations">Honest limitations</h2>
   <p>The free ShipSafe check reads the static HTML your server returns. That imposes real constraints:</p>
   <ul>
-    <li><strong>Color contrast is not checked.</strong> WCAG 1.4.3 (minimum contrast, Level AA) and 1.4.6 (enhanced contrast, Level AAA) require measuring rendered text against its background. That requires a live rendering environment, not source HTML. Contrast is one of the more common real-world accessibility failures and ShipSafe does not currently catch it.</li>
+    <li><strong>Color contrast is checked heuristically on inline styles only.</strong> Full WCAG 1.4.3 compliance requires measuring rendered text against its background, which needs a live rendering environment. ShipSafe checks the <code>color</code> and <code>background-color</code> properties declared through inline <code>style</code> attributes only &mdash; text whose color is set through a CSS class, an external stylesheet, a CSS variable, or a <code>:root</code> rule is invisible to the source scan. A pass or info result does not guarantee that all text on the page meets the contrast minimum. For a complete audit, use the WebAIM Contrast Checker or run Lighthouse with a headless browser.</li>
     <li><strong>JavaScript-rendered content is invisible.</strong> If your site builds its DOM after page load &mdash; single-page app frameworks, React, Vue, Svelte &mdash; the source HTML may be nearly empty. ShipSafe will analyze what is in the source and flag issues there, but it cannot see the final rendered output. A rendered-DOM scan (using a headless browser) is in development as a planned Pro tier feature.</li>
     <li><strong>Heuristic matching has false positives and negatives.</strong> ShipSafe detects a &ldquo;privacy policy link&rdquo; by matching link text or URL against a pattern. A site might have a privacy policy that passes heuristically but is legally inadequate, or might fail the check while having a real policy under an unusual label. The check is a signal, not a certification.</li>
     <li><strong>One page only.</strong> ShipSafe scans the URL you provide. It does not crawl other pages on your site. The homepage scan is a representative sample &mdash; your blog posts, product pages, or contact forms may have different issues.</li>

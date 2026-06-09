@@ -35,6 +35,7 @@ const WCAG_URL = {
   "4.1.1": "parsing", "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
   "1.2.2": "captions-prerecorded",
   "2.4.1": "bypass-blocks",
+  "1.4.3": "contrast-minimum",
   "1.4.4": "resize-text",
 };
 function lawTag(law) {
@@ -342,6 +343,83 @@ const CHECKS = {
         law: "WCAG 1.4.4",
       };
     }],
+    ["Color contrast (inline styles)", (c) => {
+      const NAMED = { white:[255,255,255],black:[0,0,0],red:[255,0,0],blue:[0,0,255],green:[0,128,0],
+        yellow:[255,255,0],orange:[255,165,0],purple:[128,0,128],gray:[128,128,128],grey:[128,128,128],
+        silver:[192,192,192],navy:[0,0,128],teal:[0,128,128],maroon:[128,0,0],lime:[0,255,0],
+        aqua:[0,255,255],cyan:[0,255,255],fuchsia:[255,0,255],coral:[255,127,80],gold:[255,215,0],
+        violet:[238,130,238],crimson:[220,20,60],darkgray:[169,169,169],darkgrey:[169,169,169],
+        lightgray:[211,211,211],lightgrey:[211,211,211],dimgray:[105,105,105],dimgrey:[105,105,105],
+        whitesmoke:[245,245,245],gainsboro:[220,220,220],beige:[245,245,220],ivory:[255,255,240] };
+      function parseColor(s) {
+        s = (s || "").trim().toLowerCase();
+        if (!s || /^(transparent|inherit|currentcolor|initial|unset)$/.test(s)) return null;
+        if (NAMED[s]) return NAMED[s];
+        const hm = s.match(/^#([0-9a-f]{3,8})$/);
+        if (hm) {
+          let h = hm[1];
+          if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+          if (h.length === 8 && parseInt(h.slice(6), 16) < 128) return null;
+          const h6 = h.slice(0, 6);
+          return [parseInt(h6.slice(0,2),16), parseInt(h6.slice(2,4),16), parseInt(h6.slice(4,6),16)];
+        }
+        const rm = s.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)$/);
+        if (rm) {
+          const a = rm[4] !== undefined ? parseFloat(rm[4]) : 1;
+          if (a < 0.5) return null;
+          return [Math.round(parseFloat(rm[1])), Math.round(parseFloat(rm[2])), Math.round(parseFloat(rm[3]))];
+        }
+        return null;
+      }
+      function lum(rgb) {
+        return rgb.reduce((s, v, i) => {
+          const c = v / 255;
+          return s + (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)) * [0.2126, 0.7152, 0.0722][i];
+        }, 0);
+      }
+      function cratio(a, b) { const la = lum(a), lb = lum(b); return la > lb ? (la+0.05)/(lb+0.05) : (lb+0.05)/(la+0.05); }
+      function sval(style, prop) {
+        const m = style.match(new RegExp('(?:^|;)\\s*' + prop + '\\s*:\\s*([^;]+)', 'i'));
+        return m ? m[1].trim() : null;
+      }
+      const SKIP = new Set(["script","style","meta","link","head","noscript","template","svg","math"]);
+      const candidates = [...c.doc.querySelectorAll("[style]")].filter(el =>
+        !SKIP.has(el.tagName.toLowerCase()) && /(?:^|;)\s*color\s*:/i.test(el.getAttribute("style") || "")
+      );
+      if (!candidates.length) return { status: "info", detail: "No elements with an inline color style were found — contrast could not be assessed heuristically." };
+      let checked = 0;
+      const violations = [];
+      for (const el of candidates) {
+        const text = (el.textContent || "").trim();
+        if (!text) continue;
+        const style = el.getAttribute("style");
+        const fg = parseColor(sval(style, "color"));
+        if (!fg) continue;
+        const bgStr = sval(style, "background-color");
+        const bg = bgStr ? parseColor(bgStr) : [255, 255, 255];
+        if (!bg) continue;
+        checked++;
+        const fs = parseFloat(sval(style, "font-size") || "16");
+        const fw = sval(style, "font-weight") || "";
+        const large = fs >= 24 || (fs >= 18.67 && (fw.toLowerCase() === "bold" || parseInt(fw) >= 700));
+        const threshold = large ? 3.0 : 4.5;
+        const r = cratio(fg, bg);
+        if (r < threshold) {
+          const snip = text.slice(0, 35) + (text.length > 35 ? "…" : "");
+          violations.push(`${r.toFixed(1)}:1 on "${snip}"`);
+        }
+      }
+      if (!checked) return { status: "info", detail: "No inline-styled text elements with parseable color values were found." };
+      if (!violations.length) return { status: "pass", detail: `${checked} inline-styled text element(s) checked — all meet WCAG contrast minimums.` };
+      const shown = violations.slice(0, 3).join("; ");
+      const more = violations.length > 3 ? ` and ${violations.length - 3} more` : "";
+      return {
+        status: "warn",
+        detail: `${violations.length} of ${checked} inline-styled element(s) have insufficient contrast: ${shown}${more}. (Heuristic: inline style attributes only — text colored through CSS classes or external stylesheets is not detected.)`,
+        fix: "Text needs a contrast ratio of at least 4.5:1 against its background for normal-sized text, or 3:1 for large text (18pt/24px, or 14pt/18.67px bold). Use the WebAIM Contrast Checker or Colour Contrast Analyser to validate your palette. Low contrast is one of the most common WCAG failures and affects users with low vision, color blindness, and anyone reading in bright sunlight.",
+        law: "WCAG 1.4.3",
+      };
+    }],
   ],
   privacy: [
     ["Privacy policy linked", (c) => hasLink(c, /privacy/i) ? { status: "pass", detail: "A privacy-policy link was found." }
@@ -573,6 +651,7 @@ if (_params.get("demo") === "1") {
     '<form><input type="email" placeholder="Email"><button>Join</button></form>' +
     '<a href="mailto:hi@bakery.example">Email us</a> <a href="/menu">Menu</a>' +
     '<iframe src="https://maps.google.com/maps?q=Petaluma+CA&output=embed"></iframe>' +
+    '<p style="color:#aaa;background-color:#fff">Order online — coming soon.</p>' +
     '</main></body></html>';
   render(analyze(sample, "https://maple-street-bakery.example"), "https://maple-street-bakery.example (sample)");
 }
