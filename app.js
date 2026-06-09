@@ -35,6 +35,7 @@ const WCAG_URL = {
   "4.1.1": "parsing", "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
   "1.2.2": "captions-prerecorded",
   "2.4.1": "bypass-blocks",
+  "1.4.4": "resize-text",
 };
 function lawTag(law) {
   if (!law) return "";
@@ -321,6 +322,26 @@ const CHECKS = {
         law: "WCAG 4.1.2",
       };
     }],
+    ["Viewport zoom restrictions", (c) => {
+      const meta = c.doc.querySelector('meta[name="viewport"]');
+      if (!meta) return { status: "info", detail: "No viewport meta tag found — zoom restrictions cannot be assessed." };
+      const content = (meta.getAttribute("content") || "").toLowerCase();
+      const directives = content.split(",").map(d => d.trim());
+      const noScale = directives.some(d => /user-scalable\s*=\s*no/.test(d));
+      const maxScaleMatch = directives.map(d => d.match(/maximum-scale\s*=\s*([\d.]+)/)).find(Boolean);
+      const maxScaleVal = maxScaleMatch ? parseFloat(maxScaleMatch[1]) : null;
+      const restrictedScale = maxScaleVal !== null && maxScaleVal <= 1;
+      if (!noScale && !restrictedScale) return { status: "pass", detail: "Viewport allows pinch-to-zoom — no user-scalable=no or maximum-scale≤1 found." };
+      const issues = [];
+      if (noScale) issues.push("user-scalable=no");
+      if (restrictedScale) issues.push(`maximum-scale=${maxScaleVal}`);
+      return {
+        status: "warn",
+        detail: `Viewport meta restricts pinch-to-zoom: ${issues.join(", ")}. Low-vision users who rely on browser or OS zoom to enlarge text cannot zoom this page.`,
+        fix: 'Remove user-scalable=no and raise maximum-scale to 5 or higher (or omit it). The safe default is: <meta name="viewport" content="width=device-width, initial-scale=1">. WCAG 1.4.4 requires that text be resizable up to 200% without loss of content — blocking browser zoom is a direct violation. iOS Safari has ignored user-scalable=no since iOS 10, but Android and older browsers still honour it.',
+        law: "WCAG 1.4.4",
+      };
+    }],
   ],
   privacy: [
     ["Privacy policy linked", (c) => hasLink(c, /privacy/i) ? { status: "pass", detail: "A privacy-policy link was found." }
@@ -545,6 +566,7 @@ const _params = new URLSearchParams(location.search);
 // ?demo=1 — render a representative sample report (real engine, crafted sample). A "see a sample" link.
 if (_params.get("demo") === "1") {
   const sample = '<!doctype html><html><head><title>Maple Street Bakery</title>' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">' +
     '<meta name="description" content="Fresh sourdough and pastries in downtown Petaluma."><link rel="icon" href="/favicon.ico">' +
     '<script src="https://www.googletagmanager.com/gtag/js"><' + '/script></head><body><main>' +
     '<h1>Maple Street Bakery</h1><img src="hero.jpg"><img src="logo.png" alt="Maple Street Bakery">' +

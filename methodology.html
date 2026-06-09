@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These eighteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These nineteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -211,6 +211,14 @@
         </td>
         <td>WCAG 4.1.2 requires that all user interface components expose a name that assistive technology can announce. <code>&lt;iframe&gt;</code> elements are frame containers &mdash; when a screen-reader user navigates into or past one, the browser announces the frame by its <code>title</code> attribute. Without a <code>title</code>, the frame is identified only by its <code>src</code> URL (or not at all), leaving users with no indication of what the embedded content contains or why it is on the page. This is a very common failure on sites that embed Google Maps, YouTube videos, Calendly widgets, or third-party chat tools &mdash; all use <code>&lt;iframe&gt;</code>, and none supply a <code>title</code> by default unless the developer explicitly adds one. ShipSafe checks every <code>&lt;iframe&gt;</code> in the page source for a non-empty <code>title</code> attribute and returns a fail on any that are missing. The check returns <em>info</em> if the page contains no <code>&lt;iframe&gt;</code> elements.</td>
       </tr>
+      <tr>
+        <td>Viewport zoom restrictions</td>
+        <td>
+          <span class="wcag-ref">1.4.4 Resize Text</span><br>
+          <span class="wcag-level">Level AA</span>
+        </td>
+        <td>WCAG 1.4.4 requires that text can be resized up to 200 percent without loss of content or functionality. The most common way a web page blocks this is through the <code>&lt;meta name="viewport"&gt;</code> tag: setting <code>user-scalable=no</code> disables pinch-to-zoom on mobile browsers, and setting <code>maximum-scale=1</code> (or lower) caps how far the user can zoom. Both are direct barriers for low-vision users who rely on device-level zoom to read standard-sized text. ShipSafe parses the viewport meta tag&rsquo;s <code>content</code> attribute and checks for both directives. If <code>user-scalable=no</code> is present, or if <code>maximum-scale</code> is set to a value of 1 or below, the check returns a warning. iOS Safari has ignored <code>user-scalable=no</code> since iOS 10, which is why this is classified as a warn rather than a fail &mdash; in practice the restriction may not take effect on modern iPhones. However, many Android browsers and older mobile WebViews still honour it, and WCAG makes no platform exception. The fix is always the same: remove the restriction and use the safe default viewport declaration. If no viewport meta tag is present, the check returns informational &mdash; the companion &ldquo;Mobile viewport&rdquo; check handles that case.</td>
+      </tr>
     </tbody>
   </table>
 
@@ -352,6 +360,7 @@
     <li><strong>ARIA required-attribute detection is source-only.</strong> ShipSafe checks whether elements with ARIA roles that have mandatory state/property attributes (per WAI-ARIA 1.2) carry those attributes in the static HTML source. Attributes added or updated by JavaScript at runtime &mdash; for example, <code>aria-valuenow</code> on a slider whose value is set by a script &mdash; are not present in the source and will be flagged as missing. An <em>info</em> result means no elements with required-attribute roles were found in the static source; it does not guarantee that all ARIA widgets in the rendered DOM are fully attributed.</li>
     <li><strong>Autocomplete detection relies on field-type and name heuristics.</strong> ShipSafe identifies personal-data inputs by checking <code>type</code> (<code>email</code>, <code>tel</code>, <code>password</code>) and matching <code>name</code> or <code>placeholder</code> attributes against a list of personal-information keywords. Custom field names that do not match the pattern will not be flagged even if they collect personal data. Conversely, a field with a matching name that does not actually collect personal information will be flagged. The check also cannot detect JavaScript-based autocomplete widgets that provide equivalent functionality through a custom UI &mdash; those fields will be flagged even if the experience is equivalent. A warn result is a prompt to verify, not a definitive finding.</li>
     <li><strong>Iframe title detection is source-only.</strong> ShipSafe detects <code>&lt;iframe&gt;</code> elements and their <code>title</code> attributes from the static HTML source. Frames injected by JavaScript after page load are invisible to the scan &mdash; third-party scripts that inject chat widgets, ad slots, or analytics frames are a common source of untitled iframes that this check will not catch. An <em>info</em> result (no iframes found in source) does not guarantee that the rendered page is free of untitled frames.</li>
+    <li><strong>Viewport zoom check is limited to the meta tag.</strong> ShipSafe detects zoom restrictions through the <code>&lt;meta name="viewport"&gt;</code> <code>content</code> attribute only. A page may also block zoom through CSS (<code>touch-action: none</code>, <code>user-select: none</code>) or JavaScript event listeners that intercept pinch gestures &mdash; none of these are detectable from source HTML. Additionally, iOS Safari has ignored <code>user-scalable=no</code> since iOS 10, so the practical impact depends on the user&rsquo;s device and browser. A warn result is a flag for verification, not a guarantee that zoom is blocked on all devices.</li>
   </ul>
 
   <div class="callout">
