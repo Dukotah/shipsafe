@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These sixteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These seventeen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -194,6 +194,14 @@
           <span class="wcag-level">Level A</span>
         </td>
         <td>The WAI-ARIA 1.2 specification defines a set of <em>required state and property attributes</em> for certain interactive roles. A <code>role="slider"</code> element must carry <code>aria-valuenow</code>, <code>aria-valuemin</code>, and <code>aria-valuemax</code>; a <code>role="checkbox"</code> or <code>role="switch"</code> must carry <code>aria-checked</code>; a <code>role="combobox"</code> must carry <code>aria-expanded</code>; a <code>role="option"</code> must carry <code>aria-selected</code>. Without these attributes, assistive technology has no way to determine or announce the control&rsquo;s current state &mdash; a slider with no value, a checkbox with no checked state, an option with no selected state. WCAG 4.1.2 (Name, Role, Value) requires that all user interface components expose their state, so a control missing a mandatory ARIA property is a direct 4.1.2 failure. ShipSafe checks each element whose <code>role</code> is in the WAI-ARIA 1.2 required-properties table against those required attributes and returns a fail on any gap. The complete set of roles checked: <code>checkbox</code>, <code>combobox</code>, <code>heading</code>, <code>menuitemcheckbox</code>, <code>menuitemradio</code>, <code>meter</code>, <code>option</code>, <code>radio</code>, <code>scrollbar</code>, <code>slider</code>, <code>spinbutton</code>, <code>switch</code>. The check returns <em>info</em> if no elements with roles requiring mandatory attributes are found &mdash; the correct result for static pages that use only semantic HTML without custom ARIA widgets.</td>
+      </tr>
+      <tr>
+        <td>Autocomplete on personal-data fields</td>
+        <td>
+          <span class="wcag-ref">1.3.5 Identify Input Purpose</span><br>
+          <span class="wcag-level">Level AA</span>
+        </td>
+        <td>WCAG 1.3.5 requires that any input field collecting personal information about the user &mdash; name, email, phone, address, password &mdash; declare its purpose via the HTML <code>autocomplete</code> attribute. The <code>autocomplete</code> attribute lets browsers and password managers identify the field&rsquo;s purpose and pre-fill it automatically. For users with cognitive disabilities, motor impairments, or reading difficulties, autofill is not a convenience &mdash; it is often the only way they can complete a form accurately and without assistance. Without it, every form requires them to recall and type personal details from memory, which is a significant and unnecessary barrier. ShipSafe checks all <code>&lt;input&gt;</code> elements whose type (<code>email</code>, <code>tel</code>, <code>password</code>) or whose <code>name</code> or <code>placeholder</code> attribute suggests personal information (name, address, phone, zip, city) and flags any that lack an <code>autocomplete</code> attribute. The check returns a warn rather than a fail because WCAG 1.3.5 is Level AA, and because source-only analysis cannot determine whether a custom JavaScript autocomplete mechanism provides equivalent functionality. If no personal-data fields are found in the source, the check returns informational.</td>
       </tr>
     </tbody>
   </table>
@@ -334,6 +342,7 @@
     <li><strong>Skip links injected by JavaScript are not visible to the source scan.</strong> If a skip link is added to the page by a script after load, ShipSafe cannot detect it. A &ldquo;no skip link found&rdquo; result is informational rather than a fail for this reason &mdash; it reflects what is in the HTML source, not necessarily what a browser renders.</li>
     <li><strong>Duplicate ID detection is source-only.</strong> ShipSafe detects duplicate <code>id</code> attributes in the HTML source. IDs injected or deduplicated by JavaScript after page load are invisible to the check. A pass result means no duplicates were found in the static source; it does not guarantee uniqueness in the live rendered DOM.</li>
     <li><strong>ARIA required-attribute detection is source-only.</strong> ShipSafe checks whether elements with ARIA roles that have mandatory state/property attributes (per WAI-ARIA 1.2) carry those attributes in the static HTML source. Attributes added or updated by JavaScript at runtime &mdash; for example, <code>aria-valuenow</code> on a slider whose value is set by a script &mdash; are not present in the source and will be flagged as missing. An <em>info</em> result means no elements with required-attribute roles were found in the static source; it does not guarantee that all ARIA widgets in the rendered DOM are fully attributed.</li>
+    <li><strong>Autocomplete detection relies on field-type and name heuristics.</strong> ShipSafe identifies personal-data inputs by checking <code>type</code> (<code>email</code>, <code>tel</code>, <code>password</code>) and matching <code>name</code> or <code>placeholder</code> attributes against a list of personal-information keywords. Custom field names that do not match the pattern will not be flagged even if they collect personal data. Conversely, a field with a matching name that does not actually collect personal information will be flagged. The check also cannot detect JavaScript-based autocomplete widgets that provide equivalent functionality through a custom UI &mdash; those fields will be flagged even if the experience is equivalent. A warn result is a prompt to verify, not a definitive finding.</li>
   </ul>
 
   <div class="callout">

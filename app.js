@@ -31,7 +31,7 @@ const statSvg = (status) => {
 
 const WCAG_URL = {
   "3.1.1": "language-of-page", "3.1.2": "language-of-parts",
-  "1.1.1": "non-text-content", "1.3.1": "info-and-relationships",
+  "1.1.1": "non-text-content", "1.3.1": "info-and-relationships", "1.3.5": "identify-input-purpose",
   "4.1.1": "parsing", "4.1.2": "name-role-value", "2.4.2": "page-titled", "2.4.3": "focus-order", "2.4.4": "link-purpose-in-context", "1.4.10": "reflow",
   "1.2.2": "captions-prerecorded",
   "2.4.1": "bypass-blocks",
@@ -280,6 +280,28 @@ const CHECKS = {
         detail: `${violations.length} element(s) are missing required ARIA attributes: ${shown}${more}.`,
         fix: "Each WAI-ARIA role with required state/properties must carry those attributes. For example: role=\"slider\" requires aria-valuenow, aria-valuemin, and aria-valuemax; role=\"checkbox\" and role=\"switch\" require aria-checked; role=\"combobox\" requires aria-expanded. Missing required attributes mean assistive technology cannot correctly announce or interact with the control.",
         law: "WCAG 4.1.2",
+      };
+    }],
+    ["Autocomplete on personal-data fields", (c) => {
+      const PERSONAL_TYPES = new Set(["email", "tel", "password"]);
+      const PERSONAL_NAME_RE = /\b(name|first[-_]?name|last[-_]?name|fname|lname|full[-_]?name|address|street|city|zip|postal|phone|mobile|cell)\b/i;
+      const SKIP_TYPES = new Set(["hidden","submit","button","image","reset","checkbox","radio","file","range","color","date","datetime-local","month","week","time","number"]);
+      const inputs = [...c.doc.querySelectorAll("input")].filter(el => {
+        const type = (el.getAttribute("type") || "text").toLowerCase();
+        if (SKIP_TYPES.has(type)) return false;
+        if (PERSONAL_TYPES.has(type)) return true;
+        const name = (el.getAttribute("name") || "");
+        const placeholder = (el.getAttribute("placeholder") || "");
+        return PERSONAL_NAME_RE.test(name) || PERSONAL_NAME_RE.test(placeholder);
+      });
+      if (!inputs.length) return { status: "info", detail: "No personal-information input fields detected in the source." };
+      const missing = inputs.filter(el => !el.hasAttribute("autocomplete"));
+      if (!missing.length) return { status: "pass", detail: `All ${inputs.length} personal-information field(s) carry an autocomplete attribute.` };
+      return {
+        status: "warn",
+        detail: `${missing.length} of ${inputs.length} personal-information field(s) (email, name, address, phone, or password) have no autocomplete attribute.`,
+        fix: 'Add autocomplete to inputs collecting personal data — e.g. autocomplete="email", autocomplete="name", autocomplete="tel", autocomplete="street-address", autocomplete="new-password". Autocomplete lets browsers and password managers fill these fields automatically, which significantly reduces friction for users with cognitive or motor disabilities. WCAG 1.3.5 requires that inputs collecting personal information about the user identify their purpose via the autocomplete attribute.',
+        law: "WCAG 1.3.5",
       };
     }],
   ],
