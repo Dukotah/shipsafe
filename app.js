@@ -304,6 +304,23 @@ const CHECKS = {
         law: "WCAG 1.3.5",
       };
     }],
+    ["Frames have accessible names", (c) => {
+      const frames = [...c.doc.querySelectorAll("iframe")];
+      if (!frames.length) return { status: "info", detail: "No <iframe> elements found on this page." };
+      const missing = frames.filter(el => !el.getAttribute("title")?.trim());
+      if (!missing.length) return { status: "pass", detail: `All ${frames.length} <iframe> element(s) have a title attribute.` };
+      const shown = missing.slice(0, 3).map(el => {
+        const src = el.getAttribute("src") || "(no src)";
+        return `<code>${esc(src.length > 60 ? src.slice(0, 60) + "…" : src)}</code>`;
+      }).join(", ");
+      const more = missing.length > 3 ? ` (and ${missing.length - 3} more)` : "";
+      return {
+        status: "fail",
+        detail: `${missing.length} of ${frames.length} <iframe> element(s) have no title: ${shown}${more}.`,
+        fix: 'Add a title attribute to every <iframe> describing its content — e.g. title="Google Maps: our office location" or title="Product demo video". Screen readers announce the frame title when a user navigates into it; without one the frame is opaque to assistive technology. This is one of the most common WCAG 4.1.2 failures on sites that embed maps, videos, or third-party widgets.',
+        law: "WCAG 4.1.2",
+      };
+    }],
   ],
   privacy: [
     ["Privacy policy linked", (c) => hasLink(c, /privacy/i) ? { status: "pass", detail: "A privacy-policy link was found." }
@@ -532,7 +549,9 @@ if (_params.get("demo") === "1") {
     '<script src="https://www.googletagmanager.com/gtag/js"><' + '/script></head><body><main>' +
     '<h1>Maple Street Bakery</h1><img src="hero.jpg"><img src="logo.png" alt="Maple Street Bakery">' +
     '<form><input type="email" placeholder="Email"><button>Join</button></form>' +
-    '<a href="mailto:hi@bakery.example">Email us</a> <a href="/menu">Menu</a></main></body></html>';
+    '<a href="mailto:hi@bakery.example">Email us</a> <a href="/menu">Menu</a>' +
+    '<iframe src="https://maps.google.com/maps?q=Petaluma+CA&output=embed"></iframe>' +
+    '</main></body></html>';
   render(analyze(sample, "https://maple-street-bakery.example"), "https://maple-street-bakery.example (sample)");
 }
 

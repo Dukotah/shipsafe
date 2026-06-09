@@ -55,7 +55,7 @@
   </div>
 
   <h2 id="accessibility">Accessibility checks (ADA / WCAG)</h2>
-  <p>These seventeen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
+  <p>These eighteen checks map to the Web Content Accessibility Guidelines (WCAG) 2.2 &mdash; the technical standard U.S. courts apply when evaluating ADA website claims. They are weighted highest in the overall score because they are the issues automated ADA filers scan for directly.</p>
 
   <table class="check-table" aria-label="Accessibility checks and WCAG criteria">
     <thead>
@@ -203,6 +203,14 @@
         </td>
         <td>WCAG 1.3.5 requires that any input field collecting personal information about the user &mdash; name, email, phone, address, password &mdash; declare its purpose via the HTML <code>autocomplete</code> attribute. The <code>autocomplete</code> attribute lets browsers and password managers identify the field&rsquo;s purpose and pre-fill it automatically. For users with cognitive disabilities, motor impairments, or reading difficulties, autofill is not a convenience &mdash; it is often the only way they can complete a form accurately and without assistance. Without it, every form requires them to recall and type personal details from memory, which is a significant and unnecessary barrier. ShipSafe checks all <code>&lt;input&gt;</code> elements whose type (<code>email</code>, <code>tel</code>, <code>password</code>) or whose <code>name</code> or <code>placeholder</code> attribute suggests personal information (name, address, phone, zip, city) and flags any that lack an <code>autocomplete</code> attribute. The check returns a warn rather than a fail because WCAG 1.3.5 is Level AA, and because source-only analysis cannot determine whether a custom JavaScript autocomplete mechanism provides equivalent functionality. If no personal-data fields are found in the source, the check returns informational.</td>
       </tr>
+      <tr>
+        <td>Frames have accessible names</td>
+        <td>
+          <span class="wcag-ref">4.1.2 Name, Role, Value</span><br>
+          <span class="wcag-level">Level A</span>
+        </td>
+        <td>WCAG 4.1.2 requires that all user interface components expose a name that assistive technology can announce. <code>&lt;iframe&gt;</code> elements are frame containers &mdash; when a screen-reader user navigates into or past one, the browser announces the frame by its <code>title</code> attribute. Without a <code>title</code>, the frame is identified only by its <code>src</code> URL (or not at all), leaving users with no indication of what the embedded content contains or why it is on the page. This is a very common failure on sites that embed Google Maps, YouTube videos, Calendly widgets, or third-party chat tools &mdash; all use <code>&lt;iframe&gt;</code>, and none supply a <code>title</code> by default unless the developer explicitly adds one. ShipSafe checks every <code>&lt;iframe&gt;</code> in the page source for a non-empty <code>title</code> attribute and returns a fail on any that are missing. The check returns <em>info</em> if the page contains no <code>&lt;iframe&gt;</code> elements.</td>
+      </tr>
     </tbody>
   </table>
 
@@ -343,6 +351,7 @@
     <li><strong>Duplicate ID detection is source-only.</strong> ShipSafe detects duplicate <code>id</code> attributes in the HTML source. IDs injected or deduplicated by JavaScript after page load are invisible to the check. A pass result means no duplicates were found in the static source; it does not guarantee uniqueness in the live rendered DOM.</li>
     <li><strong>ARIA required-attribute detection is source-only.</strong> ShipSafe checks whether elements with ARIA roles that have mandatory state/property attributes (per WAI-ARIA 1.2) carry those attributes in the static HTML source. Attributes added or updated by JavaScript at runtime &mdash; for example, <code>aria-valuenow</code> on a slider whose value is set by a script &mdash; are not present in the source and will be flagged as missing. An <em>info</em> result means no elements with required-attribute roles were found in the static source; it does not guarantee that all ARIA widgets in the rendered DOM are fully attributed.</li>
     <li><strong>Autocomplete detection relies on field-type and name heuristics.</strong> ShipSafe identifies personal-data inputs by checking <code>type</code> (<code>email</code>, <code>tel</code>, <code>password</code>) and matching <code>name</code> or <code>placeholder</code> attributes against a list of personal-information keywords. Custom field names that do not match the pattern will not be flagged even if they collect personal data. Conversely, a field with a matching name that does not actually collect personal information will be flagged. The check also cannot detect JavaScript-based autocomplete widgets that provide equivalent functionality through a custom UI &mdash; those fields will be flagged even if the experience is equivalent. A warn result is a prompt to verify, not a definitive finding.</li>
+    <li><strong>Iframe title detection is source-only.</strong> ShipSafe detects <code>&lt;iframe&gt;</code> elements and their <code>title</code> attributes from the static HTML source. Frames injected by JavaScript after page load are invisible to the scan &mdash; third-party scripts that inject chat widgets, ad slots, or analytics frames are a common source of untitled iframes that this check will not catch. An <em>info</em> result (no iframes found in source) does not guarantee that the rendered page is free of untitled frames.</li>
   </ul>
 
   <div class="callout">
