@@ -207,6 +207,17 @@ function render(r, url) {
     low: "Solid. No major demand-letter red flags in your page source. Skim the items below for polish.",
   }[r.risk];
 
+  // contextual lead capture — pre-fill a fix-quote email with this scan's findings
+  const allResults = Object.keys(CAT_META).flatMap((k) => r.cats[k].results);
+  const fails = allResults.filter((x) => x.status === "fail").length;
+  const warns = allResults.filter((x) => x.status === "warn").length;
+  const topIssues = allResults.filter((x) => x.status === "fail" || x.status === "warn")
+    .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]).slice(0, 8)
+    .map((x) => "- " + x.label).join("\n");
+  const quoteSubject = `Fix quote — ShipSafe flagged ${fails} issue${fails === 1 ? "" : "s"} on my site`;
+  const quoteBody = `Hi Copper Bay,\n\nI ran ShipSafe on ${url}\nGrade ${r.grade} · Health ${r.health}/100 · ${riskWord}\n${fails} issue${fails === 1 ? "" : "s"} and ${warns} warning${warns === 1 ? "" : "s"} flagged${topIssues ? ", including:\n" + topIssues : "."}\n\nI'd like a no-obligation quote to get these fixed. Thanks!`;
+  const fixHref = `mailto:contact@copperbaytech.com?subject=${encodeURIComponent(quoteSubject)}&body=${encodeURIComponent(quoteBody)}`;
+
   const cat = (key) => {
     const c = r.cats[key], m = CAT_META[key];
     const rows = [...c.results].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]).map((x) => `
@@ -231,10 +242,19 @@ function render(r, url) {
       </div>
     </div>
     ${cat("accessibility")}${cat("privacy")}${cat("schema")}${cat("trust")}
+    ${r.risk !== "low" ? `<div class="fix-cta" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:18px 0 6px;padding:16px 18px;border:1px solid var(--copper,#bf6b3c);background:var(--copper-tint,#f6ebe2);border-radius:12px">
+      <div style="max-width:48ch">
+        <strong style="display:block;margin-bottom:3px">Want these fixed for you?</strong>
+        <span style="color:var(--muted,#665f54);font-size:14px">Copper Bay Tech remediates exactly these accessibility &amp; privacy gaps. Get a no-obligation quote — your scan results are pre-filled in the email.</span>
+      </div>
+      <a class="btn primary" href="${fixHref}" style="white-space:nowrap">Get a free fix quote &rarr;</a>
+    </div>` : ""}
     <div class="actions">
       <button class="btn primary" id="copy-report">${svg("copy", "")}Copy report</button>
       <button class="btn" id="again">${svg("again", "")}Scan another</button>
-      <a class="btn" href="https://copperbaytech.com" target="_blank" rel="noopener">Get it fixed by Copper Bay Tech →</a>
+      ${r.risk === "low"
+        ? `<a class="btn" href="${fixHref}">Ask Copper Bay to take a look &rarr;</a>`
+        : `<a class="btn" href="https://copperbaytech.com" target="_blank" rel="noopener">About Copper Bay Tech &rarr;</a>`}
     </div>
     <p class="trustline" style="margin-top:8px">ShipSafe analyzes your page's HTML source and gives heuristic guidance, not legal advice. <a href="methodology.html">How we score →</a></p>`;
   el.hidden = false;
