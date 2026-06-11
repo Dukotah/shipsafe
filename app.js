@@ -269,7 +269,7 @@ function reportText(r, url) {
     o += `\n${m.name} — ${r.cats[k].score}/100\n`;
     for (const x of [...r.cats[k].results].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])) o += `  [${x.status.toUpperCase()}] ${x.label} — ${x.detail || ""}\n`;
   }
-  return o + `\nChecked free at https://dukotah.github.io/shipsafe/ — heuristic, not legal advice.`;
+  return o + `\nChecked free at https://labs.copperbaytech.com/shipsafe/ — heuristic, not legal advice.`;
 }
 function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
