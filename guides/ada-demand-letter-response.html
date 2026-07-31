@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Received an ADA Demand Letter? What to Do First (Step-by-Step)</title>
+<meta name="description" content="Got an ADA website demand letter? This step-by-step guide walks through what the letter means, which fixes to make first, how to document remediation, and when to talk to a lawyer.">
+<link rel="canonical" href="https://labs.copperbaytech.com/shipsafe/guides/ada-demand-letter-response.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ShipSafe">
+<meta property="og:title" content="Received an ADA Demand Letter? What to Do First (Step-by-Step)">
+<meta property="og:description" content="Step-by-step response guide for website owners and developers who have received an ADA accessibility demand letter — what to fix first, how to document it, and when to involve an attorney.">
+<meta property="og:url" content="https://labs.copperbaytech.com/shipsafe/guides/ada-demand-letter-response.html">
+<meta property="og:image" content="https://labs.copperbaytech.com/shipsafe/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#faf8f4">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","headline":"Received an ADA Demand Letter? What to Do First (Step-by-Step)","description":"A step-by-step response guide for website owners and developers who have received an ADA accessibility demand letter. Covers understanding the letter, which fixes to prioritize, how to document remediation, and when to consult an attorney.","author":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"datePublished":"2026-07-31","dateModified":"2026-07-31","mainEntityOfPage":"https://labs.copperbaytech.com/shipsafe/guides/ada-demand-letter-response.html","mainEntity":{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this ADA demand letter legitimate?","acceptedAnswer":{"@type":"Answer","text":"Most ADA website demand letters are genuine legal correspondence from plaintiff firms representing disabled individuals, not phishing or spam. A small number of plaintiff firms send high volumes of these letters, scanning websites automatically for common WCAG failures. The fact that it reads like a template does not make it a scam — it means the firm operates at scale. Take it seriously and consult an attorney."}},{"@type":"Question","name":"Do I have to respond to an ADA demand letter?","acceptedAnswer":{"@type":"Answer","text":"You are not legally required to reply to a pre-litigation demand letter — it is not a court order. However, ignoring it can result in a lawsuit being filed. Many firms use lack of response as grounds to escalate to litigation. In practice, demonstrating that you have made good-faith remediation efforts significantly reduces the risk of the matter proceeding to court. Consult an attorney about whether and how to respond."}},{"@type":"Question","name":"How long do I have to respond?","acceptedAnswer":{"@type":"Answer","text":"Demand letters often state a response deadline — typically 30 to 60 days. The deadline is not a statutory requirement (this is pre-litigation correspondence), but exceeding it meaningfully increases the likelihood the firm will file a complaint. Begin remediation immediately and consult an attorney about whether to send an acknowledgement letter within the stated window."}},{"@type":"Question","name":"Can I be sued even if I have a small website or side project?","acceptedAnswer":{"@type":"Answer","text":"Yes. ADA Title III applies to places of public accommodation, which courts in the Ninth, Eleventh, and other circuits have held includes websites open to the public. Serial plaintiff firms specifically target small and mid-size businesses because they are less likely to have legal resources to contest the claims. A landing page, portfolio, or early-stage SaaS product is not exempt by virtue of its size."}},{"@type":"Question","name":"What does it cost to settle an ADA website demand letter?","acceptedAnswer":{"@type":"Answer","text":"Settlements vary widely. Early-stage settlements for small business websites often involve a remediation timeline agreement and a nominal settlement payment (commonly in the range of a few thousand dollars) plus plaintiff attorney fees. Cases that proceed to litigation are significantly more expensive. Demonstrating documented remediation before any settlement discussion materially strengthens your position."}},{"@type":"Question","name":"Does fixing the issues mean my site is now ADA compliant?","acceptedAnswer":{"@type":"Answer","text":"Fixing the specific items cited in the letter reduces your litigation exposure for those items. It does not by itself constitute a formal WCAG conformance certification or legal guarantee of compliance. A full WCAG 2.1 AA audit by a qualified accessibility specialist is required for a defensible conformance claim. That said, documented good-faith remediation is the most practically important step for most small and mid-size businesses facing a demand letter."}},{"@type":"Question","name":"Should I add an accessibility statement to my site?","acceptedAnswer":{"@type":"Answer","text":"Yes. An accessibility statement (a page describing your commitment to accessibility, the standard you target — WCAG 2.1 AA — your contact email for accessibility issues, and the date you last audited) is a standard part of a defensible posture. It gives users a path to report problems, which courts and regulators view favorably as evidence of good faith."}}]}}
+</script>
+<link rel="stylesheet" href="../styles.css?v=7">
+<style>
+  .doc .lede{font-size:clamp(17px,2.3vw,20px);color:var(--muted)}
+  .doc h2{scroll-margin-top:80px}
+  .doc h3{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:19px;margin:22px 0 6px;letter-spacing:-.01em}
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 6px;padding:0;list-style:none}
+  .toc a{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+  .toc a:hover{border-color:var(--bay);color:var(--ink);text-decoration:none}
+  .callout{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:14px 18px;margin:22px 0;font-size:15.5px;color:#5a3e10}
+  .callout.tip{background:var(--pass-bg);border-left-color:var(--pass);color:#1b4d30}
+  .callout.alert{background:#fef2f2;border-left-color:#ef4444;color:#7f1d1d}
+  .doc code.inline{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--line-2,#f0ebe2);padding:2px 6px;border-radius:5px}
+  pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;margin:12px 0}
+  .step-list{margin:24px 0;padding:0;list-style:none;counter-reset:step}
+  .step-list>li{position:relative;padding:6px 0 28px 56px;counter-increment:step;border-bottom:1px solid var(--line)}
+  .step-list>li:last-child{border-bottom:none;padding-bottom:8px}
+  .step-list>li::before{content:counter(step);position:absolute;left:0;top:4px;width:36px;height:36px;border-radius:50%;background:var(--copper);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:"Fraunces",serif}
+  .step-list>li strong.step-title{display:block;font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:19px;letter-spacing:-.01em;margin-bottom:6px}
+  .fix-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin:18px 0}
+  .fix-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .fix-card h4{font-family:"Fraunces",serif;font-weight:600;font-size:16px;margin:0 0 6px;color:var(--ink)}
+  .fix-card p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.55}
+  .fix-card code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--line-2,#f0ebe2);padding:1px 5px;border-radius:4px}
+  .badge-risk{display:inline-flex;align-items:center;gap:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#b91c1c;background:#fef2f2;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;margin-bottom:8px}
+  .doc-checklist{margin:14px 0;padding:0;list-style:none}
+  .doc-checklist li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .doc-checklist li:first-child{border-top:1px solid var(--line)}
+  .doc-checklist li::before{content:"☐";font-size:17px;flex-shrink:0;margin-top:1px;color:var(--muted)}
+  .suite{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 6px}
+  .suite a{display:block;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s,border-color .15s}
+  .suite a:hover{text-decoration:none;box-shadow:var(--shadow-lift);transform:translateY(-2px);border-color:var(--line-2)}
+  .suite .s-name{font-family:"Fraunces",serif;font-weight:600;font-size:17px;color:var(--ink);display:block;margin:0 0 4px}
+  .suite p{color:var(--muted);font-size:14px;margin:0}
+  .suite .s-tag{display:inline-block;margin-bottom:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bay);background:var(--bay-tint,#e3eeef);border:1px solid #cfe1e3;border-radius:6px;padding:2px 8px}
+  .faq-section{margin:18px 0}
+  .faq-section details{border-bottom:1px solid var(--line);padding:14px 0}
+  .faq-section details:first-child{border-top:1px solid var(--line)}
+  .faq-section summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq-section summary::-webkit-details-marker{display:none}
+  .faq-section summary::after{content:"+";font-size:20px;color:var(--muted);flex-shrink:0}
+  .faq-section details[open] summary::after{content:"\2212"}
+  .faq-section details p{margin:12px 0 4px;color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead" role="banner">
+  <div class="wrap hdr-bar">
+    <a class="brand" href="../" aria-label="ShipSafe — go to homepage">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/><g fill="var(--ink)"><rect x="29" y="2" width="6" height="14" rx="3"/><rect x="29" y="48" width="6" height="14" rx="3"/><rect x="2" y="29" width="14" height="6" rx="3"/><rect x="48" y="29" width="14" height="6" rx="3"/></g></svg>
+      <span class="wordmark">ShipSafe</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="../methodology.html">Methodology</a>
+      <a href="wcag-compliance-ai-generated-sites.html">Fix guides</a>
+      <a href="ada-demand-letter-response.html" aria-current="page">Demand letter</a>
+      <a href="../">Check my site</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="doc">
+  <div class="wrap narrow">
+    <p class="eyebrow" style="text-align:left">Incident response</p>
+    <h1>Received an ADA Demand Letter? What to Do First</h1>
+    <p class="lede">An ADA accessibility demand letter is serious — but it is not a lawsuit. It is a notice that specific accessibility failures exist on your site and a request that you remediate them. Most website owners who fix the cited issues and document their work resolve these matters without litigation. Here is exactly what to do, in order.</p>
+
+    <div class="callout alert">
+      <strong>Not legal advice.</strong> This guide is educational — it explains what these letters typically mean and what remediation involves. It is not a substitute for legal counsel. Before sending any written response to the party that sent the letter, consult a qualified attorney. What you write in a response can affect your legal position.
+    </div>
+
+    <ul class="toc" aria-label="On this page">
+      <li><a href="#understand">Understand what you received</a></li>
+      <li><a href="#preserve">Preserve evidence first</a></li>
+      <li><a href="#fixes">Make the fixes</a></li>
+      <li><a href="#document">Document remediation</a></li>
+      <li><a href="#attorney">Consult an attorney</a></li>
+      <li><a href="#ongoing">Ongoing posture</a></li>
+      <li><a href="#verify">Verify with ShipSafe</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <h2 id="understand">1. Understand what you received</h2>
+
+    <p>A small number of plaintiff firms send high volumes of ADA demand letters to website owners. Their workflow is typically automated: they run accessibility scanners across thousands of URLs, identify sites with common WCAG failures, and send templated demand letters on behalf of clients who are disabled individuals covered by ADA Title III.</p>
+
+    <p>The letter likely cites one or more of the following failures — the four that appear most frequently because automated scanners detect them reliably:</p>
+
+    <div class="fix-cards">
+      <div class="fix-card">
+        <span class="badge-risk">⚠ Most cited</span>
+        <h4>Missing or empty alt text</h4>
+        <p>Informational images that have no <code>alt</code> attribute, or decorative images with missing <code>alt=""</code>. Screen readers announce images with no alt as the filename, which is disorienting.</p>
+      </div>
+      <div class="fix-card">
+        <span class="badge-risk">⚠ Most cited</span>
+        <h4>Unlabeled form inputs</h4>
+        <p>Input fields without a programmatically associated <code>&lt;label&gt;</code>. Placeholder text alone does not count — it disappears when the user types and cannot be read back by assistive technology.</p>
+      </div>
+      <div class="fix-card">
+        <span class="badge-risk">⚠ Most cited</span>
+        <h4>Insufficient color contrast</h4>
+        <p>Text that fails the 4.5:1 contrast ratio for normal text or 3:1 for large text. Light grey text on white backgrounds is the most common failure. Automated scanners catch this reliably.</p>
+      </div>
+      <div class="fix-card">
+        <span class="badge-risk">⚠ Often cited</span>
+        <h4>Missing lang attribute</h4>
+        <p>The <code>&lt;html&gt;</code> element has no <code>lang</code> attribute. Screen readers use this to select the correct voice and pronunciation engine. One missing attribute; one-line fix.</p>
+      </div>
+      <div class="fix-card">
+        <span class="badge-risk">⚠ Often cited</span>
+        <h4>No skip navigation link</h4>
+        <p>Keyboard users must Tab through every navigation item on every page. A "Skip to main content" link as the first focusable element lets them bypass repeated navigation — required by WCAG 2.4.1.</p>
+      </div>
+    </div>
+
+    <p>Read the letter carefully to identify which specific criteria are cited. Some letters reference vague WCAG categories; others name specific success criterion numbers (e.g. "WCAG 1.1.1", "WCAG 1.4.3"). Note the URLs that were checked — typically just the homepage from automated scans, sometimes a few additional pages.</p>
+
+    <h2 id="preserve">2. Preserve the current state before touching anything</h2>
+
+    <p>Before making any changes, document the site as it exists now. This creates a timestamped "before" record that is useful if the matter escalates.</p>
+
+    <ul class="doc-checklist" aria-label="Preservation checklist">
+      <li>Take full-page screenshots of the URLs cited in the letter. Use a tool that captures the full scroll height, not just the viewport.</li>
+      <li>Run ShipSafe on each cited URL and save the results page (screenshot or PDF). This gives you an independent, timestamped audit of the current failures.</li>
+      <li>Record the date you received the letter and the date you first accessed the cited URLs.</li>
+      <li>Save the letter itself in a secure location — including the envelope if it arrived by post (some letters are sent certified mail).</li>
+    </ul>
+
+    <p>Do not delete or modify web server logs if you have them. Access logs may be relevant if questions arise about whether the plaintiff's representative actually visited the site.</p>
+
+    <h2 id="fixes">3. Fix the cited issues — in priority order</h2>
+
+    <p>Work through the specific failures the letter names first, then run the <a href="ada-compliance-checklist.html">full ADA compliance checklist</a> to catch anything the scanner didn't flag. The five fixes most commonly cited in demand letters are fast to implement:</p>
+
+    <h3>Add <code class="inline">lang="en"</code> to the <code class="inline">&lt;html&gt;</code> element</h3>
+    <p>Find the opening <code class="inline">&lt;html&gt;</code> tag in your base template and add the <code class="inline">lang</code> attribute. Use the correct BCP 47 language code for your site's primary language (<code class="inline">lang="en"</code> for English, <code class="inline">lang="es"</code> for Spanish, etc.). This is a one-line change that propagates to every page instantly if you use a template or layout component.</p>
+
+    <pre>&lt;!-- Before --&gt;
+&lt;html&gt;
+
+&lt;!-- After --&gt;
+&lt;html lang="en"&gt;</pre>
+
+    <h3>Add alt text to all informational images</h3>
+    <p>Run the free Axe DevTools browser extension on each cited page — it flags every image missing an <code class="inline">alt</code> attribute with a specific element selector. For informational images, write descriptive text that conveys the image's meaning. For purely decorative images (borders, background textures, icons that duplicate adjacent text), use an empty <code class="inline">alt=""</code> so screen readers skip them entirely.</p>
+
+    <h3>Associate labels with every form input</h3>
+    <p>Axe will also identify every unlabeled input. The fix is to wrap each input and its visible label text in a <code class="inline">&lt;label&gt;</code> element, or use <code class="inline">&lt;label for="inputId"&gt;</code> with a matching <code class="inline">id</code> on the input. Do not use placeholder text as a substitute for a label — it disappears on input and is not a programmatic association.</p>
+
+    <pre>&lt;!-- Broken --&gt;
+&lt;input type="email" placeholder="Email address"&gt;
+
+&lt;!-- Fixed --&gt;
+&lt;label for="email"&gt;Email address&lt;/label&gt;
+&lt;input type="email" id="email" placeholder="you@example.com"&gt;</pre>
+
+    <h3>Fix color contrast failures</h3>
+    <p>Use the WebAIM Contrast Checker or the colour picker in Chrome DevTools (click any text color in the Elements panel; the contrast ratio appears below the colour wheel). Any text below 4.5:1 against its background fails for normal text; below 3:1 for large text (18px+ or 14px bold+). Darken the text or lighten the background until the ratio passes. The most common failure is light grey body text on a white or near-white background.</p>
+
+    <h3>Add a skip navigation link</h3>
+    <p>Add the following as the very first element inside <code class="inline">&lt;body&gt;</code>, before the header:</p>
+    <pre>&lt;a class="skip" href="#main"&gt;Skip to main content&lt;/a&gt;</pre>
+    <p>In your CSS, style it to be off-screen by default but visible on keyboard focus:</p>
+    <pre>.skip {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 8px 16px;
+}</pre>
+    <p>Add <code class="inline">id="main"</code> to your <code class="inline">&lt;main&gt;</code> element so the link's target is correct.</p>
+
+    <div class="callout tip">
+      <strong>Run the full checklist now.</strong> Automated scanners catch the most common failures — but they miss roughly 60% of WCAG criteria, including keyboard trap issues, missing ARIA states, and focus-order problems. After fixing the cited items, work through the <a href="ada-compliance-checklist.html">ADA compliance checklist</a> to close any remaining gaps before responding or settling.
+    </div>
+
+    <h2 id="document">4. Document the remediation thoroughly</h2>
+
+    <p>Your documentation is the evidence that you responded in good faith. Good-faith remediation is the most practically important factor in how these matters resolve for small and mid-size businesses.</p>
+
+    <ul class="doc-checklist" aria-label="Documentation checklist">
+      <li>Record the specific changes you made: file names, the old code, the new code, the date of each change. A git commit log with descriptive commit messages is ideal evidence — the timestamps are verifiable.</li>
+      <li>Run ShipSafe (or Axe) on each cited URL after fixing and save the results. Capture the date. This is your "after" record.</li>
+      <li>Take new full-page screenshots of the fixed URLs. Pair them with the "before" screenshots from Step 2.</li>
+      <li>Note the date you completed each fix. If you are fixing multiple pages, document each separately.</li>
+      <li>If your site has a git history, the commits documenting your fixes are timestamped by GitHub/GitLab and difficult to dispute.</li>
+    </ul>
+
+    <h2 id="attorney">5. Consult an attorney before responding in writing</h2>
+
+    <p>Do not send a written response to the demand letter yourself — not even an acknowledgement — without first speaking to an attorney who handles ADA accessibility matters. What you put in writing can affect your legal position, including admissions about prior knowledge of the failures.</p>
+
+    <p>Attorneys who regularly handle ADA website demand letters can advise you on:</p>
+    <ul style="color:var(--muted);padding-left:22px;margin:10px 0">
+      <li>Whether the specific claims in the letter are valid under the WCAG criteria cited</li>
+      <li>The appropriate response: settlement, a remediation timeline agreement, or contesting the claims</li>
+      <li>Whether a settlement demand, if included, is within the typical range for a matter like yours</li>
+      <li>How to draft a response that demonstrates good faith without creating unnecessary admissions</li>
+    </ul>
+
+    <p>Disability rights legal organizations and ADA-focused bar associations can provide referrals. Many accessibility attorneys offer an initial consultation at low or no cost for straightforward demand letter situations.</p>
+
+    <h2 id="ongoing">6. Establish an ongoing accessibility posture</h2>
+
+    <p>A one-time fix is a starting point, not a permanent solution. Sites change — new pages, new components, third-party widgets, CMS updates — and each change can introduce new failures. After resolving the immediate matter, set up a sustainable posture:</p>
+
+    <ul class="doc-checklist" aria-label="Ongoing accessibility posture">
+      <li><strong>Add an accessibility statement page</strong> — a publicly accessible page describing your commitment to WCAG 2.1 AA, a contact email for reporting accessibility issues, and the date of your last audit. This gives users a resolution path and demonstrates good faith to regulators and courts.</li>
+      <li><strong>Schedule quarterly checks</strong> — run ShipSafe and Axe on your most-visited pages every three months, or after any significant template or component change. Document the results.</li>
+      <li><strong>Test new features before launch</strong> — add an accessibility checkpoint to your launch process: Tab-through keyboard test, Axe run on the new component, contrast check on any new color combinations.</li>
+      <li><strong>Audit the full checklist at least annually</strong> — run through the <a href="ada-compliance-checklist.html">30-item WCAG 2.1 AA checklist</a> once a year, not just the items the automated scanner flags.</li>
+    </ul>
+
+    <h2 id="verify">Verify your fixes with ShipSafe</h2>
+    <p>ShipSafe scans your page's HTML for the accessibility failures that appear most frequently in ADA demand letters: missing <code class="inline">lang</code> attribute, unlabeled form inputs, images without <code class="inline">alt</code> text, contrast failures, and no skip navigation link. Run it on each URL cited in the demand letter after making your fixes to confirm the repairs are reflected in the live markup.</p>
+
+    <p style="margin:24px 0 8px"><a class="btn primary" href="../">Check my site with ShipSafe &rarr;</a></p>
+
+    <p style="margin:8px 0 4px">More ShipSafe guides:</p>
+    <ul style="margin:4px 0 24px;padding-left:22px;color:var(--muted)">
+      <li><a href="ada-compliance-checklist.html">ADA compliance checklist for web developers — 30 testable WCAG 2.1 AA items</a></li>
+      <li><a href="wcag-compliance-ai-generated-sites.html">WCAG compliance for AI-generated sites — the 5 most-flagged gaps and how to fix them</a></li>
+      <li><a href="wcag-2-1-vs-2-2-what-changed.html">WCAG 2.1 vs 2.2: what changed and do you need to update your site?</a></li>
+    </ul>
+
+    <h2 id="faq">Frequently asked questions</h2>
+    <div class="faq-section">
+      <details open>
+        <summary>Is this ADA demand letter legitimate?</summary>
+        <p>Most ADA website demand letters are genuine legal correspondence from plaintiff firms, not phishing or scam mail. A small number of firms send high volumes of these letters, scanning websites automatically for WCAG failures. The templated appearance reflects that the firm operates at scale — it does not make the letter a scam. Take it seriously and consult an attorney before responding in writing.</p>
+      </details>
+      <details>
+        <summary>Do I have to respond to the letter?</summary>
+        <p>You are not legally required to reply to a pre-litigation demand letter — it is not a court summons or order. However, ignoring it meaningfully increases the likelihood that the firm will file a lawsuit. Demonstrating documented good-faith remediation is the most effective way to reduce that risk. Consult an attorney about whether to send a written response and what it should say.</p>
+      </details>
+      <details>
+        <summary>How long do I have to respond?</summary>
+        <p>Demand letters typically state a response deadline — often 30 to 60 days. This is not a statutory deadline, but exceeding it can be used by the plaintiff firm to justify filing a complaint. Begin remediation immediately and consult an attorney about whether to send an acknowledgement within the stated window, even if remediation is still in progress.</p>
+      </details>
+      <details>
+        <summary>Can I be targeted even if my site is small?</summary>
+        <p>Yes. Serial plaintiff firms specifically target small and mid-size businesses because they are less likely to have resources to contest claims. ADA Title III applies to websites open to the public — courts have held this across multiple circuits. A landing page, portfolio, or small SaaS product is not exempt by virtue of its size or traffic level.</p>
+      </details>
+      <details>
+        <summary>What does settlement typically cost?</summary>
+        <p>Early-stage settlements for small business websites vary widely, but frequently involve a remediation timeline agreement and a payment in the range of a few thousand dollars plus plaintiff attorney fees. Cases that proceed to litigation are significantly more expensive. Demonstrating documented remediation before any settlement discussion materially strengthens your negotiating position — courts view good-faith remediation favorably.</p>
+      </details>
+      <details>
+        <summary>Does fixing the issues mean my site is now ADA compliant?</summary>
+        <p>Fixing the specific items cited reduces your exposure for those items. It does not constitute a formal WCAG 2.1 AA conformance certification or a legal guarantee of compliance. A full audit by a qualified accessibility specialist is required for a defensible conformance claim. For most small businesses facing a demand letter, documented good-faith remediation is the most practically important step — not a formal certification.</p>
+      </details>
+      <details>
+        <summary>Should I add an accessibility statement to my site?</summary>
+        <p>Yes. An accessibility statement — a page stating your commitment to WCAG 2.1 AA, a contact email for reporting issues, and the date of your last review — is a standard part of a defensible posture. It gives users a resolution path and is viewed favorably as evidence of good faith by courts and regulators. Include the statement in your site's footer navigation.</p>
+      </details>
+    </div>
+
+    <h2 style="margin-top:48px">Also in the Copper Bay Labs suite</h2>
+    <p>Accessibility is one layer of pre-launch risk. These free tools cover the rest:</p>
+    <div class="suite">
+      <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Privacy policy</span>
+        <span class="s-name">ComplyKit</span>
+        <p>Generate a privacy policy, terms of service, and cookie notice for your site — free, in your browser, no account.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/leakcheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Secret scanning</span>
+        <span class="s-name">LeakCheck</span>
+        <p>Paste code or a config file and see exposed API keys and secrets flagged before they reach the repo.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/hardencheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Security headers</span>
+        <span class="s-name">HardenCheck</span>
+        <p>Scan your live site's HTTP headers for missing CSP, HSTS, and other security hardening flags.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/exposurecheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Post-deploy</span>
+        <span class="s-name">ExposureCheck</span>
+        <p>Scan your live URL for exposed <code class="inline">.env</code> files, <code class="inline">.git</code> directories, source maps, and bundled secrets.</p>
+      </a>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="wrap foot">
+    <div>
+      <a class="brand small" href="../" aria-label="ShipSafe — go to homepage">
+        <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+        <span class="wordmark">ShipSafe</span>
+      </a>
+      <p class="fine">Heuristic guidance, not legal advice.</p>
+    </div>
+    <nav class="foot-nav" aria-label="Footer navigation">
+      <a href="../methodology.html">Methodology</a>
+      <a href="wcag-compliance-ai-generated-sites.html">Fix AI sites</a>
+      <a href="wcag-2-1-vs-2-2-what-changed.html">WCAG 2.1 vs 2.2</a>
+      <a href="ada-compliance-checklist.html">ADA checklist</a>
+      <a href="ada-demand-letter-response.html" aria-current="page">Demand letter</a>
+      <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">ComplyKit</a>
+      <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Get it fixed <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens in new tab)</span></a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Copper Bay Labs<span class="sr-only"> (opens in new tab)</span></a> product. <span class="disclaimer">This is an automated heuristic check, not a legal accessibility audit or compliance guarantee.</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
