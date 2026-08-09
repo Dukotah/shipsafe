@@ -247,6 +247,8 @@
       <li><strong>Audit the full checklist at least annually</strong> — run through the <a href="ada-compliance-checklist.html">30-item WCAG 2.1 AA checklist</a> once a year, not just the items the automated scanner flags.</li>
     </ul>
 
+    <p>HTTP security headers are a complementary layer worth checking at the same time. Missing Content Security Policy, HSTS, and cookie flags are separate from accessibility compliance but are the kind of low-friction hygiene that both security scanners and prospective clients check for. <a href="https://labs.copperbaytech.com/hardencheck/" target="_blank" rel="noopener noreferrer">HardenCheck</a> grades your response headers for free &mdash; enter your URL or paste raw response headers.</p>
+
     <h2 id="verify">Verify your fixes with ShipSafe</h2>
     <p>ShipSafe scans your page's HTML for the accessibility failures that appear most frequently in ADA demand letters: missing <code class="inline">lang</code> attribute, unlabeled form inputs, images without <code class="inline">alt</code> text, contrast failures, and no skip navigation link. Run it on each URL cited in the demand letter after making your fixes to confirm the repairs are reflected in the live markup.</p>
 
