@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Write an Accessibility Statement for Your Website (With Template)</title>
+<meta name="description" content="An accessibility statement documents your WCAG compliance commitment, discloses known limitations, and gives users a contact method. Here's what it must include and a fill-in template you can publish today.">
+<link rel="canonical" href="https://labs.copperbaytech.com/shipsafe/guides/accessibility-statement-template.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ShipSafe">
+<meta property="og:title" content="How to Write an Accessibility Statement for Your Website (With Template)">
+<meta property="og:description" content="What an accessibility statement must include, a fill-in template, where to publish it, and how often to update it — with context on when it's legally required.">
+<meta property="og:url" content="https://labs.copperbaytech.com/shipsafe/guides/accessibility-statement-template.html">
+<meta property="og:image" content="https://labs.copperbaytech.com/shipsafe/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#faf8f4">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Write an Accessibility Statement for Your Website (With Template)","description":"A step-by-step guide to writing a WCAG accessibility statement — what it must include, a fill-in template, where to publish it, and how often to update it.","author":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"datePublished":"2026-09-15","dateModified":"2026-09-15","mainEntityOfPage":"https://labs.copperbaytech.com/shipsafe/guides/accessibility-statement-template.html","mainEntity":{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is an accessibility statement legally required?","acceptedAnswer":{"@type":"Answer","text":"It depends on where you operate and what kind of site you run. EU public-sector bodies must publish an accessibility statement under the Web Accessibility Directive (Directive 2016/2102); private companies in the EU are not yet legally required to publish one, though the European Accessibility Act (EAA), which applies to many private-sector digital products from 2025, implies documented compliance. In the US, no statute currently requires a statement for private websites, but courts in ADA Title III cases consistently weigh the presence of a statement as evidence of good-faith remediation — making it a meaningful risk-reduction step even where it is not mandatory."}},{"@type":"Question","name":"What does 'partially compliant' mean in an accessibility statement?","acceptedAnswer":{"@type":"Answer","text":"'Partially compliant' means your site meets most WCAG 2.1 Level AA criteria but has known failures that you have documented and are working to address. This is the honest status for almost every real-world site — the key is to name the specific failures (e.g., 'some older PDFs lack reading-order tags; we are replacing them by Q4 2026') rather than leaving the status vague. 'Fully compliant' should only be used if you have a recent third-party audit confirming it. 'Not compliant' should be used if you have not yet assessed the site or have significant known failures without a remediation plan."}},{"@type":"Question","name":"Should I list known accessibility failures in my accessibility statement?","acceptedAnswer":{"@type":"Answer","text":"Yes. Disclosing known failures in your accessibility statement is more protective than omitting them. Courts and regulators view honest disclosure combined with a remediation timeline as evidence of good faith. Omitting known failures while claiming 'partially compliant' status creates a credibility problem if a demand letter or complaint cites those exact failures. Name the failure, name the criterion it violates (e.g., WCAG 1.4.3 Color Contrast, Level AA), and include a target resolution date."}},{"@type":"Question","name":"Where should I publish my accessibility statement?","acceptedAnswer":{"@type":"Answer","text":"Publish it on a dedicated URL — /accessibility or /accessibility-statement — and link to it from the footer of every page. The footer link is important: it signals to users (and to plaintiff attorneys doing preliminary reviews) that the statement exists and is findable. A statement buried in a dropdown menu or not linked from the footer has significantly lower visibility and legal weight than one linked directly in the footer nav."}},{"@type":"Question","name":"How often should I update my accessibility statement?","acceptedAnswer":{"@type":"Answer","text":"Update it whenever you complete a remediation pass (to move known failures off the list or update their target dates), whenever a major site change introduces new content or functionality, and at minimum once per year. The 'last reviewed' date in the statement is the most-scrutinized field in enforcement actions — an out-of-date statement (more than 12 months) suggests the commitment is performative rather than ongoing."}},{"@type":"Question","name":"Do I need a lawyer to write an accessibility statement?","acceptedAnswer":{"@type":"Answer","text":"No. An accessibility statement is a technical disclosure document, not a legal instrument. You write it yourself, using accurate information about your compliance status and known failures. Where a lawyer helps is if you receive a demand letter or formal complaint — the statement then becomes evidence in a legal context, and a lawyer can advise on how to characterize your compliance posture. Writing an accurate, honest statement yourself is more defensible than a legally polished statement that overstates your compliance."}},{"@type":"Question","name":"What should I do when someone contacts me through my accessibility statement?","acceptedAnswer":{"@type":"Answer","text":"Respond within a reasonable timeframe — best practice is 48–72 hours. Acknowledge the reported issue, log it, reproduce it if possible, and fix it or add it to your documented known-failures list with a target date. The important thing is to close the loop: reply to the person who reported the issue, tell them what you found, and when it will be addressed. An ignored accessibility contact form is almost as bad as not having one — responsiveness is part of what 'good faith' means in practice."}}]}}
+</script>
+<link rel="stylesheet" href="../styles.css?v=7">
+<style>
+  .doc .lede{font-size:clamp(17px,2.3vw,20px);color:var(--muted)}
+  .doc h2{scroll-margin-top:80px}
+  .doc h3{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:19px;margin:22px 0 6px;letter-spacing:-.01em}
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 6px;padding:0;list-style:none}
+  .toc a{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+  .toc a:hover{border-color:var(--bay);color:var(--ink);text-decoration:none}
+  .callout{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:14px 18px;margin:22px 0;font-size:15.5px;color:#5a3e10}
+  .callout.tip{background:var(--pass-bg);border-left-color:var(--pass);color:#1b4d30}
+  .doc code.inline{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--line-2,#f0ebe2);padding:2px 6px;border-radius:5px}
+  pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;margin:12px 0}
+  pre code{background:none;padding:0;font-size:inherit}
+  .element-block{border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:18px 0;background:var(--surface)}
+  .element-block .e-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .element-label{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bay);background:var(--bay-tint,#e3eeef);border:1px solid #cfe1e3;border-radius:6px;padding:2px 8px;flex-shrink:0}
+  .required-label{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+  .element-block h3{margin:0;font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:19px;letter-spacing:-.01em}
+  .mistake-list{margin:14px 0;padding:0;list-style:none}
+  .mistake-list li{padding:9px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+  .mistake-list li:first-child{border-top:1px solid var(--line)}
+  .mistake-list li strong{color:var(--ink)}
+  .template-box{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:24px 26px;margin:22px 0;font-size:14.5px;line-height:1.7}
+  .template-box h3{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:20px;margin:0 0 6px;letter-spacing:-.01em}
+  .template-box p{margin:0 0 12px;color:var(--ink)}
+  .template-box .fill{background:var(--warn-bg);border-radius:5px;padding:1px 6px;color:#5a3e10;font-style:italic}
+  .template-box ul{margin:8px 0 12px;padding-left:22px;color:var(--muted)}
+  .template-box li{margin-bottom:6px}
+  .template-box .t-label{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:18px 0 4px;display:block}
+  .suite{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 6px}
+  .suite a{display:block;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s,border-color .15s}
+  .suite a:hover{text-decoration:none;box-shadow:var(--shadow-lift);transform:translateY(-2px);border-color:var(--line-2)}
+  .suite .s-name{font-family:"Fraunces",serif;font-weight:600;font-size:17px;color:var(--ink);display:block;margin:0 0 4px}
+  .suite p{color:var(--muted);font-size:14px;margin:0}
+  .suite .s-tag{display:inline-block;margin-bottom:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bay);background:var(--bay-tint,#e3eeef);border:1px solid #cfe1e3;border-radius:6px;padding:2px 8px}
+  .faq-section{margin:18px 0}
+  .faq-section details{border-bottom:1px solid var(--line);padding:14px 0}
+  .faq-section details:first-child{border-top:1px solid var(--line)}
+  .faq-section summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq-section summary::-webkit-details-marker{display:none}
+  .faq-section summary::after{content:"+";font-size:20px;color:var(--muted);flex-shrink:0}
+  .faq-section details[open] summary::after{content:"\2212"}
+  .faq-section details p{margin:12px 0 4px;color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead" role="banner">
+  <div class="wrap hdr-bar">
+    <a class="brand" href="../" aria-label="ShipSafe &mdash; go to homepage">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/><g fill="var(--ink)"><rect x="29" y="2" width="6" height="14" rx="3"/><rect x="29" y="48" width="6" height="14" rx="3"/><rect x="2" y="29" width="14" height="6" rx="3"/><rect x="48" y="29" width="14" height="6" rx="3"/></g></svg>
+      <span class="wordmark">ShipSafe</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="wcag-compliance-ai-generated-sites.html">Fix guides</a>
+      <a href="ada-demand-letter-response.html">Demand letter</a>
+      <a href="accessibility-overlay-ada-lawsuit.html">Overlays</a>
+      <a href="wcag-remediation-checklist-existing-website.html">Remediation</a>
+      <a href="accessibility-statement-template.html" aria-current="page">Statement</a>
+      <a href="../">Check my site</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="doc">
+  <div class="wrap narrow">
+    <p class="eyebrow" style="text-align:left">Accessibility statement</p>
+    <h1>How to Write an Accessibility Statement for Your Website</h1>
+    <p class="lede">An accessibility statement is a public page that documents your WCAG compliance commitment, discloses known limitations, and gives users a way to report issues. Courts weigh it as evidence of good faith. Enterprise procurement teams increasingly require one. This guide covers exactly what it must include &mdash; and gives you a fill-in template you can publish today.</p>
+
+    <div class="callout">
+      <strong>Not legal advice.</strong> This guide explains best practices for accessibility statements based on WCAG guidance and common legal context &mdash; it is educational, not legal counsel. If you are responding to a demand letter or formal complaint, consult a qualified attorney.
+    </div>
+
+    <ul class="toc" aria-label="On this page">
+      <li><a href="#what-it-is">What it is</a></li>
+      <li><a href="#when-required">When it&rsquo;s required</a></li>
+      <li><a href="#what-to-include">7 required elements</a></li>
+      <li><a href="#template">Fill-in template</a></li>
+      <li><a href="#where-to-publish">Where to publish</a></li>
+      <li><a href="#how-often">How often to update</a></li>
+      <li><a href="#mistakes">Common mistakes</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <h2 id="what-it-is">What an accessibility statement is</h2>
+
+    <p>An accessibility statement is a dedicated page on your site that explains three things: (1) what accessibility standard you are targeting, (2) how well you currently meet it, and (3) how users can report accessibility problems they encounter.</p>
+
+    <p>It is not a marketing claim (&ldquo;we care about accessibility&rdquo;) or a legal disclaimer. It is a technical disclosure document &mdash; one that should accurately reflect the real state of your site, including failures you know about.</p>
+
+    <p>The difference in legal weight between a vague accessibility pledge and a specific, honest statement with a &ldquo;last reviewed&rdquo; date is significant. The pledge is boilerplate; the statement is evidence.</p>
+
+    <h2 id="when-required">When an accessibility statement is legally required</h2>
+
+    <p><strong>Required under EU law &mdash; public sector:</strong> The EU Web Accessibility Directive (2016/2102) requires public-sector bodies in EU member states to publish an accessibility statement in a specific format, monitor compliance, and report to the European Commission. The statement must follow the W3C model and include a formal complaints mechanism.</p>
+
+    <p><strong>Implied by the European Accessibility Act (EAA) &mdash; private sector:</strong> The EAA, which covers many private-sector digital products and services, took effect in EU member states in 2025. While it does not mandate an accessibility statement by name, demonstrating WCAG compliance and having a documented feedback mechanism are practical requirements for compliance.</p>
+
+    <p><strong>Not currently mandated for US private websites &mdash; but legally valuable:</strong> No US statute requires a specific accessibility statement for private commercial websites. However, in ADA Title III litigation, courts regularly weigh the presence of an accessibility statement as evidence of good-faith compliance effort. Its absence can strengthen a plaintiff&rsquo;s argument that accessibility is not taken seriously. For any US business that wants to reduce ADA demand letter exposure, publishing an accurate statement is a low-cost, meaningful step.</p>
+
+    <h2 id="what-to-include">7 elements every accessibility statement must include</h2>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 1</span>
+        <span class="required-label">Required</span>
+        <h3>Compliance status</h3>
+      </div>
+      <p>State your current compliance level honestly using one of three standard terms:</p>
+      <ul style="margin:10px 0 6px;padding-left:22px">
+        <li><strong>Fully compliant</strong> &mdash; use only if a recent third-party audit confirms full WCAG 2.1 Level AA conformance. Almost no real-world site qualifies.</li>
+        <li><strong>Partially compliant</strong> &mdash; the honest status for most sites. You meet most criteria but have documented known failures.</li>
+        <li><strong>Not compliant</strong> &mdash; use if you have not yet audited the site or have significant known failures without a remediation plan.</li>
+      </ul>
+      <p>&ldquo;Partially compliant&rdquo; with a list of specific known failures and target dates is more protective than &ldquo;fully compliant&rdquo; that a plaintiff can immediately disprove.</p>
+    </div>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 2</span>
+        <span class="required-label">Required</span>
+        <h3>The standard and conformance level</h3>
+      </div>
+      <p>Name the specific standard you are targeting: <strong>Web Content Accessibility Guidelines (WCAG) 2.1, Level AA</strong>. This is the internationally recognized standard referenced in ADA settlements, CVAA rulemakings, and the EU Web Accessibility Directive. Do not write &ldquo;we follow best practices&rdquo; &mdash; this is vague and unverifiable. Name the standard.</p>
+      <p>If your site or app is covered by WCAG 2.2 criteria (newer interactivity, form design), you may reference 2.2 instead &mdash; but 2.1 Level AA is the current legal baseline in most jurisdictions.</p>
+    </div>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 3</span>
+        <span class="required-label">Required</span>
+        <h3>Known failures and non-compliant content</h3>
+      </div>
+      <p>List every known accessibility failure you have identified. For each, include:</p>
+      <ul style="margin:10px 0 6px;padding-left:22px">
+        <li>What the failure is (e.g., &ldquo;some older PDF documents lack text reading order and alternative text&rdquo;)</li>
+        <li>The WCAG criterion it violates (e.g., WCAG 1.1.1 Non-text Content, Level A)</li>
+        <li>A target resolution date, or an explanation if it is out of your control (e.g., third-party embedded content)</li>
+      </ul>
+      <p>Listing known failures honestly is more protective than omitting them. If a user or plaintiff encounters a failure you already knew about but did not disclose, it suggests you were concealing it. If you disclosed it and named a remediation date, you are demonstrating an ongoing process.</p>
+    </div>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 4</span>
+        <span class="required-label">Required</span>
+        <h3>Feedback and contact mechanism</h3>
+      </div>
+      <p>Give users a specific way to report accessibility problems. A dedicated email address is sufficient. A contact form also works, but the form itself must be accessible (labeled inputs, keyboard operable, no CAPTCHA that blocks screen readers).</p>
+      <p>Write a specific commitment: &ldquo;We aim to respond within 48 hours.&rdquo; A response commitment that you actually honour is meaningful. A generic &ldquo;contact us&rdquo; link to a general inquiry page is not.</p>
+      <div class="callout tip">
+        <strong>Important:</strong> Because the <code class="inline">contact@copperbaytech.com</code> inbox delivery has not yet been confirmed, do not wire a new live mailto: contact for accessibility feedback until you have verified that address receives email. Use your confirmed inbox, or a simple contact form, for the feedback mechanism.
+      </div>
+    </div>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 5</span>
+        <span class="required-label">Required</span>
+        <h3>Date of last review</h3>
+      </div>
+      <p>Include a specific date: &ldquo;This statement was last reviewed on [Month Year].&rdquo; A statement with no date, or one that says &ldquo;we regularly review our accessibility,&rdquo; is functionally useless as evidence &mdash; there is no way to verify the claim. A specific date that is within the past 12 months signals ongoing attention; a date more than 12 months old signals neglect.</p>
+    </div>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 6</span>
+        <span class="required-label">Recommended</span>
+        <h3>Assistive technology compatibility notes</h3>
+      </div>
+      <p>If you have tested your site with specific assistive technologies &mdash; VoiceOver on macOS, NVDA on Windows, TalkBack on Android &mdash; note which combinations work as expected and which have limitations. This is not required by WCAG itself but is part of the EU Web Accessibility Directive model statement and is useful for screen reader users deciding whether your site will work for them before they invest time in it.</p>
+    </div>
+
+    <div class="element-block">
+      <div class="e-head">
+        <span class="element-label">Element 7</span>
+        <span class="required-label">EU public sector: Required</span>
+        <h3>Formal enforcement or complaints procedure</h3>
+      </div>
+      <p>EU public-sector bodies must include a link to the relevant national enforcement body or ombudsman, where users can escalate complaints if they are not satisfied with your response. For EU public sector sites, this is mandatory under the Web Accessibility Directive. For private-sector sites, it is not required &mdash; but noting the relevant national body (e.g., the UK&rsquo;s Equality and Human Rights Commission, or the relevant DPA) is a sign of transparency.</p>
+    </div>
+
+    <h2 id="template">Fill-in template</h2>
+
+    <p>Copy this template, fill in the highlighted fields, and publish it at <code class="inline">/accessibility</code> or <code class="inline">/accessibility-statement</code>. Update it every time you complete a remediation pass or make major site changes.</p>
+
+    <div class="template-box">
+      <h3>Accessibility Statement</h3>
+
+      <span class="t-label">Compliance status</span>
+      <p><span class="fill">[Your site name]</span> is committed to ensuring digital accessibility for people with disabilities. We continually improve the user experience for everyone and apply the relevant accessibility standards.</p>
+
+      <p>This website aims to conform to <strong>Web Content Accessibility Guidelines (WCAG) 2.1, Level AA</strong>. We are <span class="fill">[fully compliant / partially compliant / not yet compliant]</span> with these guidelines.</p>
+
+      <span class="t-label">Known limitations</span>
+      <p><em>Include this section only if you have known failures. If none are known, omit it or state "We are not aware of any current accessibility barriers."</em></p>
+      <ul>
+        <li><span class="fill">[Describe the failure, e.g., "Some older PDF documents lack structured reading order."]</span> This affects WCAG <span class="fill">[criterion number and name, e.g., 1.1.1 Non-text Content, Level A]</span>. We are working to address this by <span class="fill">[target date or quarter]</span>.</li>
+      </ul>
+
+      <span class="t-label">Assistive technology compatibility</span>
+      <p>We have tested this site with the following assistive technologies:</p>
+      <ul>
+        <li>VoiceOver with Safari on macOS</li>
+        <li>NVDA with Chrome on Windows</li>
+        <li><span class="fill">[Add or remove as appropriate]</span></li>
+      </ul>
+
+      <span class="t-label">Feedback and contact</span>
+      <p>We welcome feedback on the accessibility of <span class="fill">[your site name]</span>. If you encounter an accessibility barrier, or if you need content in an alternative format, please contact us:</p>
+      <ul>
+        <li>Email: <span class="fill">[your confirmed accessibility email address]</span></li>
+        <li>We aim to respond within <span class="fill">[48 hours / 3 business days]</span>.</li>
+      </ul>
+
+      <span class="t-label">Date of last review</span>
+      <p>This accessibility statement was last reviewed on <span class="fill">[Month Year]</span>.</p>
+    </div>
+
+    <div class="callout tip">
+      <strong>Tip &mdash; keep it specific:</strong> The most defensible statements name the exact WCAG criteria for each known failure and include real target dates. Courts and procurement reviewers notice the difference between a statement that names &ldquo;WCAG 1.4.3 Contrast (Minimum), Level AA — target fix: Q4 2026&rdquo; and one that vaguely says &ldquo;we are working on improving contrast.&rdquo;
+    </div>
+
+    <h2 id="where-to-publish">Where to publish your accessibility statement</h2>
+
+    <h3>URL</h3>
+    <p>Use a clean, predictable path: <code class="inline">/accessibility</code> or <code class="inline">/accessibility-statement</code>. Plaintiff attorneys and procurement reviewers look for it at these paths first. A statement buried at <code class="inline">/legal/docs/access-policy-v3.html</code> is as bad as no statement for discoverability purposes.</p>
+
+    <h3>Footer link</h3>
+    <p>Add a direct link in your site footer on every page. The footer is where users and automated scanners look for policy links. It should appear as &ldquo;Accessibility&rdquo; or &ldquo;Accessibility statement&rdquo; &mdash; not as a sub-item in a &ldquo;Legal&rdquo; dropdown.</p>
+
+    <h3>Navigation</h3>
+    <p>For sites where accessibility is important to the user audience (anything with a significant disabled user base, or EU public-sector sites), add a header nav link as well. For typical SaaS or content sites, a footer link is sufficient.</p>
+
+    <h2 id="how-often">How often to update your accessibility statement</h2>
+
+    <p>Update the statement&rsquo;s &ldquo;last reviewed&rdquo; date and content:</p>
+    <ul style="margin:10px 0 24px;padding-left:22px;color:var(--muted)">
+      <li><strong>After each remediation pass</strong> &mdash; remove resolved failures from the &ldquo;known limitations&rdquo; list, or update their status.</li>
+      <li><strong>After any major site change</strong> &mdash; a new checkout flow, a new CMS, a new navigation structure, a new file upload component. New functionality introduces new potential failures; the statement should reflect whether you have tested the new additions.</li>
+      <li><strong>At minimum, once per year</strong> &mdash; even if nothing changed, run a fresh ShipSafe scan, update the last-reviewed date, and confirm the known limitations list is still accurate.</li>
+    </ul>
+
+    <p>A statement with a last-reviewed date more than 12 months ago signals that accessibility is not an ongoing practice. A statement updated regularly, even if it still lists known failures, signals that it is.</p>
+
+    <h2 id="mistakes">Common mistakes</h2>
+
+    <ul class="mistake-list" aria-label="Common accessibility statement mistakes">
+      <li><strong>Claiming &ldquo;fully compliant&rdquo; without an audit</strong> &mdash; this is the most common and most damaging mistake. A plaintiff can check your site with Axe in 30 seconds. If the first page has missing alt text, your &ldquo;fully compliant&rdquo; claim is a credibility liability, not a shield.</li>
+      <li><strong>No &ldquo;last reviewed&rdquo; date</strong> &mdash; a statement with no date cannot demonstrate ongoing effort. Add a specific month and year, and update it on every review.</li>
+      <li><strong>No feedback mechanism</strong> &mdash; a statement without a way to report issues is a compliance document that actively ignores users. The feedback channel is the point of contact for good-faith remediation.</li>
+      <li><strong>Not linking it from the footer</strong> &mdash; a statement that exists but is not findable from every page is not serving its purpose. Footer link is the minimum; test that it works on mobile too.</li>
+      <li><strong>Vague known-failures list</strong> &mdash; &ldquo;some parts of our site may not be fully accessible&rdquo; is legally meaningless. Name the specific failure, the WCAG criterion, and the target date.</li>
+      <li><strong>Never updating it</strong> &mdash; a statement from three years ago that still lists the same &ldquo;known failures&rdquo; with no resolution dates suggests those failures are permanent, not in progress.</li>
+    </ul>
+
+    <h2 id="scan" style="margin-top:36px">Check your site before publishing your statement</h2>
+
+    <p>Before you write your compliance status and your known-failures list, run a current scan so your statement reflects the actual state of the site. ShipSafe surfaces the four failures most commonly cited in ADA demand letters &mdash; missing language attribute, unlabeled inputs, missing alt text, color contrast &mdash; in a single scan. Your statement should be informed by a scan you ran this month, not by memory.</p>
+
+    <p style="margin:24px 0 8px"><a class="btn primary" href="../">Scan my site with ShipSafe first &rarr;</a></p>
+
+    <p style="margin:8px 0 4px">Related ShipSafe guides:</p>
+    <ul style="margin:4px 0 24px;padding-left:22px;color:var(--muted)">
+      <li><a href="wcag-remediation-checklist-existing-website.html">WCAG remediation checklist &mdash; fix failures in priority order</a></li>
+      <li><a href="ada-compliance-checklist.html">ADA compliance checklist &mdash; 30 testable WCAG 2.1 AA items</a></li>
+      <li><a href="ada-demand-letter-response.html">Received an ADA demand letter? Step-by-step response guide</a></li>
+      <li><a href="accessibility-overlay-ada-lawsuit.html">Do accessibility overlays prevent ADA lawsuits?</a></li>
+      <li><a href="wcag-compliance-ai-generated-sites.html">WCAG compliance for AI-generated sites &mdash; the 5 most-flagged gaps</a></li>
+    </ul>
+
+    <h2 id="faq">Frequently asked questions</h2>
+    <div class="faq-section">
+      <details open>
+        <summary>Is an accessibility statement legally required?</summary>
+        <p>It depends on where you operate. EU public-sector bodies must publish one under the Web Accessibility Directive. Private companies in the EU are not yet explicitly required to publish one, though the European Accessibility Act (EAA) implies documented compliance for many private-sector digital products. In the US, no statute requires an accessibility statement for private websites, but courts in ADA Title III cases treat its presence as evidence of good-faith effort &mdash; making it a meaningful risk-reduction step even where not mandatory.</p>
+      </details>
+      <details>
+        <summary>What does &ldquo;partially compliant&rdquo; mean?</summary>
+        <p>&ldquo;Partially compliant&rdquo; means your site meets most WCAG 2.1 Level AA criteria but has documented known failures you are working to address. This is the accurate status for almost every real-world site. The key is to name the specific failures rather than leaving the status vague &mdash; &ldquo;some older PDFs lack reading-order tags; we are replacing them by Q4 2026&rdquo; is far more credible than just saying &ldquo;partially compliant.&rdquo; Reserve &ldquo;fully compliant&rdquo; for sites with a recent third-party audit confirming it.</p>
+      </details>
+      <details>
+        <summary>Should I list known failures in my statement?</summary>
+        <p>Yes. Disclosing known failures is more protective than omitting them. Courts and regulators view honest disclosure combined with a remediation timeline as evidence of good faith. Omitting known failures while claiming &ldquo;partially compliant&rdquo; status creates a credibility problem if a demand letter or complaint later cites those exact failures. Name the failure, name the WCAG criterion, and include a target resolution date.</p>
+      </details>
+      <details>
+        <summary>Where should I publish my accessibility statement?</summary>
+        <p>Publish it on a dedicated URL &mdash; <code class="inline">/accessibility</code> or <code class="inline">/accessibility-statement</code> &mdash; and link to it from the footer of every page. The footer link is critical: it signals to users and plaintiff attorneys that the statement exists and is findable. A statement that requires searching to find has significantly lower legal weight than one directly linked in the footer nav.</p>
+      </details>
+      <details>
+        <summary>How often should I update my accessibility statement?</summary>
+        <p>Update it after each remediation pass, after major site changes that introduce new content or functionality, and at minimum once per year. The &ldquo;last reviewed&rdquo; date is the most-scrutinised field in enforcement reviews &mdash; a statement more than 12 months old suggests the commitment is performative rather than ongoing. Update the date even on annual reviews where nothing else changed, to confirm you checked and confirmed the information is still accurate.</p>
+      </details>
+      <details>
+        <summary>Do I need a lawyer to write an accessibility statement?</summary>
+        <p>No. An accessibility statement is a technical disclosure document, not a legal instrument. Write it yourself using accurate information about your compliance status and known failures. A lawyer&rsquo;s input is valuable if you receive a demand letter or formal complaint, at which point the statement becomes evidence &mdash; but accurate honesty in your initial statement is more defensible than polished legal language overstating your compliance.</p>
+      </details>
+      <details>
+        <summary>What should I do when someone contacts me through my accessibility statement?</summary>
+        <p>Respond within the timeframe you committed to in the statement (48&ndash;72 hours is best practice). Acknowledge the reported issue, log it, reproduce it if possible, and either fix it or add it to your documented known-failures list with a target date. Close the loop by replying to the person who reported the issue with what you found and when it will be addressed. An ignored accessibility contact form is almost as damaging as not having one &mdash; responsiveness is part of what good faith means in practice.</p>
+      </details>
+    </div>
+
+    <h2 style="margin-top:48px">Also in the Copper Bay Labs suite</h2>
+    <p>Accessibility is one layer of pre-launch compliance. These free tools cover the rest:</p>
+    <div class="suite">
+      <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Privacy policy</span>
+        <span class="s-name">ComplyKit</span>
+        <p>Generate a privacy policy, terms of service, and cookie notice for your site &mdash; free, in your browser, no account.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/hardencheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Security headers</span>
+        <span class="s-name">HardenCheck</span>
+        <p>Scan your live site&rsquo;s HTTP headers for missing CSP, HSTS, and other security hardening flags.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/leakcheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Secret scanning</span>
+        <span class="s-name">LeakCheck</span>
+        <p>Paste code or a config file and see exposed API keys and secrets flagged before they reach the repo.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/exposurecheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Post-deploy</span>
+        <span class="s-name">ExposureCheck</span>
+        <p>Scan your live URL for exposed <code class="inline">.env</code> files, <code class="inline">.git</code> directories, source maps, and bundled secrets.</p>
+      </a>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="wrap foot">
+    <div>
+      <a class="brand small" href="../" aria-label="ShipSafe &mdash; go to homepage">
+        <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+        <span class="wordmark">ShipSafe</span>
+      </a>
+      <p class="fine">Heuristic guidance, not legal advice.</p>
+    </div>
+    <nav class="foot-nav" aria-label="Footer navigation">
+      <a href="../methodology.html">Methodology</a>
+      <a href="wcag-compliance-ai-generated-sites.html">Fix AI sites</a>
+      <a href="wcag-2-1-vs-2-2-what-changed.html">WCAG 2.1 vs 2.2</a>
+      <a href="ada-compliance-checklist.html">ADA checklist</a>
+      <a href="ada-demand-letter-response.html">Demand letter</a>
+      <a href="accessibility-overlay-ada-lawsuit.html">Overlays &amp; lawsuits</a>
+      <a href="wcag-remediation-checklist-existing-website.html">Fix checklist</a>
+      <a href="accessibility-statement-template.html" aria-current="page">Accessibility statement</a>
+      <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">ComplyKit</a>
+      <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Get it fixed <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens in new tab)</span></a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Copper Bay Labs<span class="sr-only"> (opens in new tab)</span></a> product. <span class="disclaimer">This is an automated heuristic check, not a legal accessibility audit or compliance guarantee.</span></p>
+  </div>
+</footer>
+</body>
+</html>
