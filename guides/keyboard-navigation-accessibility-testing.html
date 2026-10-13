@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Test Keyboard Navigation Accessibility — WCAG 2.1.1 Guide</title>
+<meta name="description" content="Step-by-step keyboard accessibility testing: the full protocol (Tab, Shift+Tab, Enter, Space, Escape), what to check for, common failures in modals and dropdowns, fix patterns, and tools. WCAG 2.1.1, 2.4.3, 2.4.7.">
+<link rel="canonical" href="https://labs.copperbaytech.com/shipsafe/guides/keyboard-navigation-accessibility-testing.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ShipSafe">
+<meta property="og:title" content="How to Test Keyboard Navigation Accessibility — WCAG 2.1.1 Guide">
+<meta property="og:description" content="Tab through your site before it becomes an ADA lawsuit. The keyboard testing protocol every developer should know: which keys, what to look for, and how to fix the most common failures.">
+<meta property="og:url" content="https://labs.copperbaytech.com/shipsafe/guides/keyboard-navigation-accessibility-testing.html">
+<meta property="og:image" content="https://labs.copperbaytech.com/shipsafe/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#faf8f4">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Test Keyboard Navigation Accessibility — WCAG 2.1.1 Guide","description":"A step-by-step keyboard accessibility testing protocol covering WCAG 2.1.1, 2.4.3, and 2.4.7: which keys to use, what to check for, common failures in modals and custom interactive components, fix patterns, and automated tools.","author":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"datePublished":"2026-10-13","dateModified":"2026-10-13","mainEntityOfPage":"https://labs.copperbaytech.com/shipsafe/guides/keyboard-navigation-accessibility-testing.html","mainEntity":{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which WCAG success criteria cover keyboard navigation?","acceptedAnswer":{"@type":"Answer","text":"Four WCAG success criteria are directly relevant. 2.1.1 Keyboard (Level A): all functionality must be operable through a keyboard without requiring specific timing. 2.1.2 No Keyboard Trap (Level A): if keyboard focus can move into a component, it can move out using standard keys (Tab or Escape). 2.4.3 Focus Order (Level A): if a page can be navigated sequentially, the focus order must preserve meaning and operability. 2.4.7 Focus Visible (Level AA): any keyboard-operable interface must have a visible focus indicator. WCAG 2.2 added 2.4.11 Focus Appearance (Level AA), requiring a minimum size and contrast ratio for focus indicators."}},{"@type":"Question","name":"What keys do I use during keyboard accessibility testing?","acceptedAnswer":{"@type":"Answer","text":"Tab moves focus to the next interactive element; Shift+Tab moves it backward. Enter activates links and buttons and submits forms. Space activates buttons and checkboxes (and scrolls the page when focus is not on an interactive element). Arrow keys navigate within components — menu items, radio groups, tab panels, sliders, listboxes. Escape closes modals, dialogs, and popovers, and cancels in-progress operations. Home and End jump to the first and last item in some components. Testing keyboard accessibility means using only these keys — no mouse — from the top of the page to the bottom."}},{"@type":"Question","name":"What does 'keyboard trap' mean in WCAG?","acceptedAnswer":{"@type":"Answer","text":"A keyboard trap (WCAG 2.1.2) occurs when a user navigates into a component with the keyboard but cannot exit using standard keys. The classic example is an embedded map, PDF viewer, or iframe where Tab enters an area the user cannot leave. Modal dialogs intentionally trap focus (so the user can't Tab behind the modal) but must allow Escape as an exit and return focus to the trigger on close. The distinction is between an intentional, documented trap inside a dialog versus an unintentional one with no way out."}},{"@type":"Question","name":"What is tabindex and when should I use it?","acceptedAnswer":{"@type":"Answer","text":"tabindex controls whether an element receives keyboard focus and in what order. tabindex=\"0\" adds an element to the natural tab order — use it on custom interactive elements like div-based buttons. tabindex=\"-1\" makes an element programmatically focusable (via element.focus()) without adding it to the tab order — use it on dialog containers and error summaries that should receive focus programmatically. Positive tabindex values (tabindex=\"1\", tabindex=\"2\") create a custom tab order that almost always breaks WCAG 2.4.3 Focus Order by taking precedence over the natural DOM order. Use only 0 and -1."}},{"@type":"Question","name":"How do I make a modal dialog keyboard accessible?","acceptedAnswer":{"@type":"Answer","text":"A keyboard-accessible modal requires four things: (1) Move focus into the modal when it opens — to the first focusable element or the dialog container itself. (2) Trap focus inside while the modal is open — Tab should cycle only through elements within the modal. (3) Close on Escape. (4) Return focus to the trigger element when the modal closes. Add role=\"dialog\" and aria-modal=\"true\" to the container, and aria-labelledby pointing to the dialog heading. The native HTML dialog element handles most of this automatically in modern browsers."}},{"@type":"Question","name":"Why does my custom dropdown work with a mouse but fail keyboard testing?","acceptedAnswer":{"@type":"Answer","text":"Custom dropdowns built from div and span elements receive mouse click events but are not in the tab order and don't respond to keyboard events by default. For keyboard access, the trigger needs tabindex=\"0\" (or should be a button), appropriate ARIA role, keyboard event listeners for Enter and Space to toggle open, Arrow keys to navigate between options, Escape to close, and focus management to return to the trigger on close. The native HTML select element is keyboard-accessible across all browsers without any extra code — use it for simple selection controls."}},{"@type":"Question","name":"Does ShipSafe check keyboard accessibility?","acceptedAnswer":{"@type":"Answer","text":"ShipSafe scans the page's HTML source for patterns commonly associated with keyboard accessibility failures: missing skip links, interactive-looking elements that lack keyboard support in their markup, and inline styles that suppress focus outlines. It is a fast heuristic check, not a full manual test. For comprehensive keyboard testing, combine ShipSafe with a manual keyboard walkthrough (Tab through the full page without a mouse) and the free Axe DevTools browser extension, which can detect failures in the rendered DOM including JavaScript-rendered components."}}]}}
+</script>
+<link rel="stylesheet" href="../styles.css?v=7">
+<style>
+  .doc .lede{font-size:clamp(17px,2.3vw,20px);color:var(--muted)}
+  .doc h2{scroll-margin-top:80px}
+  .doc h3{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:19px;margin:22px 0 6px;letter-spacing:-.01em}
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 6px;padding:0;list-style:none}
+  .toc a{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+  .toc a:hover{border-color:var(--bay);color:var(--ink);text-decoration:none}
+  .callout{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:14px 18px;margin:22px 0;font-size:15.5px;color:#5a3e10}
+  .callout.tip{background:var(--pass-bg);border-left-color:var(--pass);color:#1b4d30}
+  .callout.danger{background:#fef2f2;border-left-color:#ef4444;color:#7f1d1d}
+  .doc code.inline{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--line-2,#f0ebe2);padding:2px 6px;border-radius:5px}
+  pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;margin:12px 0}
+  pre code{background:none;padding:0;font-size:inherit}
+  .wcag-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+  .wcag-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .wcag-card .badge{display:inline-flex;align-items:center;gap:5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-bottom:10px;border:1px solid}
+  .badge-a{color:#7c2d12;background:#ffedd5;border-color:#fdba74}
+  .badge-aa{color:#0c4a6e;background:#e0f2fe;border-color:#7dd3fc}
+  .wcag-card h4{font-family:"Fraunces",serif;font-weight:600;font-size:16px;margin:0 0 6px;color:var(--ink)}
+  .wcag-card p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.55}
+  .key-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px}
+  .key-table th{text-align:left;padding:10px 14px;border-bottom:2px solid var(--line);font-family:"Fraunces",serif;font-weight:600;color:var(--ink);font-size:15px}
+  .key-table td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted);line-height:1.5}
+  .key-table tr:last-child td{border-bottom:none}
+  .key-table td:first-child{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ink);font-weight:600;white-space:nowrap;font-size:13px}
+  .check-list{margin:18px 0;padding:0;list-style:none;counter-reset:chk}
+  .check-list>li{position:relative;padding:4px 0 20px 46px;counter-increment:chk;border-bottom:1px solid var(--line)}
+  .check-list>li:last-child{border-bottom:none;padding-bottom:4px}
+  .check-list>li::before{content:counter(chk);position:absolute;left:0;top:4px;width:32px;height:32px;border-radius:50%;background:var(--copper);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:"Fraunces",serif}
+  .check-list>li strong.rule-title{display:block;font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:17px;letter-spacing:-.01em;margin-bottom:4px}
+  .failure-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0}
+  .failure-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .failure-card .sev{display:inline-flex;align-items:center;gap:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-bottom:8px;border:1px solid}
+  .sev-crit{color:#7f1d1d;background:#fef2f2;border-color:#fca5a5}
+  .sev-high{color:#78350f;background:#fffbeb;border-color:#fcd34d}
+  .failure-card h4{font-family:"Fraunces",serif;font-weight:600;font-size:16px;margin:0 0 6px;color:var(--ink)}
+  .failure-card p,.failure-card li{font-size:14.5px;color:var(--muted);line-height:1.55}
+  .failure-card ul{margin:4px 0 0;padding-left:18px}
+  .suite{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 6px}
+  .suite a{display:block;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s,border-color .15s}
+  .suite a:hover{text-decoration:none;box-shadow:var(--shadow-lift);transform:translateY(-2px);border-color:var(--line-2)}
+  .suite .s-name{font-family:"Fraunces",serif;font-weight:600;font-size:17px;color:var(--ink);display:block;margin:0 0 4px}
+  .suite p{color:var(--muted);font-size:14px;margin:0}
+  .suite .s-tag{display:inline-block;margin-bottom:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bay);background:var(--bay-tint,#e3eeef);border:1px solid #cfe1e3;border-radius:6px;padding:2px 8px}
+  .faq-section{margin:18px 0}
+  .faq-section details{border-bottom:1px solid var(--line);padding:14px 0}
+  .faq-section details:first-child{border-top:1px solid var(--line)}
+  .faq-section summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq-section summary::-webkit-details-marker{display:none}
+  .faq-section summary::after{content:"+";font-size:20px;color:var(--muted);flex-shrink:0}
+  .faq-section details[open] summary::after{content:"\2212"}
+  .faq-section details p,.faq-section details li{margin:12px 0 4px;color:var(--muted)}
+  .faq-section details ul{padding-left:20px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead" role="banner">
+  <div class="wrap hdr-bar">
+    <a class="brand" href="../" aria-label="ShipSafe — go to homepage">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/><g fill="var(--ink)"><rect x="29" y="2" width="6" height="14" rx="3"/><rect x="29" y="48" width="6" height="14" rx="3"/><rect x="2" y="29" width="14" height="6" rx="3"/><rect x="48" y="29" width="14" height="6" rx="3"/></g></svg>
+      <span class="wordmark">ShipSafe</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="../methodology.html">Methodology</a>
+      <a href="wcag-compliance-ai-generated-sites.html">Fix guides</a>
+      <a href="ada-demand-letter-response.html">Demand letter</a>
+      <a href="accessibility-overlay-ada-lawsuit.html">Overlays</a>
+      <a href="wcag-remediation-checklist-existing-website.html">Remediation</a>
+      <a href="accessibility-statement-template.html">Statement</a>
+      <a href="fix-missing-alt-text-wcag-1-1-1.html">Alt text</a>
+      <a href="keyboard-navigation-accessibility-testing.html" aria-current="page">Keyboard nav</a>
+      <a href="../">Check my site</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="doc">
+  <div class="wrap narrow">
+    <p class="eyebrow" style="text-align:left">Remediation guide</p>
+    <h1>How to Test Keyboard Navigation Accessibility</h1>
+    <p class="lede">Keyboard inaccessibility is cited in a significant portion of ADA website demand letters — second only to missing alt text. A user who navigates by keyboard (due to motor disability, a broken mouse, or personal preference) must be able to reach and operate every link, button, form field, and interactive widget on your site using only the keyboard. This guide walks through the complete testing protocol and the fixes for the most common failures.</p>
+
+    <ul class="toc" aria-label="On this page">
+      <li><a href="#wcag-criteria">WCAG criteria</a></li>
+      <li><a href="#protocol">Testing protocol</a></li>
+      <li><a href="#checklist">What to check</a></li>
+      <li><a href="#failures">Common failures</a></li>
+      <li><a href="#fixes">Fix patterns</a></li>
+      <li><a href="#tools">Automated tools</a></li>
+      <li><a href="#verify">Verify with ShipSafe</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <h2 id="wcag-criteria">The WCAG success criteria you're testing against</h2>
+    <p>Four success criteria from WCAG 2.1 and 2.2 cover keyboard access. All four appear in ADA demand letters and automated audit reports.</p>
+
+    <div class="wcag-grid">
+      <div class="wcag-card">
+        <span class="badge badge-a">Level A</span>
+        <h4>2.1.1 Keyboard</h4>
+        <p>All functionality must be operable through a keyboard interface without requiring specific timing for individual keystrokes. Any action a mouse user can perform — clicking a button, navigating a menu, filling a form, playing media — must also be achievable with the keyboard alone.</p>
+      </div>
+      <div class="wcag-card">
+        <span class="badge badge-a">Level A</span>
+        <h4>2.1.2 No Keyboard Trap</h4>
+        <p>If keyboard focus can be moved into a component, it must be movable out of that component using standard keys (Tab, Shift+Tab, or Escape). Embedded maps, third-party widgets, and poorly implemented modal dialogs are common sources of keyboard traps.</p>
+      </div>
+      <div class="wcag-card">
+        <span class="badge badge-a">Level A</span>
+        <h4>2.4.3 Focus Order</h4>
+        <p>If a web page can be navigated sequentially, the focus order must preserve meaning and operability. Components that appear visually at the top of the page but are last in the DOM — due to absolute positioning, float layout, or flexbox reordering — often produce illogical, disorienting focus sequences.</p>
+      </div>
+      <div class="wcag-card">
+        <span class="badge badge-aa">Level AA</span>
+        <h4>2.4.7 Focus Visible</h4>
+        <p>Any keyboard-operable user interface component must have a visible focus indicator. Many sites suppress the browser's default focus outline with <code>outline: none</code> or <code>outline: 0</code> in their CSS reset and replace it with nothing, making the focused element invisible to keyboard users.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>WCAG 2.2 raised the bar for focus indicators.</strong> Success Criterion 2.4.11 Focus Appearance (Level AA) requires the focus indicator area to be at least as large as a 2&nbsp;CSS&nbsp;px perimeter around the component, with a contrast ratio of at least 3:1 between the focused and unfocused states. Browser defaults often fail this criterion. If your site must meet WCAG 2.2 AA, test focus indicators specifically against 2.4.11.
+    </div>
+
+    <h2 id="protocol">The keyboard testing protocol</h2>
+    <p>Set down your mouse. Navigate the full page from top to bottom using only these keys. Each key tests a different aspect of keyboard accessibility.</p>
+
+    <table class="key-table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>What it does</th>
+          <th>What you&#8217;re checking</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tab</td>
+          <td>Moves focus to the next interactive element in DOM order</td>
+          <td>Focus is visible on the element; every interactive element (links, buttons, inputs, selects) receives focus; non-interactive elements (paragraphs, divs) are skipped</td>
+        </tr>
+        <tr>
+          <td>Shift+Tab</td>
+          <td>Moves focus backward through the tab sequence</td>
+          <td>Backward navigation is possible; focus order is consistent in both directions</td>
+        </tr>
+        <tr>
+          <td>Enter</td>
+          <td>Activates links (navigates); activates buttons; submits forms</td>
+          <td>Links navigate to their destination; buttons fire; form submits — same as a mouse click</td>
+        </tr>
+        <tr>
+          <td>Space</td>
+          <td>Activates buttons and checkboxes; scrolls the page when focus is not on an element</td>
+          <td>Buttons respond to Space (not just Enter); checkboxes toggle; radio buttons do NOT toggle with Space — they use arrow keys</td>
+        </tr>
+        <tr>
+          <td>Arrow keys</td>
+          <td>Navigate within components that contain multiple focusable items</td>
+          <td>Radio groups, custom dropdown menus, tab panels, sliders, comboboxes, tree views, data grids — all navigate with arrow keys while Tab moves focus to and from the whole component</td>
+        </tr>
+        <tr>
+          <td>Escape</td>
+          <td>Closes dialogs, menus, popovers, and tooltips; cancels in-progress operations</td>
+          <td>Every open overlay closes; focus returns to the element that triggered it</td>
+        </tr>
+        <tr>
+          <td>Home / End</td>
+          <td>Jumps to the first / last item in certain components</td>
+          <td>Sliders, listboxes, and grid cells typically support Home/End per the ARIA design patterns</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <strong>Start every test with a hard reload (Ctrl+Shift+R) and no scroll position.</strong> Then press Tab once — the skip navigation link should be the first thing that receives focus. If you can&#8217;t see what&#8217;s focused at any point, that&#8217;s a failure.
+    </div>
+
+    <h2 id="checklist">5 things to check as you tab through the page</h2>
+
+    <ol class="check-list">
+      <li>
+        <strong class="rule-title">Is the focused element always visible on screen?</strong>
+        <p>As you Tab, can you see which element has focus at all times? The browser default outline — a blue ring on Chrome, a dashed border on Firefox — is your baseline. If an element receives focus but you can&#8217;t see a visible indicator, the site has likely applied <code class="inline">outline: none</code> or <code class="inline">:focus { outline: 0 }</code> in CSS without providing a replacement. This is a WCAG 2.4.7 failure. Also check for scroll: does the page auto-scroll to keep the focused element in view, or can focus move off-screen while the user can&#8217;t tell where they are?</p>
+      </li>
+      <li>
+        <strong class="rule-title">Is the focus order logical?</strong>
+        <p>Focus should move through the page in a sequence that matches the visual reading order — generally left-to-right, top-to-bottom. Layouts built with CSS absolute positioning, negative margins, flexbox <code class="inline">order</code>, or CSS Grid placement can produce a DOM order that diverges from visual order. Tab through the page and notice: does focus jump unexpectedly between header, sidebar, and footer? Does a modal or off-canvas navigation that appears visually above everything else receive focus after the main content? These are WCAG 2.4.3 Focus Order failures.</p>
+      </li>
+      <li>
+        <strong class="rule-title">Can you reach every interactive element?</strong>
+        <p>Every link, button, form field, select, checkbox, radio button, and custom interactive widget must appear in the tab sequence. Interactive elements that are only accessible via mouse hover (like certain dropdown menus that open on <code class="inline">:hover</code> with no keyboard alternative) are WCAG 2.1.1 failures. Also watch for elements that <em>are</em> in the tab order but shouldn&#8217;t be — non-interactive elements like decorative images or hidden elements that received <code class="inline">tabindex="0"</code> accidentally.</p>
+      </li>
+      <li>
+        <strong class="rule-title">Can you escape every component you enter?</strong>
+        <p>Tab into each section of the page and check that you can Tab back out. Focus on a date picker, embedded map, or rich-text editor — can you leave using Tab or Escape? Modal dialogs intentionally contain focus while open, but must respond to Escape. Carousels, video players, and third-party widgets are common traps. If you press Escape and the dialog closes, verify that focus returns to the button that opened it — not to the top of the page or to <code class="inline">document.body</code>.</p>
+      </li>
+      <li>
+        <strong class="rule-title">Does every custom interactive element behave like its native counterpart?</strong>
+        <p>A custom button built from a <code class="inline">&lt;div&gt;</code> should respond to both Enter and Space, just like a native <code class="inline">&lt;button&gt;</code>. A custom dropdown should respond to Arrow keys for options, Enter to select, and Escape to close — matching the behavior of a native <code class="inline">&lt;select&gt;</code>. A custom checkbox should toggle with Space. Test each non-native interactive component against the <a href="https://www.w3.org/WAI/ARIA/apg/patterns/" target="_blank" rel="noopener noreferrer">ARIA Authoring Practices Guide keyboard interaction patterns<span class="sr-only"> (opens in new tab)</span></a> for the corresponding widget type.</p>
+      </li>
+    </ol>
+
+    <h2 id="failures">Common keyboard accessibility failures</h2>
+
+    <div class="failure-grid">
+      <div class="failure-card">
+        <span class="sev sev-crit">Critical</span>
+        <h4>Focus outline removed, no replacement</h4>
+        <p>The most widespread keyboard failure: <code>* { outline: none }</code> or <code>:focus { outline: 0 }</code> in a CSS reset, with nothing to replace the browser&#8217;s default ring. Every interactive element on the page becomes invisible to keyboard users.</p>
+        <ul>
+          <li>Search your CSS for <code>outline:&nbsp;none</code> and <code>outline:&nbsp;0</code></li>
+          <li>Replace with a custom focus style or use <code>:focus-visible</code> to show focus only for keyboard (not mouse) interaction</li>
+        </ul>
+      </div>
+      <div class="failure-card">
+        <span class="sev sev-crit">Critical</span>
+        <h4>Modal dialog without focus management</h4>
+        <p>Modal opens but focus stays on the trigger behind it; or focus enters the modal but Tab escapes to the document; or modal closes but focus is lost (sent to <code>body</code>). All three patterns appear in ADA demand letters.</p>
+        <ul>
+          <li>Move focus to modal on open (first focusable element or dialog container)</li>
+          <li>Trap Tab within modal while open</li>
+          <li>Return focus to trigger on close</li>
+          <li>Respond to Escape to close</li>
+        </ul>
+      </div>
+      <div class="failure-card">
+        <span class="sev sev-crit">Critical</span>
+        <h4>Missing skip navigation link</h4>
+        <p>Without a skip link, keyboard users must Tab through every item in your navigation header on every page before reaching the main content. A page with 20 nav items means 20 Tab presses to reach the first link in the article.</p>
+        <ul>
+          <li>Add <code>&lt;a class="skip" href="#main"&gt;Skip to main content&lt;/a&gt;</code> as the first element in <code>&lt;body&gt;</code></li>
+          <li>Show it only on keyboard focus (visually hidden by default, visible on <code>:focus</code>)</li>
+        </ul>
+      </div>
+      <div class="failure-card">
+        <span class="sev sev-high">High</span>
+        <h4>Custom interactive elements not in tab order</h4>
+        <p>Buttons and links built from <code>div</code>, <code>span</code>, or <code>a href="#"</code> without <code>tabindex</code> or correct ARIA roles. Mouse users see a clickable element; keyboard users never reach it.</p>
+        <ul>
+          <li>Use native <code>&lt;button&gt;</code> and <code>&lt;a href&gt;</code> wherever possible</li>
+          <li>If you must use a non-native element, add <code>tabindex="0"</code>, the appropriate <code>role</code>, and keyboard event listeners</li>
+        </ul>
+      </div>
+      <div class="failure-card">
+        <span class="sev sev-high">High</span>
+        <h4>Hover-only menus</h4>
+        <p>Navigation dropdowns that open on CSS <code>:hover</code> or a mouseover JS event without a keyboard equivalent. The items inside the dropdown are unreachable via Tab if the dropdown never opens.</p>
+        <ul>
+          <li>Open the dropdown on Enter/Space on the parent button, not just hover</li>
+          <li>Navigate items with Arrow keys; close with Escape</li>
+          <li>Or use the disclosure navigation pattern (each level is a separate page or expandable region)</li>
+        </ul>
+      </div>
+      <div class="failure-card">
+        <span class="sev sev-high">High</span>
+        <h4>Positive tabindex values</h4>
+        <p><code>tabindex=&quot;1&quot;</code>, <code>tabindex=&quot;2&quot;</code>, etc. create a custom tab order that overrides the DOM order. Elements with positive tabindex receive focus before <em>all</em> <code>tabindex=&quot;0&quot;</code> elements, typically producing a disorienting, illogical sequence — a WCAG 2.4.3 violation.</p>
+        <ul>
+          <li>Remove all positive tabindex values</li>
+          <li>Fix DOM order to match visual order instead of manipulating tabindex</li>
+          <li>Use only <code>tabindex=&quot;0&quot;</code> and <code>tabindex=&quot;-1&quot;</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="fixes">Fix patterns</h2>
+
+    <h3>Fix 1: Restore focus indicators with :focus-visible</h3>
+    <p>Replace blanket <code class="inline">outline: none</code> with a targeted rule that removes outlines only for mouse/touch interaction while keeping them for keyboard navigation:</p>
+<pre><code>/* Remove default outline for mouse/touch, keep it for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Custom keyboard focus style */
+:focus-visible {
+  outline: 3px solid #0070f3;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* High contrast support */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid ButtonText;
+  }
+}</code></pre>
+    <p><code class="inline">:focus-visible</code> is supported in all modern browsers. For older browser support, use the <a href="https://github.com/WICG/focus-visible" target="_blank" rel="noopener noreferrer">focus-visible polyfill<span class="sr-only"> (opens in new tab)</span></a>.</p>
+
+    <h3>Fix 2: Skip navigation link (visually hidden until focused)</h3>
+<pre><code>&lt;!-- First element inside &lt;body&gt; --&gt;
+&lt;a class="skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
+
+&lt;!-- Target --&gt;
+&lt;main id="main"&gt;...&lt;/main&gt;</code></pre>
+<pre><code>/* CSS: visually hidden, shown on focus */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 9999;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 8px;
+}</code></pre>
+
+    <h3>Fix 3: Keyboard-accessible modal dialog</h3>
+<pre><code>class FocusTrap {
+  constructor(element) {
+    this.el = element;
+    this.focusable = 'a[href], button:not([disabled]), input, select,
+      textarea, [tabindex="0"]';
+  }
+
+  getFocusable() {
+    return [...this.el.querySelectorAll(this.focusable)]
+      .filter(el => !el.closest('[hidden]'));
+  }
+
+  open(trigger) {
+    this.trigger = trigger;
+    this.el.removeAttribute('hidden');
+    const items = this.getFocusable();
+    if (items.length) items[0].focus();
+    else this.el.focus(); // dialog needs tabindex="-1"
+    this.el.addEventListener('keydown', this._handleKey);
+  }
+
+  close() {
+    this.el.setAttribute('hidden', '');
+    this.el.removeEventListener('keydown', this._handleKey);
+    this.trigger?.focus();
+  }
+
+  _handleKey = (e) => {
+    if (e.key === 'Escape') { this.close(); return; }
+    if (e.key !== 'Tab') return;
+    const items = this.getFocusable();
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
+}
+
+// Usage
+const trap = new FocusTrap(document.getElementById('my-dialog'));
+document.getElementById('open-btn').addEventListener('click', e =&gt; trap.open(e.currentTarget));
+document.getElementById('close-btn').addEventListener('click', () =&gt; trap.close());</code></pre>
+
+    <div class="callout tip">
+      <strong>The native HTML <code>&lt;dialog&gt;</code> element handles much of this automatically</strong> in modern browsers: it traps focus, responds to Escape, and moves focus to the first focusable child on open. Use it when you can — polyfill with the <a href="https://github.com/GoogleChrome/dialog-polyfill" target="_blank" rel="noopener noreferrer">dialog polyfill<span class="sr-only"> (opens in new tab)</span></a> for older browsers.
+    </div>
+
+    <h3>Fix 4: Custom button from a non-native element</h3>
+<pre><code>&lt;!-- Avoid this: div receives click but not keyboard events --&gt;
+&lt;div class="btn" onclick="doAction()"&gt;Save&lt;/div&gt;
+
+&lt;!-- Use a native button instead (preferred) --&gt;
+&lt;button type="button" class="btn" onclick="doAction()"&gt;Save&lt;/button&gt;
+
+&lt;!-- If you must keep the div (legacy code), add ARIA + keyboard --&gt;
+&lt;div class="btn"
+     role="button"
+     tabindex="0"
+     onclick="doAction()"
+     onkeydown="if(e.key==='Enter'||e.key===' '){e.preventDefault();doAction()}"&gt;
+  Save
+&lt;/div&gt;</code></pre>
+    <p>Native <code class="inline">&lt;button&gt;</code> handles Tab, Enter, Space, and disabled state for free. The <code class="inline">role="button"</code> workaround requires you to reimplement all of that manually and is easy to get wrong.</p>
+
+    <h2 id="tools">Automated tools</h2>
+
+    <h3>Manual keyboard-only test (highest coverage)</h3>
+    <p>Unplug or disable your mouse. Tab through every page of your site. There is no substitute — automated tools can detect many structural issues, but only a manual keyboard walkthrough catches focus order problems, hover-only interactions, and the subjective experience of keyboard navigation.</p>
+
+    <h3>Axe DevTools browser extension (free)</h3>
+    <p>The Axe DevTools extension for Chrome and Firefox identifies keyboard accessibility violations in the rendered DOM, including: interactive elements that don&#8217;t have accessible names, <code class="inline">tabindex</code> values greater than 0, ARIA roles missing required keyboard behavior, and elements with <code class="inline">aria-hidden="true"</code> that are still focusable. Install it, open DevTools, and run the scan. Results include the specific failing element and a direct link to the WCAG criterion.</p>
+
+    <h3>ShipSafe (quick HTML source check)</h3>
+    <p>Paste your URL into ShipSafe for a fast scan of the page&#8217;s HTML source. ShipSafe checks for the presence of a skip navigation link, common focus-suppression patterns in inline styles, and interactive-element patterns that suggest keyboard inaccessibility. It&#8217;s fastest as a first pass before a full manual test.</p>
+
+    <h3>axe-core CLI (for CI integration)</h3>
+<pre><code>npx axe-core-cli &lt;url&gt; --tags wcag2a,wcag2aa --reporter json &gt; axe-report.json</code></pre>
+    <p>This produces a JSON report of all WCAG A and AA violations detected in the rendered page. Run it in CI before every deploy to catch regressions. Note: automated tools detect roughly 30&ndash;40% of real accessibility issues; the remaining failures require manual testing.</p>
+
+    <h2 id="verify">Verify with ShipSafe</h2>
+    <p>After applying fixes, run ShipSafe on your URL. Look for the <strong>Accessibility</strong> section in the results — a green check next to keyboard-related items confirms the structural indicators ShipSafe looks for are in place. For a complete picture, run the Axe DevTools scan from within the browser after the page fully renders, then do a final manual keyboard walkthrough from the top of the page to the bottom with no mouse.</p>
+    <p>Keyboard accessibility is process, not a one-time fix: new features, third-party widgets, and framework upgrades can reintroduce failures. Make keyboard testing part of your pre-deploy checklist.</p>
+
+    <p style="margin:24px 0 8px"><a class="btn primary" href="../">Check my site with ShipSafe &rarr;</a></p>
+
+    <p style="margin:8px 0 4px">Related ShipSafe guides:</p>
+    <ul style="margin:4px 0 24px;padding-left:22px;color:var(--muted)">
+      <li><a href="ada-compliance-checklist.html">ADA compliance checklist for developers — 30 testable WCAG 2.1 AA items</a></li>
+      <li><a href="wcag-remediation-checklist-existing-website.html">WCAG remediation checklist for existing websites</a></li>
+      <li><a href="fix-missing-alt-text-wcag-1-1-1.html">How to fix missing alt text on images — WCAG 1.1.1</a></li>
+      <li><a href="ada-demand-letter-response.html">Received an ADA demand letter? What to do first</a></li>
+    </ul>
+
+    <h2 id="faq">Frequently asked questions</h2>
+    <div class="faq-section">
+      <details open>
+        <summary>Which WCAG success criteria cover keyboard navigation?</summary>
+        <p>Four success criteria are directly relevant:</p>
+        <ul>
+          <li><strong>2.1.1 Keyboard (Level A):</strong> all functionality must be operable through a keyboard interface without requiring specific timing.</li>
+          <li><strong>2.1.2 No Keyboard Trap (Level A):</strong> if focus can move into a component, it can move out using standard keys (Tab or Escape).</li>
+          <li><strong>2.4.3 Focus Order (Level A):</strong> if a page can be navigated sequentially, the focus order must preserve meaning and operability.</li>
+          <li><strong>2.4.7 Focus Visible (Level AA):</strong> keyboard-operable interfaces must have a visible focus indicator.</li>
+        </ul>
+        <p>WCAG 2.2 added <strong>2.4.11 Focus Appearance (Level AA)</strong>, requiring a minimum size and contrast ratio for focus indicators.</p>
+      </details>
+      <details>
+        <summary>What keys do I use during keyboard accessibility testing?</summary>
+        <p>Tab (forward), Shift+Tab (backward), Enter (links and buttons), Space (buttons and checkboxes), Arrow keys (within components: radio groups, menus, sliders), Escape (close dialogs and menus), and Home/End (first/last in some components). Test with only these keys — no mouse — from the top of the page to the bottom.</p>
+      </details>
+      <details>
+        <summary>What does &ldquo;keyboard trap&rdquo; mean in WCAG?</summary>
+        <p>A keyboard trap (WCAG 2.1.2) occurs when focus enters a component but cannot exit using standard keyboard keys. Embedded maps and iframes are common unintentional traps. Modal dialogs intentionally trap focus while open — that is correct behavior — but must allow Escape as an exit and must return focus to the trigger element on close. The failure is when there is no documented way out of a component.</p>
+      </details>
+      <details>
+        <summary>What is tabindex and when should I use it?</summary>
+        <p><code class="inline">tabindex="0"</code> adds a non-interactive element to the natural tab order — use it on custom interactive widgets. <code class="inline">tabindex="-1"</code> makes an element programmatically focusable via <code class="inline">element.focus()</code> without adding it to the tab sequence — use it on dialog containers and error summaries. Positive tabindex values (<code class="inline">tabindex="1"</code>, etc.) override natural DOM order and almost always create WCAG 2.4.3 Focus Order violations. Never use positive values.</p>
+      </details>
+      <details>
+        <summary>How do I make a modal dialog keyboard accessible?</summary>
+        <p>Four requirements: (1) Move focus into the modal on open — to the first focusable element or the dialog container. (2) Trap Tab inside while the modal is open. (3) Close on Escape. (4) Return focus to the trigger on close. Add <code class="inline">role="dialog"</code> and <code class="inline">aria-modal="true"</code> to the container, and <code class="inline">aria-labelledby</code> pointing to the heading. The native HTML <code class="inline">&lt;dialog&gt;</code> element handles this in modern browsers with less custom code.</p>
+      </details>
+      <details>
+        <summary>Why does my custom dropdown work with a mouse but fail keyboard testing?</summary>
+        <p>Custom dropdowns built from <code class="inline">&lt;div&gt;</code> or <code class="inline">&lt;span&gt;</code> receive mouse click events but aren&#8217;t in the tab order and don&#8217;t handle keyboard events by default. For keyboard access, the trigger needs <code class="inline">tabindex="0"</code> (or should be a <code class="inline">&lt;button&gt;</code>), appropriate ARIA role, and keyboard event listeners for Enter, Space, Arrow keys, and Escape. The native <code class="inline">&lt;select&gt;</code> element is fully keyboard-accessible without additional code — use it for simple selection controls.</p>
+      </details>
+      <details>
+        <summary>Does ShipSafe check keyboard accessibility?</summary>
+        <p>ShipSafe scans the page&#8217;s HTML source for structural patterns associated with keyboard failures: missing skip links, inline styles that suppress focus indicators, and custom interactive elements that may lack keyboard support in their markup. For comprehensive testing, combine ShipSafe&#8217;s quick source scan with a manual keyboard walkthrough (no mouse, Tab through the full page) and the Axe DevTools browser extension for rendered-DOM analysis.</p>
+      </details>
+    </div>
+
+    <h2 style="margin-top:48px">Also in the Copper Bay Labs suite</h2>
+    <p>Keyboard accessibility is one dimension of ADA and WCAG risk. These free tools cover the rest:</p>
+    <div class="suite">
+      <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Privacy policy</span>
+        <span class="s-name">ComplyKit</span>
+        <p>Generate a privacy policy, terms of service, and cookie notice for your site &mdash; free, in your browser, no account.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/hardencheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Security headers</span>
+        <span class="s-name">HardenCheck</span>
+        <p>Scan your live site&#8217;s HTTP headers for missing CSP, HSTS, and other security hardening flags.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/leakcheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Secret scanning</span>
+        <span class="s-name">LeakCheck</span>
+        <p>Paste code or a config file and see exposed API keys and secrets flagged before they reach the repo.</p>
+      </a>
+      <a href="https://labs.copperbaytech.com/exposurecheck/" target="_blank" rel="noopener noreferrer">
+        <span class="s-tag">Post-deploy</span>
+        <span class="s-name">ExposureCheck</span>
+        <p>Scan your live URL for exposed <code class="inline">.env</code> files, <code class="inline">.git</code> directories, source maps, and bundled secrets.</p>
+      </a>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="wrap foot">
+    <div>
+      <a class="brand small" href="../" aria-label="ShipSafe &mdash; go to homepage">
+        <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--copper)" stroke-width="9"/><circle cx="32" cy="32" r="13" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+        <span class="wordmark">ShipSafe</span>
+      </a>
+      <p class="fine">Heuristic guidance, not legal advice.</p>
+    </div>
+    <nav class="foot-nav" aria-label="Footer navigation">
+      <a href="../methodology.html">Methodology</a>
+      <a href="wcag-compliance-ai-generated-sites.html">Fix AI sites</a>
+      <a href="wcag-2-1-vs-2-2-what-changed.html">WCAG 2.1 vs 2.2</a>
+      <a href="ada-compliance-checklist.html">ADA checklist</a>
+      <a href="ada-demand-letter-response.html">Demand letter</a>
+      <a href="accessibility-overlay-ada-lawsuit.html">Overlays &amp; lawsuits</a>
+      <a href="wcag-remediation-checklist-existing-website.html">Fix checklist</a>
+      <a href="accessibility-statement-template.html">Accessibility statement</a>
+      <a href="fix-missing-alt-text-wcag-1-1-1.html">Fix alt text</a>
+      <a href="keyboard-navigation-accessibility-testing.html" aria-current="page">Keyboard nav testing</a>
+      <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">ComplyKit</a>
+      <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Get it fixed <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens in new tab)</span></a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="madeby">A <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Copper Bay Labs<span class="sr-only"> (opens in new tab)</span></a> product. <span class="disclaimer">This is an automated heuristic check, not a legal accessibility audit or compliance guarantee.</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
