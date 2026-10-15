@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Fix Missing Alt Text on Images — WCAG 1.1.1 Fix Guide","description":"Missing alt text on images is WCAG Success Criterion 1.1.1 — the most-cited accessibility failure in ADA website lawsuits. This guide covers how to write correct alt text for informative, decorative, and functional images; how to audit your site; and how to fix it in WordPress, Webflow, Squarespace, Next.js, React, and AI-generated sites.","author":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"datePublished":"2026-10-03","dateModified":"2026-10-03","mainEntityOfPage":"https://labs.copperbaytech.com/shipsafe/guides/fix-missing-alt-text-wcag-1-1-1.html","mainEntity":{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is WCAG 1.1.1 and what does it require?","acceptedAnswer":{"@type":"Answer","text":"Success Criterion 1.1.1 (Non-text Content) is a Level A requirement in WCAG 2.1 and 2.2. It requires that every non-text element — including images, icons, and image-only buttons — has a text alternative serving the equivalent purpose. For HTML images this means every img element must have an alt attribute. For informative images, alt text describes what the image communicates. For decorative images, alt=”” tells screen readers to skip the element. For functional images (links or buttons), alt text describes the destination or action."}},{"@type":"Question","name":"What is the difference between a missing alt attribute and alt=“”?","acceptedAnswer":{"@type":"Answer","text":"A missing alt attribute and an empty alt attribute produce completely different behavior. When the alt attribute is absent, most screen readers announce the image's file name — often a meaningless hash or path like hero-2024-final-v3.jpg. An empty alt attribute (alt=\"\") explicitly instructs the screen reader to ignore the element entirely. For decorative images, alt=\"\" is the correct approach. For informative images, both a missing alt and an empty alt are WCAG 1.1.1 failures."}},{"@type":"Question","name":"When should I use an empty alt attribute (alt=\"\")?" ,"acceptedAnswer":{"@type":"Answer","text":"Use alt=\"\" on purely decorative images — images that add visual styling but don't communicate information beyond what the surrounding text already provides. Common examples: decorative dividers, abstract background textures, and stock-photo images used as generic visual filler when adjacent text provides all the context. The test: would a user who couldn't see this image miss any information or functionality? If no, the image is decorative and gets alt=\"\"."}},{"@type":"Question","name":"How do I write good alt text for an informative image?","acceptedAnswer":{"@type":"Answer","text":"Describe what the image communicates in context — not just what it looks like. Don't start with ‘image of’ or ‘photo of’; screen readers already announce ‘image’ before reading the alt text. Calibrate length to information density: a team headshot might need just name and role; a product screenshot might need 15–25 words. For data charts, supplement with a visible data table or paragraph below the image. The benchmark: if a sighted user could read your alt text and understand what the image contributes, the alt text is correct."}},{"@type":"Question","name":"Does alt text affect SEO?","acceptedAnswer":{"@type":"Answer","text":"Yes, meaningfully. Search engines use alt text to understand image content and index images in Google Image Search — one of the only direct image signals available to crawlers. Well-written alt text for product screenshots, diagrams, and infographics can drive image search traffic. Google’s crawlers function similarly to screen readers: both need text to understand visual content. The same alt text improvements that reduce ADA lawsuit risk also improve search visibility."}},{"@type":"Question","name":"Do SVG images need alt text?","acceptedAnswer":{"@type":"Answer","text":"It depends on how the SVG is embedded. An SVG loaded via an img tag requires an alt attribute like any other image. An inline SVG (the svg element directly in HTML) should have role=\"img\" and a title child element as the text alternative, with aria-labelledby pointing to the title’s id. Decorative inline SVGs — icon glyphs next to text labels — should have aria-hidden=\"true\" and focusable=\"false\" to remove them from the accessibility tree entirely."}},{"@type":"Question","name":"Does ShipSafe check for missing alt text?","acceptedAnswer":{"@type":"Answer","text":"Yes. ShipSafe scans the page's HTML for img elements missing an alt attribute, and for images with placeholder alt values like ‘image’, ‘photo’, or a file path string. It flags these as WCAG 1.1.1 violations — the same criterion automated ADA demand-letter scanners check. After adding alt text, run ShipSafe on the same URL to confirm the findings are resolved."}}]}}
+{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Fix Missing Alt Text on Images — WCAG 1.1.1 Fix Guide","description":"Missing alt text on images is WCAG Success Criterion 1.1.1 — the most-cited accessibility failure in ADA website lawsuits. This guide covers how to write correct alt text for informative, decorative, and functional images; how to audit your site; and how to fix it in WordPress, Webflow, Squarespace, Next.js, React, and AI-generated sites.","author":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"publisher":{"@type":"Organization","name":"Copper Bay Labs","url":"https://copperbaytech.com"},"datePublished":"2026-10-03","dateModified":"2026-10-03","mainEntityOfPage":"https://labs.copperbaytech.com/shipsafe/guides/fix-missing-alt-text-wcag-1-1-1.html","mainEntity":{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is WCAG 1.1.1 and what does it require?","acceptedAnswer":{"@type":"Answer","text":"Success Criterion 1.1.1 (Non-text Content) is a Level A requirement in WCAG 2.1 and 2.2. It requires that every non-text element — including images, icons, and image-only buttons — has a text alternative serving the equivalent purpose. For HTML images this means every img element must have an alt attribute. For informative images, alt text describes what the image communicates. For decorative images, alt=\"\" tells screen readers to skip the element. For functional images (links or buttons), alt text describes the destination or action."}},{"@type":"Question","name":"What is the difference between a missing alt attribute and alt=\"\"?","acceptedAnswer":{"@type":"Answer","text":"A missing alt attribute and an empty alt attribute produce completely different behavior. When the alt attribute is absent, most screen readers announce the image's file name — often a meaningless hash or path like hero-2024-final-v3.jpg. An empty alt attribute (alt=\"\") explicitly instructs the screen reader to ignore the element entirely. For decorative images, alt=\"\" is the correct approach. For informative images, both a missing alt and an empty alt are WCAG 1.1.1 failures."}},{"@type":"Question","name":"When should I use an empty alt attribute (alt=\"\")?","acceptedAnswer":{"@type":"Answer","text":"Use alt=\"\" on purely decorative images — images that add visual styling but don't communicate information beyond what the surrounding text already provides. Common examples: decorative dividers, abstract background textures, and stock-photo images used as generic visual filler when adjacent text provides all the context. The test: would a user who couldn't see this image miss any information or functionality? If no, the image is decorative and gets alt=\"\"."}},{"@type":"Question","name":"How do I write good alt text for an informative image?","acceptedAnswer":{"@type":"Answer","text":"Describe what the image communicates in context — not just what it looks like. Don't start with 'image of' or 'photo of'; screen readers already announce 'image' before reading the alt text. Calibrate length to information density: a team headshot might need just name and role; a product screenshot might need 15–25 words. For data charts, supplement with a visible data table or paragraph below the image. The benchmark: if a sighted user could read your alt text and understand what the image contributes, the alt text is correct."}},{"@type":"Question","name":"Does alt text affect SEO?","acceptedAnswer":{"@type":"Answer","text":"Yes, meaningfully. Search engines use alt text to understand image content and index images in Google Image Search — one of the only direct image signals available to crawlers. Well-written alt text for product screenshots, diagrams, and infographics can drive image search traffic. Google's crawlers function similarly to screen readers: both need text to understand visual content. The same alt text improvements that reduce ADA lawsuit risk also improve search visibility."}},{"@type":"Question","name":"Do SVG images need alt text?","acceptedAnswer":{"@type":"Answer","text":"It depends on how the SVG is embedded. An SVG loaded via an img tag requires an alt attribute like any other image. An inline SVG (the svg element directly in HTML) should have role=\"img\" and a title child element as the text alternative, with aria-labelledby pointing to the title's id. Decorative inline SVGs — icon glyphs next to text labels — should have aria-hidden=\"true\" and focusable=\"false\" to remove them from the accessibility tree entirely."}},{"@type":"Question","name":"Does ShipSafe check for missing alt text?","acceptedAnswer":{"@type":"Answer","text":"Yes. ShipSafe scans the page's HTML for img elements missing an alt attribute, and for images with placeholder alt values like 'image', 'photo', or a file path string. It flags these as WCAG 1.1.1 violations — the same criterion automated ADA demand-letter scanners check. After adding alt text, run ShipSafe on the same URL to confirm the findings are resolved."}}]}}
 </script>
 <link rel="stylesheet" href="../styles.css?v=7">
 <style>
@@ -94,6 +94,7 @@
       <a href="wcag-remediation-checklist-existing-website.html">Remediation</a>
       <a href="accessibility-statement-template.html">Statement</a>
       <a href="fix-missing-alt-text-wcag-1-1-1.html" aria-current="page">Alt text</a>
+      <a href="keyboard-navigation-accessibility-testing.html">Keyboard nav</a>
       <a href="../">Check my site</a>
     </nav>
   </div>
@@ -136,7 +137,7 @@
         <span class="badge-type badge-func">Functional</span>
         <h4>Functional images</h4>
         <p>Images that are the only content inside a link or button: a logo linking home, a search icon in a button, a social icon linking to a profile.</p>
-        <p><strong>Needs:</strong> <code>alt</code> text describing what the link goes to or what the button does — not what the image looks like. The alt text is the control’s label.</p>
+        <p><strong>Needs:</strong> <code>alt</code> text describing what the link goes to or what the button does — not what the image looks like. The alt text is the control's label.</p>
       </div>
     </div>
 
@@ -194,41 +195,41 @@
     </div>
 
     <h2 id="writing-alt-text">5 rules for writing good alt text</h2>
-    <p>These rules apply to informative images — the ones that need descriptive alt text. Apply them in order when you’re not sure what to write.</p>
+    <p>These rules apply to informative images — the ones that need descriptive alt text. Apply them in order when you're not sure what to write.</p>
 
     <ol class="alt-rules">
       <li>
         <strong class="rule-title">Describe what the image communicates, not what it looks like</strong>
-        <p>Alt text is a functional replacement — it should give the reader the same understanding they’d get from seeing the image. A screenshot of your SaaS dashboard should describe what information the dashboard shows, not that it is a "screenshot with a blue sidebar". Context matters: the same photo might need different alt text depending on what point the surrounding content is making.</p>
+        <p>Alt text is a functional replacement — it should give the reader the same understanding they'd get from seeing the image. A screenshot of your SaaS dashboard should describe what information the dashboard shows, not that it is a "screenshot with a blue sidebar". Context matters: the same photo might need different alt text depending on what point the surrounding content is making.</p>
       </li>
       <li>
-        <strong class="rule-title">Don’t start with “image of” or “photo of”</strong>
-        <p>Screen readers already announce “image” (or “graphic”) before reading the alt text. Starting with “image of a person” means users hear “image — image of a person”. Skip the prefix and go straight to the content: “Alex Chen, Lead Engineer” instead of “Photo of Alex Chen, Lead Engineer”.</p>
+        <strong class="rule-title">Don't start with "image of" or "photo of"</strong>
+        <p>Screen readers already announce "image" (or "graphic") before reading the alt text. Starting with "image of a person" means users hear "image — image of a person". Skip the prefix and go straight to the content: "Alex Chen, Lead Engineer" instead of "Photo of Alex Chen, Lead Engineer".</p>
       </li>
       <li>
         <strong class="rule-title">Match length to information density</strong>
-        <p>There’s no required length limit. A team headshot: 3–6 words (name and role). A product screenshot: 15–25 words describing what the interface shows. A data chart: a brief summary in alt text, plus a data table or paragraph below the image containing the full data. The W3C technique G94 recommends a short text alternative in alt; G92 recommends a longer description in adjacent text for complex images.</p>
+        <p>There's no required length limit. A team headshot: 3–6 words (name and role). A product screenshot: 15–25 words describing what the interface shows. A data chart: a brief summary in alt text, plus a data table or paragraph below the image containing the full data. The W3C technique G94 recommends a short text alternative in alt; G92 recommends a longer description in adjacent text for complex images.</p>
       </li>
       <li>
         <strong class="rule-title">For functional images, describe the destination or action</strong>
-        <p>An image inside a link or button is a UI control. Its alt text is the control’s accessible label, not an image description. For links: describe where the link goes (“Copper Bay Labs homepage”). For buttons: describe what the button does (“Search”, “Close menu”, “Submit payment”). The visual appearance of the icon is irrelevant.</p>
+        <p>An image inside a link or button is a UI control. Its alt text is the control's accessible label, not an image description. For links: describe where the link goes ("Copper Bay Labs homepage"). For buttons: describe what the button does ("Search", "Close menu", "Submit payment"). The visual appearance of the icon is irrelevant.</p>
       </li>
       <li>
         <strong class="rule-title">For complex images, supplement with visible text</strong>
-        <p>Charts, infographics, and diagrams often communicate data that can’t be compressed into a short string without losing meaning. Provide a brief summary in the <code class="inline">alt</code> attribute, then include the underlying data as a visible HTML table or paragraph below the image. Use <code class="inline">aria-describedby</code> to link the image to its description element. This makes the data accessible to everyone, not just screen reader users.</p>
+        <p>Charts, infographics, and diagrams often communicate data that can't be compressed into a short string without losing meaning. Provide a brief summary in the <code class="inline">alt</code> attribute, then include the underlying data as a visible HTML table or paragraph below the image. Use <code class="inline">aria-describedby</code> to link the image to its description element. This makes the data accessible to everyone, not just screen reader users.</p>
       </li>
     </ol>
 
     <h2 id="audit">How to find images with missing alt text</h2>
 
     <h3>1. ShipSafe (fastest for a quick page check)</h3>
-    <p>Paste your URL into ShipSafe. It reads the page’s source HTML and flags every <code class="inline">&lt;img&gt;</code> missing an <code class="inline">alt</code> attribute and every image with a suspicious placeholder value (“image”, “photo”, a URL-looking string). Results in under 10 seconds, no install required.</p>
+    <p>Paste your URL into ShipSafe. It reads the page's source HTML and flags every <code class="inline">&lt;img&gt;</code> missing an <code class="inline">alt</code> attribute and every image with a suspicious placeholder value ("image", "photo", a URL-looking string). Results in under 10 seconds, no install required.</p>
 
     <h3>2. Axe DevTools browser extension (most thorough)</h3>
-    <p>Install the free Axe DevTools extension for Chrome or Firefox. Open any page, right-click → Inspect → click the “axe DevTools” tab. Run the scan: Axe identifies every WCAG 1.1.1 violation with a specific element selector you can click to jump to the node. It catches missing alt attributes, empty alt on informative images, and <code class="inline">alt="image"</code>-style non-descriptions.</p>
+    <p>Install the free Axe DevTools extension for Chrome or Firefox. Open any page, right-click → Inspect → click the "axe DevTools" tab. Run the scan: Axe identifies every WCAG 1.1.1 violation with a specific element selector you can click to jump to the node. It catches missing alt attributes, empty alt on informative images, and <code class="inline">alt="image"</code>-style non-descriptions.</p>
 
     <h3>3. Chrome DevTools Elements search (bulk audit)</h3>
-    <p>Open DevTools (F12) → Elements panel → Ctrl+F (Windows) or Cmd+F (Mac). Search for <code class="inline">img:not([alt])</code> to find all images missing an alt attribute. This won’t catch empty-alt-on-informative-images; use Axe for that.</p>
+    <p>Open DevTools (F12) → Elements panel → Ctrl+F (Windows) or Cmd+F (Mac). Search for <code class="inline">img:not([alt])</code> to find all images missing an alt attribute. This won't catch empty-alt-on-informative-images; use Axe for that.</p>
 
     <div class="callout tip">
       <strong>For CI coverage:</strong> run <code>npx axe-core-cli &lt;url&gt; --tags wcag2a</code> for a JSON report of all Level A violations including 1.1.1. Or use Playwright with the axe-core library to catch regressions in a pre-deploy test.
@@ -247,7 +248,7 @@
       </div>
       <div class="platform-card">
         <h4>Webflow</h4>
-        <p>Select the image element on the canvas → right Settings panel → <strong>Alt</strong> field. For decorative images, enter a single space (Webflow’s UI doesn’t accept an empty string; a space renders as <code>alt=" "</code> which screen readers treat as empty). For precise control, set <code>alt=""</code> directly in code export mode.</p>
+        <p>Select the image element on the canvas → right Settings panel → <strong>Alt</strong> field. For decorative images, enter a single space (Webflow's UI doesn't accept an empty string; a space renders as <code>alt=" "</code> which screen readers treat as empty). For precise control, set <code>alt=""</code> directly in code export mode.</p>
       </div>
       <div class="platform-card">
         <h4>Squarespace</h4>
@@ -255,11 +256,11 @@
       </div>
       <div class="platform-card">
         <h4>Wix</h4>
-        <p>Click the image → <strong>Settings</strong> (gear icon) → <strong>What’s in the image? (Alt text)</strong> field. Background image sections cannot have alt text set — they are CSS background images and are inaccessible to screen readers by nature; treat them as decorative.</p>
+        <p>Click the image → <strong>Settings</strong> (gear icon) → <strong>What's in the image? (Alt text)</strong> field. Background image sections cannot have alt text set — they are CSS background images and are inaccessible to screen readers by nature; treat them as decorative.</p>
       </div>
       <div class="platform-card">
         <h4>Next.js Image component</h4>
-        <p>The <code>next/image</code> <code>&lt;Image&gt;</code> component requires an <code>alt</code> prop — TypeScript will error if it’s absent. For decorative images, pass <code>alt=""</code> explicitly.</p>
+        <p>The <code>next/image</code> <code>&lt;Image&gt;</code> component requires an <code>alt</code> prop — TypeScript will error if it's absent. For decorative images, pass <code>alt=""</code> explicitly.</p>
 <pre><code>// Informative
 &lt;Image src="/dashboard.png"
   alt="Dashboard showing 3 active projects" /&gt;
@@ -273,14 +274,14 @@
       </div>
       <div class="platform-card">
         <h4>AI builders (Lovable, Bolt, v0, Cursor)</h4>
-        <p>Open the code view and search for <code>&lt;img</code>. AI builders frequently omit alt or generate <code>alt="[object Object]"</code> or the filename. Edit each occurrence directly. Then prompt: “add descriptive alt text to all images — use empty alt for decorative ones” to fix future output.</p>
+        <p>Open the code view and search for <code>&lt;img</code>. AI builders frequently omit alt or generate <code>alt="[object Object]"</code> or the filename. Edit each occurrence directly. Then prompt: "add descriptive alt text to all images — use empty alt for decorative ones" to fix future output.</p>
       </div>
     </div>
 
     <h2 id="special-cases">Special cases</h2>
 
     <h3>Inline SVG elements</h3>
-    <p>An SVG embedded as a <code class="inline">&lt;svg&gt;</code> element in HTML doesn’t accept an <code class="inline">alt</code> attribute. For informative inline SVGs, add <code class="inline">role="img"</code> and a <code class="inline">&lt;title&gt;</code> child as the text alternative:</p>
+    <p>An SVG embedded as a <code class="inline">&lt;svg&gt;</code> element in HTML doesn't accept an <code class="inline">alt</code> attribute. For informative inline SVGs, add <code class="inline">role="img"</code> and a <code class="inline">&lt;title&gt;</code> child as the text alternative:</p>
 <pre><code>&lt;svg role="img" aria-labelledby="chart-title" viewBox="0 0 400 200"&gt;
   &lt;title id="chart-title"&gt;Monthly active users — Q3 2024&lt;/title&gt;
   &lt;!-- SVG content --&gt;
@@ -310,7 +311,7 @@
 &lt;/a&gt;</code></pre>
 
     <h3>Complex images (charts, infographics)</h3>
-    <p>For complex images where a brief alt string can’t capture all the information, provide a short summary in <code class="inline">alt</code> and link the image to a longer visible description with <code class="inline">aria-describedby</code>:</p>
+    <p>For complex images where a brief alt string can't capture all the information, provide a short summary in <code class="inline">alt</code> and link the image to a longer visible description with <code class="inline">aria-describedby</code>:</p>
 <pre><code>&lt;figure&gt;
   &lt;img src="revenue-q3.png"
        alt="Q3 2024 revenue by product line"
@@ -322,7 +323,7 @@
 &lt;/figure&gt;</code></pre>
 
     <h2 id="verify">Verify your fixes with ShipSafe</h2>
-    <p>After adding or updating alt text, run ShipSafe on the same URL to confirm the changes are live. ShipSafe reads the page’s HTML source and flags remaining <code class="inline">&lt;img&gt;</code> elements with a missing or suspicious alt attribute. Look for the <strong>Accessibility</strong> category in the results — a green check next to “Images have alt text” confirms the visible images in your source HTML are covered.</p>
+    <p>After adding or updating alt text, run ShipSafe on the same URL to confirm the changes are live. ShipSafe reads the page's HTML source and flags remaining <code class="inline">&lt;img&gt;</code> elements with a missing or suspicious alt attribute. Look for the <strong>Accessibility</strong> category in the results — a green check next to "Images have alt text" confirms the visible images in your source HTML are covered.</p>
     <p>Note: ShipSafe reads the initial HTML source. Images injected by JavaScript after the page loads — lazy-loaded images, carousel images, images rendered by a JS framework without SSR — may not appear in the scan. For comprehensive JavaScript-rendered coverage, use Axe DevTools directly in the browser after the page fully loads.</p>
 
     <p style="margin:24px 0 8px"><a class="btn primary" href="../">Check my site with ShipSafe &rarr;</a></p>
@@ -343,27 +344,27 @@
       </details>
       <details>
         <summary>What is the difference between a missing alt attribute and alt=""?</summary>
-        <p>A missing alt attribute and an empty alt attribute produce completely different screen reader behavior. When the <code class="inline">alt</code> attribute is absent, most screen readers announce the image’s file name — often a meaningless hash like <code class="inline">hero-2024-final-v3.jpg</code>. An empty alt attribute (<code class="inline">alt=""</code>) explicitly instructs the screen reader to ignore the element entirely. For decorative images, <code class="inline">alt=""</code> is correct. For informative images, both a missing alt and an empty alt are WCAG 1.1.1 failures.</p>
+        <p>A missing alt attribute and an empty alt attribute produce completely different screen reader behavior. When the <code class="inline">alt</code> attribute is absent, most screen readers announce the image's file name — often a meaningless hash like <code class="inline">hero-2024-final-v3.jpg</code>. An empty alt attribute (<code class="inline">alt=""</code>) explicitly instructs the screen reader to ignore the element entirely. For decorative images, <code class="inline">alt=""</code> is correct. For informative images, both a missing alt and an empty alt are WCAG 1.1.1 failures.</p>
       </details>
       <details>
         <summary>When should I use an empty alt attribute (alt="")?</summary>
-        <p>Use <code class="inline">alt=""</code> on purely decorative images that add visual styling but don’t communicate information beyond what the surrounding text already provides: decorative dividers, abstract background textures, stock-photo filler where adjacent text provides all context. The test: would a user who couldn’t see this image miss any information or functionality? If not, the image is decorative and gets <code class="inline">alt=""</code>.</p>
+        <p>Use <code class="inline">alt=""</code> on purely decorative images that add visual styling but don't communicate information beyond what the surrounding text already provides: decorative dividers, abstract background textures, stock-photo filler where adjacent text provides all context. The test: would a user who couldn't see this image miss any information or functionality? If not, the image is decorative and gets <code class="inline">alt=""</code>.</p>
       </details>
       <details>
         <summary>How do I write good alt text for an informative image?</summary>
-        <p>Describe what the image communicates in context — not just what it looks like. Don’t start with “image of” or “photo of”; screen readers already announce “image” before reading the alt text. Calibrate length to information density: a team headshot might need just name and role; a product screenshot might need 15–25 words. For data charts, supplement with a visible data table below the image. The benchmark: if a sighted user could read only your alt text and understand what the image contributes to the page, the alt text is correct.</p>
+        <p>Describe what the image communicates in context — not just what it looks like. Don't start with "image of" or "photo of"; screen readers already announce "image" before reading the alt text. Calibrate length to information density: a team headshot might need just name and role; a product screenshot might need 15–25 words. For data charts, supplement with a visible data table below the image. The benchmark: if a sighted user could read only your alt text and understand what the image contributes to the page, the alt text is correct.</p>
       </details>
       <details>
         <summary>Does alt text affect SEO?</summary>
-        <p>Yes, meaningfully. Search engines use alt text to understand image content and index images in Google Image Search — one of the only direct signals available to crawlers for understanding visual content. Well-written alt text for product screenshots, diagrams, and infographics can drive image search traffic. Google’s crawlers function similarly to screen readers: both need text to understand images. The same alt text improvements that reduce ADA lawsuit risk also improve search visibility.</p>
+        <p>Yes, meaningfully. Search engines use alt text to understand image content and index images in Google Image Search — one of the only direct signals available to crawlers for understanding visual content. Well-written alt text for product screenshots, diagrams, and infographics can drive image search traffic. Google's crawlers function similarly to screen readers: both need text to understand images. The same alt text improvements that reduce ADA lawsuit risk also improve search visibility.</p>
       </details>
       <details>
         <summary>Do SVG images need alt text?</summary>
-        <p>It depends on how the SVG is embedded. An SVG loaded via <code class="inline">&lt;img src="..."&gt;</code> requires an <code class="inline">alt</code> attribute like any other image. An inline <code class="inline">&lt;svg&gt;</code> element should have <code class="inline">role="img"</code> and a <code class="inline">&lt;title&gt;</code> child element as the text alternative, with <code class="inline">aria-labelledby</code> pointing to the title’s <code class="inline">id</code>. Decorative inline SVGs — icon glyphs next to text labels — should have <code class="inline">aria-hidden="true"</code> and <code class="inline">focusable="false"</code>.</p>
+        <p>It depends on how the SVG is embedded. An SVG loaded via <code class="inline">&lt;img src="..."&gt;</code> requires an <code class="inline">alt</code> attribute like any other image. An inline <code class="inline">&lt;svg&gt;</code> element should have <code class="inline">role="img"</code> and a <code class="inline">&lt;title&gt;</code> child element as the text alternative, with <code class="inline">aria-labelledby</code> pointing to the title's <code class="inline">id</code>. Decorative inline SVGs — icon glyphs next to text labels — should have <code class="inline">aria-hidden="true"</code> and <code class="inline">focusable="false"</code>.</p>
       </details>
       <details>
         <summary>Does ShipSafe check for missing alt text?</summary>
-        <p>Yes. ShipSafe scans the page’s HTML for <code class="inline">&lt;img&gt;</code> elements missing an <code class="inline">alt</code> attribute, and for images with placeholder alt values like “image”, “photo”, or a file path string. It flags these as WCAG 1.1.1 violations — the same criterion automated ADA demand-letter scanners check. After adding alt text, run ShipSafe on the same URL to confirm. Note: ShipSafe reads the initial HTML source; images injected by JavaScript after page load may not appear in the scan.</p>
+        <p>Yes. ShipSafe scans the page's HTML for <code class="inline">&lt;img&gt;</code> elements missing an <code class="inline">alt</code> attribute, and for images with placeholder alt values like "image", "photo", or a file path string. It flags these as WCAG 1.1.1 violations — the same criterion automated ADA demand-letter scanners check. After adding alt text, run ShipSafe on the same URL to confirm. Note: ShipSafe reads the initial HTML source; images injected by JavaScript after page load may not appear in the scan.</p>
       </details>
     </div>
 
@@ -383,7 +384,7 @@
       <a href="https://labs.copperbaytech.com/hardencheck/" target="_blank" rel="noopener noreferrer">
         <span class="s-tag">Security headers</span>
         <span class="s-name">HardenCheck</span>
-        <p>Scan your live site’s HTTP headers for missing CSP, HSTS, and other security hardening flags.</p>
+        <p>Scan your live site's HTTP headers for missing CSP, HSTS, and other security hardening flags.</p>
       </a>
       <a href="https://labs.copperbaytech.com/exposurecheck/" target="_blank" rel="noopener noreferrer">
         <span class="s-tag">Post-deploy</span>
@@ -414,6 +415,7 @@
       <a href="wcag-remediation-checklist-existing-website.html">Fix checklist</a>
       <a href="accessibility-statement-template.html">Accessibility statement</a>
       <a href="fix-missing-alt-text-wcag-1-1-1.html" aria-current="page">Fix alt text</a>
+      <a href="keyboard-navigation-accessibility-testing.html">Keyboard nav testing</a>
       <a href="https://labs.copperbaytech.com/complykit/" target="_blank" rel="noopener noreferrer">ComplyKit</a>
       <a href="https://copperbaytech.com" target="_blank" rel="noopener noreferrer">Get it fixed <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens in new tab)</span></a>
     </nav>
